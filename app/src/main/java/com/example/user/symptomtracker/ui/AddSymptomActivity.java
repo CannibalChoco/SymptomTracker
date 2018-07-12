@@ -7,6 +7,10 @@ import com.example.user.symptomtracker.R;
 
 import butterknife.ButterKnife;
 
+/**
+ * Contains form for user to fill out when adding a symptom
+ * Gets and validates the user input before information can be added to database
+ */
 public class AddSymptomActivity extends AppCompatActivity {
 
     @Override

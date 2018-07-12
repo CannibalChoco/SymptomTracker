@@ -12,7 +12,7 @@ import com.example.user.symptomtracker.R;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment for displaying an all of the resolved symptoms
  */
 public class ResolvedFragment extends Fragment {
 

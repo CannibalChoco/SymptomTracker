@@ -12,15 +12,13 @@ import com.example.user.symptomtracker.R;
 import butterknife.ButterKnife;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment for displaying and editing Today
  */
 public class TodayFragment extends Fragment {
-
 
     public TodayFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

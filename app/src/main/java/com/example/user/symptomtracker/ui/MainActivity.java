@@ -16,9 +16,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * Set up and manage navigation between destinations by Fragment transactions through
+ * bottom navigation
+ */
 public class MainActivity extends AppCompatActivity {
-
-    private static final String KEY_SELECTED_FRAGMENT = "selectedFragment";
 
     @BindView(R.id.navigation)
     BottomNavigationView navigationView;

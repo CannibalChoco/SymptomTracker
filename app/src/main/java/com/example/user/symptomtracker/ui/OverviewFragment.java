@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment for displaying an overview of all the symptoms
  */
 public class OverviewFragment extends Fragment {
 
