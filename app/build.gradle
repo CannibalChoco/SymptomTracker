@@ -36,4 +36,10 @@ dependencies {
     // butterknife
     implementation "com.jakewharton:butterknife:$butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
+
+    // architecture components
+    implementation "android.arch.persistence.room:runtime:$aac_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$aac_version"
+    implementation "android.arch.lifecycle:extensions:$aac_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$aac_version"
 }

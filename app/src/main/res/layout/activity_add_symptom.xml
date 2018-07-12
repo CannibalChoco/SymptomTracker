@@ -26,18 +26,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_symptom" />
 
-    <RadioButton
-        android:id="@+id/radio_status_new"
+    <RadioGroup
+        android:id="@+id/radioGroupStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/status_new"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/radio_status_chronic" />
+        app:layout_constraintTop_toBottomOf="@+id/radioStatusChronic">
+
+        <RadioButton
+            android:id="@+id/radioStatusNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/status_new"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/radioStatusChronic" />
+
+        <RadioButton
+            android:id="@+id/radioStatusReoccurring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/status_reoccurring"
+            app:layout_constraintBaseline_toBaselineOf="@+id/radioStatusNew"
+            app:layout_constraintStart_toEndOf="@+id/radioStatusNew" />
+
+    </RadioGroup>
 
     <RadioButton
-        android:id="@+id/radio_status_doctor"
+        android:id="@+id/radioStatusDoctor"
         android:layout_width="171dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -45,17 +63,8 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/label_status"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
-    <RadioButton
-        android:id="@+id/radio_status_reoccurring"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/status_reoccurring"
-        app:layout_constraintBaseline_toBaselineOf="@+id/radio_status_new"
-        app:layout_constraintStart_toEndOf="@+id/radio_status_new" />
-
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnSaveInDb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -65,15 +74,14 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editSymptomName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:inputType="textPersonName"
         android:text="Insomnia"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        tools:layout_editor_absoluteY="3dp" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -83,7 +91,7 @@
         app:layout_constraintGuide_percent="0.4" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editCurrentTreatments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -101,17 +109,17 @@
         android:layout_marginTop="16dp"
         android:text="@string/label_status"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/editPastTreatments" />
 
     <RadioButton
-        android:id="@+id/radio_status_chronic"
+        android:id="@+id/radioStatusChronic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/status_chronic"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/radio_status_doctor" />
+        app:layout_constraintTop_toBottomOf="@+id/radioStatusDoctor" />
 
     <TextView
         android:id="@+id/label_notes"
@@ -121,10 +129,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/label_notes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_status_new" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupStatus" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/editNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -142,10 +150,10 @@
         android:layout_marginTop="8dp"
         android:text="@string/label_past_treatments"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editCurrentTreatments" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/editPastTreatments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
