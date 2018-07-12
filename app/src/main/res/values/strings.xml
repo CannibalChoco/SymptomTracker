@@ -1,6 +1,31 @@
 <resources>
     <string name="app_name">Symptom Tracker</string>
+
+    <!-- Screen titles -->
     <string name="title_today">Today</string>
     <string name="title_overview">Overview</string>
     <string name="title_resolved">Resolved</string>
+    <string name="title_add_new">Add Symptom</string>
+
+    <!-- Labels for Add New Symptom Activity -->
+    <string name="label_symptom">Symptom</string>
+    <string name="label_current_treatments">Current Treatments</string>
+    <string name="label_past_treatments">Past Treatments</string>
+    <string name="label_status">Status</string>
+    <string name="label_notes">Notes</string>
+
+    <!-- Statuses -->
+    <string name="status_doctor_informed">Doctor is informed</string>
+    <string name="status_doctor_not_informed">Doctor not informed</string>
+    <string name="status_need_to_see_doctor">You need to see a doctor</string>
+
+    <string name="status_chronic">Chronic</string>
+    <string name="status_not_chronic">Not Chronic</string>
+
+    <string name="status_new">New</string>
+    <string name="status_reoccurring">Reoccurring</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
