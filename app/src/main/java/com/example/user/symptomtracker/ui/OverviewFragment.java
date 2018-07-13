@@ -3,18 +3,21 @@ package com.example.user.symptomtracker.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,16 +26,17 @@ import butterknife.ButterKnife;
 /**
  * A fragment for displaying an overview of all the symptoms
  */
-public class OverviewFragment extends Fragment {
+public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymptomClickListener{
 
     public OverviewFragment() {
         // Required empty public constructor
     }
 
     private AppDatabase db;
+    private OverviewAdapter adapter;
 
-    @BindView(R.id.textView)
-    TextView message;
+    @BindView(R.id.overviewRecyclerView)
+    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,19 +48,30 @@ public class OverviewFragment extends Fragment {
         getActivity().setTitle(R.string.title_overview);
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
-        retrieveTasks();
+        retrieveSymptoms();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        adapter = new OverviewAdapter(getContext(), new ArrayList<SymptomEntity>(), this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
-    private void retrieveTasks() {
-        LiveData<List<SymptomEntity>> tasks = db.symptomDao().loadAllSymptoms();
-        tasks.observe(this, new Observer<List<SymptomEntity>>() {
+    private void retrieveSymptoms() {
+        LiveData<List<SymptomEntity>> symptoms = db.symptomDao().loadAllSymptoms();
+        symptoms.observe(this, new Observer<List<SymptomEntity>>() {
             @Override
             public void onChanged(@Nullable List<SymptomEntity> symptomList) {
-                message.setText(symptomList.toString());
+                adapter.replaceDataSet(symptomList);
             }
         });
     }
 
+    @Override
+    public void onSymptomSelected(int id) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(DetailActivity.KEY_ID, id);
+        startActivity(intent);
+    }
 }

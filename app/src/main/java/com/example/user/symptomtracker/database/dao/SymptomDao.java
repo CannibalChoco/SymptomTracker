@@ -24,5 +24,5 @@ public interface SymptomDao {
     void deleteSymptom(SymptomEntity symptom);
 
     @Query("SELECT * FROM symptom WHERE id = :id")
-    LiveData<SymptomEntity> loadSymptomById(int id);
+    SymptomEntity loadSymptomById(int id);
 }
