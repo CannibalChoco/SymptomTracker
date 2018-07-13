@@ -9,10 +9,12 @@ import android.util.Log;
 import com.example.user.symptomtracker.database.dao.SeverityDao;
 import com.example.user.symptomtracker.database.dao.SymptomDao;
 import com.example.user.symptomtracker.database.dao.TreatmentDao;
+import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 
-@Database(entities = {SymptomEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {SymptomEntity.class, SeverityEntity.class, TreatmentEntity.class},
+        version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
