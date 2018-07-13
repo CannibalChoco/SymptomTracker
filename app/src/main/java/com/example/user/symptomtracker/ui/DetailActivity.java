@@ -24,9 +24,6 @@ public class DetailActivity extends AppCompatActivity {
     private AppDatabase db;
     private SymptomEntity symptom;
 
-    @BindView(R.id.symptomName)
-    TextView symptomName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +44,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable SymptomEntity symptomEntity) {
                 symptom = symptomLiveData.getValue();
-                symptomName.setText(symptom.getName());
                 setTitle(symptom.getName());
             }
         });
