@@ -1,5 +1,8 @@
 package com.example.user.symptomtracker.ui;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -39,19 +42,13 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void retrieveSymptom() {
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        final LiveData<SymptomEntity> symptomLiveData = db.symptomDao().loadSymptomById(symptomId);
+        symptomLiveData.observe(this, new Observer<SymptomEntity>() {
             @Override
-            public void run() {
-                final SymptomEntity s = db.symptomDao().loadSymptomById(symptomId);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        symptom = s;
-                        symptomName.setText(symptom.getName());
-                        setTitle(symptom.getName());
-                    }
-                });
+            public void onChanged(@Nullable SymptomEntity symptomEntity) {
+                symptom = symptomLiveData.getValue();
+                symptomName.setText(symptom.getName());
+                setTitle(symptom.getName());
             }
         });
     }
