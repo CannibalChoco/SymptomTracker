@@ -10,7 +10,7 @@ import android.widget.RadioGroup;
 import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
-import com.example.user.symptomtracker.database.SymptomEntity;
+import com.example.user.symptomtracker.database.entity.SymptomEntity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

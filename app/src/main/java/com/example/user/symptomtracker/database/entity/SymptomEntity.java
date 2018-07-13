@@ -1,10 +1,13 @@
-package com.example.user.symptomtracker.database;
+package com.example.user.symptomtracker.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+/**
+ * The main entity. Additional data will be mapped with SymptomEntity id field
+ */
 @Entity (tableName = "symptom")
 public class SymptomEntity {
 
