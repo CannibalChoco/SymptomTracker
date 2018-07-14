@@ -10,7 +10,9 @@ import android.widget.RadioGroup;
 import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
+import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
+import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,12 +69,23 @@ public class AddSymptomActivity extends AppCompatActivity {
                 isChronic,
                 isReoccurring,
                 doctorIsInformed);
+
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 db.symptomDao().insertSymptom(symptom);
-                finish();
-            }
+                int id = db.symptomDao().getSymptomsId(symptomName);
+
+                final TreatmentEntity treatment = new TreatmentEntity(id, "vitamin Z",
+                        3600, 0, false);
+
+                db.treatmentDao().insertTreatment(treatment);
+
+                final TreatmentEntity treatment2 = new TreatmentEntity(id, "bath",
+                        360000, 0, false);
+
+                db.treatmentDao().insertTreatment(treatment2);
+                }
         });
     }
 
