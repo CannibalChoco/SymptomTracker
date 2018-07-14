@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
+import com.example.user.symptomtracker.utils.GraphUtils;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.List;
 
@@ -45,8 +50,10 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SymptomEntity symptom = symptomList.get(position);
-        holder.name.setText(symptom.getName());
-        holder.id.setText(String.valueOf(symptom.getId()));  // error - resource not found
+        holder.id.setText(String.valueOf(symptom.getId()));
+
+        holder.graph.setTitle(symptom.getName());
+        GraphUtils.initGraphView(holder.graph, GraphUtils.getRandomDataPoints());
     }
 
     @Override
@@ -74,10 +81,10 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
         private OnSymptomClickListener listener;
 
-        @BindView(R.id.symptomName)
-        TextView name;
         @BindView(R.id.symptomId)
         TextView id;
+        @BindView(R.id.list_item_graph)
+        GraphView graph;
 
         public ViewHolder(View itemView, OnSymptomClickListener listener) {
             super(itemView);

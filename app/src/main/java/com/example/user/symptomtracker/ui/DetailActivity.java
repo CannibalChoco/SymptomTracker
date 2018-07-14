@@ -2,16 +2,15 @@ package com.example.user.symptomtracker.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.TextView;
 
-import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
-
+import com.example.user.symptomtracker.utils.GraphUtils;
+import com.jjoe64.graphview.GraphView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +22,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private AppDatabase db;
     private SymptomEntity symptom;
+
+    @BindView(R.id.graph)
+    GraphView graph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,12 @@ public class DetailActivity extends AppCompatActivity {
             public void onChanged(@Nullable SymptomEntity symptomEntity) {
                 symptom = symptomLiveData.getValue();
                 setTitle(symptom.getName());
+                makeGraph();
             }
         });
+    }
+
+    private void makeGraph(){
+        GraphUtils.initGraphView(graph, GraphUtils.getRandomDataPoints());
     }
 }

@@ -12,24 +12,15 @@
         android:layout_height="wrap_content"
         tools:context=".DetailActivity">
 
-
-
-        <!--<com.jjoe64.graphview.GraphView-->
-        <!--android:id="@+id/graph"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:seriesData="0=5;2=5;3=0;4=2" />-->
-        <ImageView
+        <com.jjoe64.graphview.GraphView
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="250dp"
+            android:foregroundGravity="center"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/labelTreatments"
