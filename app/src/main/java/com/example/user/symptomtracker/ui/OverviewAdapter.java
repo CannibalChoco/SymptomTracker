@@ -93,6 +93,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            graph.setOnClickListener(this);
         }
 
         @Override

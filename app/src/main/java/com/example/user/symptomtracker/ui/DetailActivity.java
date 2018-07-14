@@ -36,8 +36,6 @@ public class DetailActivity extends AppCompatActivity {
 
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
         retrieveSymptom();
-
-
     }
 
     private void retrieveSymptom() {
