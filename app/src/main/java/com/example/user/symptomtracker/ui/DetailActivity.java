@@ -18,6 +18,7 @@ import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
+import com.example.user.symptomtracker.ui.adapter.TreatmentAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
 
@@ -43,17 +44,12 @@ public class DetailActivity extends AppCompatActivity {
 
     @BindView(R.id.graph)
     GraphView graph;
-    @BindView(R.id.notesRecyclerView)
+    @BindView(R.id.notesRv)
     RecyclerView notesRecyclerView;
-    // TODO: remove debug fields; replace with recyclerviews
-    @BindView(R.id.treatment1)
-    TextView treatment1;
-    @BindView(R.id.treatment2)
-    TextView treatment2;
-    @BindView(R.id.treatment1Effect)
-    TextView treatment1Effect;
-    @BindView(R.id.treatment2Effect)
-    TextView treatment2Effect;
+    @BindView(R.id.currentTreatmentRv)
+    RecyclerView currentTreatmentRv;
+    @BindView(R.id.pastTreatmentsRv)
+    RecyclerView pastTreatmentRv;
 
     @BindView(R.id.statusIsResolved)
     TextView statusIsResolved;
@@ -64,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.statusDoctorInformed)
     TextView statusDoctorInformed;
 
-    @BindDrawable(R.drawable.backgroubd_status_attention)
+    @BindDrawable(R.drawable.background_status_attention)
     Drawable backgroundStatusAttention;
     @BindDrawable(R.drawable.background_status_good)
     Drawable backgroundStatusGood;
@@ -79,7 +75,9 @@ public class DetailActivity extends AppCompatActivity {
     int colorStatusDefault;
 
     NotesAdapter notesAdapter;
+    TreatmentAdapter treatmentAdapter;
     LinearLayoutManager notesLayoutManager;
+    LinearLayoutManager currentTreatmentLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +90,9 @@ public class DetailActivity extends AppCompatActivity {
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
 
         setUpNotesRecyclerView();
+        setUpTreatmentsRecyclerView();
 
         retrieveSymptom();
-        retrieveTreatment();
     }
 
     private void setUpNotesRecyclerView() {
@@ -103,6 +101,16 @@ public class DetailActivity extends AppCompatActivity {
         notesRecyclerView.setAdapter(notesAdapter);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
         notesRecyclerView.setHasFixedSize(true);
+    }
+
+    private void setUpTreatmentsRecyclerView(){
+        treatmentAdapter = new TreatmentAdapter(new ArrayList<TreatmentEntity>());
+        currentTreatmentLayoutManager = new LinearLayoutManager(this);
+        currentTreatmentRv.setLayoutManager(currentTreatmentLayoutManager);
+        //pastTreatmentRv.setLayoutManager(notesLayoutManager);
+
+        currentTreatmentRv.setAdapter(treatmentAdapter);
+        currentTreatmentRv.setHasFixedSize(true);
     }
 
     /**
@@ -122,6 +130,7 @@ public class DetailActivity extends AppCompatActivity {
                 makeGraph();
 
                 retrieveNotes();
+                retrieveCurrentTreatments();
             }
         });
     }
@@ -183,27 +192,53 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    @OnClick(R.id.addCurrentTreatment)
+    public void addCurrentTreatment(){
+        final TreatmentEntity treatment = new TreatmentEntity(symptomId, "Treatment X",
+                360000, 3, true);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.treatmentDao().insertTreatment(treatment);
+            }
+        });
+    }
+
+    @OnClick(R.id.addPastTreatment)
+    public void addPastTreatment(){
+        final TreatmentEntity treatment = new TreatmentEntity(symptomId, "Treatment X",
+                3600, 3, false);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.treatmentDao().insertTreatment(treatment);
+            }
+        });
+    }
+
     private void setIsChronicInUi(boolean isChronic){
         if(isChronic){
-            statusIsChronic.setBackground(backgroundStatusDefault);
             statusIsChronic.setText(R.string.status_chronic);
             statusIsChronic.setTextColor(colorStatusDefault);
+            statusIsChronic.setBackground(backgroundStatusDefault);
         } else {
-            statusIsChronic.setBackground(backgroundStatusGood);
             statusIsChronic.setText(R.string.status_not_chronic);
             statusIsChronic.setTextColor(colorStatusGood);
+            statusIsChronic.setBackground(backgroundStatusGood);
         }
     }
 
     private void setDoctorIsInformedInUi(boolean doctorIsInformed){
         if(doctorIsInformed){
-            statusDoctorInformed.setBackground(backgroundStatusGood);
             statusDoctorInformed.setText(R.string.status_doctor_informed);
             statusDoctorInformed.setTextColor(colorStatusGood);
+            statusDoctorInformed.setBackground(backgroundStatusGood);
         }else{
-            statusDoctorInformed.setBackground(backgroundStatusAttention);
             statusDoctorInformed.setText(R.string.status_doctor_not_informed);
             statusDoctorInformed.setTextColor(colorStatusAttention);
+            statusDoctorInformed.setBackground(backgroundStatusAttention);
         }
     }
 
@@ -215,16 +250,24 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void retrieveTreatment(){
-        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao().getAllTreatments(symptomId);
+    private void retrieveCurrentTreatments(){
+        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
+                .loadTreatmentsByIsActive(symptomId, true);
         treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
             @Override
             public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                treatments = treatmentEntities;
-                treatment1.setText(treatments.get(0).getName());
-                treatment2.setText(treatments.get(1).getName());
-                treatment1Effect.setText(String.valueOf(treatments.get(0).getTakesEffectIn()));
-                treatment2Effect.setText(String.valueOf(treatments.get(1).getTakesEffectIn()));
+                treatmentAdapter.replaceDataSet(treatmentEntities);
+            }
+        });
+    }
+
+    private void retrievePastTreatments(){
+        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
+                .loadTreatmentsByIsActive(symptomId, false);
+        treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
+                // TODO: load into past treatment adapter
             }
         });
     }
