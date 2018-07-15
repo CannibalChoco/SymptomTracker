@@ -6,4 +6,9 @@
 
     <color name="green">#1faa00</color>
     <color name="neutralGrey">#757575</color>
+
+    <!-- Status colors -->
+    <color name="color_status_good">@color/green</color>
+    <color name="color_status_attention">@color/colorAccent</color>
+    <color name="color_status_default">@color/neutralGrey</color>
 </resources>

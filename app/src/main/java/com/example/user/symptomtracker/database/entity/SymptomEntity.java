@@ -20,22 +20,27 @@ public class SymptomEntity {
     private boolean isReoccurring;
     @ColumnInfo(name = "doctor_is_informed")
     private boolean doctorIsInformed;
+    @ColumnInfo(name = "is_resolved")
+    private boolean isResolved;
 
     public SymptomEntity(int id, String name, boolean isChronic, boolean isReoccurring,
-                         boolean doctorIsInformed) {
+                         boolean doctorIsInformed, boolean isResolved) {
         this.id = id;
         this.name = name;
         this.isChronic = isChronic;
         this.isReoccurring = isReoccurring;
         this.doctorIsInformed = doctorIsInformed;
+        this.isResolved = isResolved;
     }
 
     @Ignore
-    public SymptomEntity(String name, boolean isChronic, boolean isReoccurring, boolean doctorIsInformed) {
+    public SymptomEntity(String name, boolean isChronic, boolean isReoccurring,
+                         boolean doctorIsInformed, boolean isResolved) {
         this.name = name;
         this.isChronic = isChronic;
         this.isReoccurring = isReoccurring;
         this.doctorIsInformed = doctorIsInformed;
+        this.isResolved = isResolved;
     }
 
     public int getId() {
@@ -60,5 +65,14 @@ public class SymptomEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        isResolved = resolved;
     }
 }

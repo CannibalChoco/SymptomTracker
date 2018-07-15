@@ -1,5 +1,6 @@
 package com.example.user.symptomtracker.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -50,6 +51,7 @@ public class AddSymptomActivity extends AppCompatActivity {
 
     private AppDatabase db;
 
+    private int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +70,14 @@ public class AddSymptomActivity extends AppCompatActivity {
         final SymptomEntity symptom = new SymptomEntity(symptomName,
                 isChronic,
                 isReoccurring,
-                doctorIsInformed);
+                doctorIsInformed,
+                true);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 db.symptomDao().insertSymptom(symptom);
-                int id = db.symptomDao().getSymptomsId(symptomName);
+                id = db.symptomDao().getSymptomsId(symptomName);
 
                 final TreatmentEntity treatment = new TreatmentEntity(id, "vitamin Z",
                         3600, 0, false);
@@ -85,8 +88,15 @@ public class AddSymptomActivity extends AppCompatActivity {
                         360000, 0, false);
 
                 db.treatmentDao().insertTreatment(treatment2);
+
+                // TODO: refactor. The same code in OverviewFragment
+                Intent intent = new Intent(AddSymptomActivity.this, DetailActivity.class);
+                intent.putExtra(DetailActivity.KEY_ID, id);
+                startActivity(intent);
                 }
         });
+
+
     }
 
     private void getEnteredData (){

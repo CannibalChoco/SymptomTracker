@@ -17,6 +17,9 @@ public class GraphUtils {
      * @param dataPoints DataPoints to be displayed in the passed n graph
      */
     public static void initGraphView(GraphView graph, DataPoint[] dataPoints){
+
+        graph.removeAllSeries();
+
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
 
         graph.addSeries(series);

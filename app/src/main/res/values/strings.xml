@@ -25,5 +25,7 @@
     <string name="status_new">New</string>
     <string name="status_reoccurring">Reoccurring</string>
 
+    <string name="status_resolved">Resolved</string>
+    <string name="status_not_resolved">Not Resolved</string>
 
 </resources>

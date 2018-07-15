@@ -70,6 +70,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     @Override
     public void onSymptomSelected(int id) {
+        // TODO: refactor. The same code in OverviewFragment
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(DetailActivity.KEY_ID, id);
         startActivity(intent);
