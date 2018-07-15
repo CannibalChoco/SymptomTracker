@@ -28,7 +28,6 @@ public class ResolvedFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_resolved, container, false);
         ButterKnife.bind(this, rootView);
-        getActivity().setTitle(R.string.title_resolved);
 
         return rootView;
     }

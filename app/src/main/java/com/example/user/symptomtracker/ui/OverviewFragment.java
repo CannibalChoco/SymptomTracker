@@ -46,8 +46,6 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, rootView);
 
-        getActivity().setTitle(R.string.title_overview);
-
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
         retrieveSymptoms();
 

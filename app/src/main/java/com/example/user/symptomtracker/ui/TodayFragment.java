@@ -27,8 +27,6 @@ public class TodayFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         ButterKnife.bind(this, rootView);
 
-        getActivity().setTitle(R.string.title_today);
-
         return rootView;
     }
 
