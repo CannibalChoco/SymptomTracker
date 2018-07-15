@@ -2,27 +2,31 @@ package com.example.user.symptomtracker.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
+import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindDrawable;
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,6 +43,8 @@ public class DetailActivity extends AppCompatActivity {
 
     @BindView(R.id.graph)
     GraphView graph;
+    @BindView(R.id.notesRecyclerView)
+    RecyclerView notesRecyclerView;
     // TODO: remove debug fields; replace with recyclerviews
     @BindView(R.id.treatment1)
     TextView treatment1;
@@ -72,6 +78,8 @@ public class DetailActivity extends AppCompatActivity {
     @BindColor(R.color.color_status_default)
     int colorStatusDefault;
 
+    NotesAdapter notesAdapter;
+    LinearLayoutManager notesLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +90,19 @@ public class DetailActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(getApplicationContext());
 
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
+
+        setUpNotesRecyclerView();
+
         retrieveSymptom();
         retrieveTreatment();
+    }
+
+    private void setUpNotesRecyclerView() {
+        notesAdapter = new NotesAdapter(new ArrayList<NoteEntity>());
+        notesLayoutManager = new LinearLayoutManager(this);
+        notesRecyclerView.setAdapter(notesAdapter);
+        notesRecyclerView.setLayoutManager(notesLayoutManager);
+        notesRecyclerView.setHasFixedSize(true);
     }
 
     /**
@@ -96,15 +115,20 @@ public class DetailActivity extends AppCompatActivity {
             public void onChanged(@Nullable SymptomEntity symptomEntity) {
                 symptom = symptomLiveData.getValue();
                 setTitle(symptom.getName());
-                setIsResolved(symptom.isResolved());
+                setIsResolvedInUi(symptom.isResolved());
                 switchResolved.setChecked(symptom.isResolved());
-                setIsChronic(symptom.isChronic());
-                setDoctorIsInformed(symptom.isDoctorIsInformed());
+                setIsChronicInUi(symptom.isChronic());
+                setDoctorIsInformedInUi(symptom.isDoctorIsInformed());
                 makeGraph();
+
+                retrieveNotes();
             }
         });
     }
 
+    /**
+     * Update isChronic with opposite value in db
+     */
     @OnLongClick(R.id.statusChronic)
     public boolean setStatusChronic(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -117,6 +141,9 @@ public class DetailActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Update doctorIsInformed with opposite value in db
+     */
     @OnLongClick(R.id.statusDoctorInformed)
     public boolean setStatusDoctorIsInformed(){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -130,7 +157,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Toggle the value of statusIsResolved, save in db, update UI
+     * Update isResolved with opposite value in db
      */
     @OnClick({R.id.switchResolved})
     public void setStatusResolved(){
@@ -142,7 +169,21 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setIsChronic(boolean isChronic){
+    @OnClick(R.id.addNote)
+    public void addNote(){
+        final NoteEntity note = new NoteEntity("Catching cold increases the pain", symptomId,
+                new Date().getTime());
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.noteDao().insertNote(note);
+            }
+        });
+
+    }
+
+    private void setIsChronicInUi(boolean isChronic){
         if(isChronic){
             statusIsChronic.setBackground(backgroundStatusDefault);
             statusIsChronic.setText(R.string.status_chronic);
@@ -154,7 +195,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setDoctorIsInformed(boolean doctorIsInformed){
+    private void setDoctorIsInformedInUi(boolean doctorIsInformed){
         if(doctorIsInformed){
             statusDoctorInformed.setBackground(backgroundStatusGood);
             statusDoctorInformed.setText(R.string.status_doctor_informed);
@@ -166,7 +207,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setIsResolved(boolean isResolved){
+    private void setIsResolvedInUi(boolean isResolved){
         if(isResolved){
             statusIsResolved.setText(R.string.status_resolved);
         } else {
@@ -184,6 +225,16 @@ public class DetailActivity extends AppCompatActivity {
                 treatment2.setText(treatments.get(1).getName());
                 treatment1Effect.setText(String.valueOf(treatments.get(0).getTakesEffectIn()));
                 treatment2Effect.setText(String.valueOf(treatments.get(1).getTakesEffectIn()));
+            }
+        });
+    }
+
+    private void retrieveNotes() {
+        final LiveData<List<NoteEntity>> notes = db.noteDao().loadAllNotesForSymptom(symptomId);
+        notes.observe(this, new Observer<List<NoteEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NoteEntity> noteEntities) {
+                notesAdapter.replaceDataSet(noteEntities);
             }
         });
     }

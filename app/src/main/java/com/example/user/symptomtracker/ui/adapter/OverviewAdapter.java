@@ -1,6 +1,5 @@
-package com.example.user.symptomtracker.ui;
+package com.example.user.symptomtracker.ui.adapter;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +12,6 @@ import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.List;
 
@@ -92,6 +88,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
             this.listener = listener;
 
             ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(this);
             graph.setOnClickListener(this);
         }

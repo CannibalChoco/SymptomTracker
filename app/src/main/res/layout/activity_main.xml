@@ -23,7 +23,7 @@
         android:layout_height="@dimen/fab_default"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_action_add"
+        android:src="@drawable/ic_action_add_light"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -154,17 +154,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/notesRecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Catching cold increases the pain"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/labelNotes"
-            app:layout_constraintTop_toBottomOf="@+id/labelNotes" />
+            app:layout_constraintTop_toBottomOf="@+id/addNote" />
 
 
         <HorizontalScrollView
@@ -246,6 +247,16 @@
             app:layout_constraintBottom_toTopOf="@+id/statusIsResolved"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusIsResolved" />
+
+        <ImageView
+            android:id="@+id/addNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/labelNotes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelNotes"
+            app:srcCompat="@drawable/ic_action_add_dark" />
 
 
     </android.support.constraint.ConstraintLayout>

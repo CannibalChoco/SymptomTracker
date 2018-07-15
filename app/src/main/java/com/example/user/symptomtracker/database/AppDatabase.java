@@ -6,14 +6,17 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.user.symptomtracker.database.dao.NoteDao;
 import com.example.user.symptomtracker.database.dao.SeverityDao;
 import com.example.user.symptomtracker.database.dao.SymptomDao;
 import com.example.user.symptomtracker.database.dao.TreatmentDao;
+import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 
-@Database(entities = {SymptomEntity.class, SeverityEntity.class, TreatmentEntity.class},
+@Database(entities = {SymptomEntity.class, SeverityEntity.class, TreatmentEntity.class,
+                    NoteEntity.class},
         version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
 
@@ -40,4 +43,6 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract SeverityDao severityDao();
 
     public abstract TreatmentDao treatmentDao();
+
+    public abstract NoteDao noteDao();
 }

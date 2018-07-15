@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface SeverityDao {
 
-    @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY date ASC")
+    @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC")
     LiveData<List<SeverityEntity>> loadSeverityForSymptom(int symptomId);
 
     @Insert

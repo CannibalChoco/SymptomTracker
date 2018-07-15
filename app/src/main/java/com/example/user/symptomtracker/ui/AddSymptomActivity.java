@@ -11,9 +11,12 @@ import android.widget.RadioGroup;
 import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
+import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +44,9 @@ public class AddSymptomActivity extends AppCompatActivity {
     RadioButton radioStatusReoccurring;
     @BindView(R.id.radioStatusChronic)
     RadioButton radioStatusChronic;
+    @BindView(R.id.addNote)
+    EditText editAddNote;
+
     @BindView(R.id.btnSaveInDb)
     Button saveInDb;
 
@@ -48,6 +54,8 @@ public class AddSymptomActivity extends AppCompatActivity {
     private boolean doctorIsInformed;
     private boolean isChronic;
     private boolean isReoccurring;
+
+    private String note;
 
     private AppDatabase db;
 
@@ -89,6 +97,8 @@ public class AddSymptomActivity extends AppCompatActivity {
 
                 db.treatmentDao().insertTreatment(treatment2);
 
+                db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
+
                 // TODO: refactor. The same code in OverviewFragment
                 Intent intent = new Intent(AddSymptomActivity.this, DetailActivity.class);
                 intent.putExtra(DetailActivity.KEY_ID, id);
@@ -105,5 +115,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         doctorIsInformed = radioStatusDoctor.isChecked();
         isChronic = radioStatusChronic.isChecked();
         isReoccurring = radioStatusReoccurring.isChecked();
+
+        note = editAddNote.getText().toString();
     }
 }
