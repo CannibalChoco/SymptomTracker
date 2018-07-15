@@ -1,6 +1,5 @@
 package com.example.user.symptomtracker.ui.adapter;
 
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +15,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.ViewHolder> {
+public class CurrentTreatmentAdapter extends RecyclerView.Adapter<CurrentTreatmentAdapter.ViewHolder> {
 
     private List<TreatmentEntity> treatments;
 
-    public TreatmentAdapter(List<TreatmentEntity> treatments) {
+    public CurrentTreatmentAdapter(List<TreatmentEntity> treatments) {
         this.treatments = treatments;
     }
 

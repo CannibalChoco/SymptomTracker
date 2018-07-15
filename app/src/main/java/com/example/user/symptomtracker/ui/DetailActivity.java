@@ -17,8 +17,9 @@ import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
-import com.example.user.symptomtracker.ui.adapter.TreatmentAdapter;
+import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
 
@@ -75,9 +76,11 @@ public class DetailActivity extends AppCompatActivity {
     int colorStatusDefault;
 
     NotesAdapter notesAdapter;
-    TreatmentAdapter treatmentAdapter;
+    CurrentTreatmentAdapter currentTreatmentAdapter;
+    PastTreatmentAdapter pastTreatmentAdapter;
     LinearLayoutManager notesLayoutManager;
     LinearLayoutManager currentTreatmentLayoutManager;
+    LinearLayoutManager pastTreatmentLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,7 @@ public class DetailActivity extends AppCompatActivity {
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
 
         setUpNotesRecyclerView();
-        setUpTreatmentsRecyclerView();
+        setUpTreatmentsRecyclerViews();
 
         retrieveSymptom();
     }
@@ -103,14 +106,21 @@ public class DetailActivity extends AppCompatActivity {
         notesRecyclerView.setHasFixedSize(true);
     }
 
-    private void setUpTreatmentsRecyclerView(){
-        treatmentAdapter = new TreatmentAdapter(new ArrayList<TreatmentEntity>());
-        currentTreatmentLayoutManager = new LinearLayoutManager(this);
-        currentTreatmentRv.setLayoutManager(currentTreatmentLayoutManager);
-        //pastTreatmentRv.setLayoutManager(notesLayoutManager);
+    private void setUpTreatmentsRecyclerViews(){
+        currentTreatmentAdapter = new CurrentTreatmentAdapter(new ArrayList<TreatmentEntity>());
+        pastTreatmentAdapter = new PastTreatmentAdapter(this, new ArrayList<TreatmentEntity>());
 
-        currentTreatmentRv.setAdapter(treatmentAdapter);
+        currentTreatmentLayoutManager = new LinearLayoutManager(this);
+        pastTreatmentLayoutManager = new LinearLayoutManager(this);
+
+        currentTreatmentRv.setLayoutManager(currentTreatmentLayoutManager);
+        pastTreatmentRv.setLayoutManager(pastTreatmentLayoutManager);
+
+        currentTreatmentRv.setAdapter(currentTreatmentAdapter);
+        pastTreatmentRv.setAdapter(pastTreatmentAdapter);
+
         currentTreatmentRv.setHasFixedSize(true);
+        pastTreatmentRv.setHasFixedSize(true);
     }
 
     /**
@@ -131,6 +141,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 retrieveNotes();
                 retrieveCurrentTreatments();
+                retrievePastTreatments();
             }
         });
     }
@@ -256,7 +267,7 @@ public class DetailActivity extends AppCompatActivity {
         treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
             @Override
             public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                treatmentAdapter.replaceDataSet(treatmentEntities);
+                currentTreatmentAdapter.replaceDataSet(treatmentEntities);
             }
         });
     }
@@ -267,7 +278,7 @@ public class DetailActivity extends AppCompatActivity {
         treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
             @Override
             public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                // TODO: load into past treatment adapter
+                pastTreatmentAdapter.replaceDataSet(treatmentEntities);
             }
         });
     }
