@@ -7,7 +7,7 @@
     tools:context=".ui.AddSymptomActivity">
 
     <TextView
-        android:id="@+id/label_symptom"
+        android:id="@+id/label_treatment_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -26,7 +26,7 @@
         android:text="@string/label_current_treatments"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_symptom" />
+        app:layout_constraintTop_toBottomOf="@+id/label_treatment_name" />
 
     <RadioGroup
         android:id="@+id/radioGroupStatus"

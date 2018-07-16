@@ -19,6 +19,7 @@ import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.ui.DialogFragments.AddCurrentTreatmentDialog;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
@@ -37,10 +38,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote {
+public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote,
+        AddCurrentTreatmentDialog.OnSaveCurrentTreatment{
 
     public static final String KEY_ID = "id";
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
+    public static final String FRAGMENT_ADD_CURRENT_TREATMENT = "fragmentAddCurrentTreatment";
     private int symptomId;
 
     private AppDatabase db;
@@ -203,15 +206,10 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
     @OnClick(R.id.addCurrentTreatment)
     public void addCurrentTreatment() {
-        final TreatmentEntity treatment = new TreatmentEntity(symptomId, "Treatment X",
-                360000, 3, true);
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.treatmentDao().insertTreatment(treatment);
-            }
-        });
+        AddCurrentTreatmentDialog addCurrentTreatmentDialog = new AddCurrentTreatmentDialog();
+        addCurrentTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        addCurrentTreatmentDialog.setOnSaveCurrentTreatmentListener(this);
+        addCurrentTreatmentDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_CURRENT_TREATMENT);
     }
 
     @OnClick(R.id.addPastTreatment)
@@ -304,6 +302,19 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
             @Override
             public void run() {
                 db.noteDao().insertNote(noteEntity);
+            }
+        });
+    }
+
+    @Override
+    public void onSaveCurrentTreatment(String name, long takesEffectIn) {
+        final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
+                takesEffectIn, 3, true);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.treatmentDao().insertTreatment(treatment);
             }
         });
     }

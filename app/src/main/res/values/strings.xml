@@ -39,5 +39,15 @@
     <!-- Add New Note -->
     <string name="add_note_title">Add Note</string>
 
+    <!-- Add New Current Treatment -->
+    <string name="add_current_treatment_title">Add Current Treatment</string>
+    <string name="label_treatment">Treatment</string>
+    <string name="label_takes_effect">Takes effect in</string>
+
+    <!-- Time Radio Group -->
+    <string name="radio_time_hour">Hour</string>
+    <string name="radio_time_day">Day</string>
+    <string name="radio_time_week">Week</string>
+    <string name="radio_time_month">Month</string>
 
 </resources>

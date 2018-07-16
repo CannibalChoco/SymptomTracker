@@ -36,18 +36,19 @@ public class AddNoteDialog extends DialogFragment {
         this.listener = listener;
     }
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.title_add_new)
+                .setTitle(R.string.add_note_title)
                 .setPositiveButton(R.string.dialog_action_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String note = noteText.getText().toString();
                         if (!note.isEmpty()){
                             listener.onSaveNote(note);
+                        } else {
+                            dialog.dismiss();
                         }
                     }
                 })
