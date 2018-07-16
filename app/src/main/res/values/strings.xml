@@ -28,9 +28,16 @@
     <string name="status_resolved">Resolved</string>
     <string name="status_not_resolved">Not Resolved</string>
 
-    <!-- Dialog fragment messages -->
+    <!-- Dialog fragments -->
+    <string name="dialog_action_save">Save</string>
+
+    <!-- AddSymptomActivity -->
     <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
     <string name="dialog_action_keep_editing">Keep editing</string>
     <string name="dialog_action_discard">Discard</string>
+
+    <!-- Add New Note -->
+    <string name="add_note_title">Add Note</string>
+
 
 </resources>

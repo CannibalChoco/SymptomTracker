@@ -1,5 +1,7 @@
 package com.example.user.symptomtracker.ui;
 
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.graphics.drawable.Drawable;
@@ -17,6 +19,7 @@ import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
@@ -34,9 +37,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote {
 
     public static final String KEY_ID = "id";
+    public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
     private int symptomId;
 
     private AppDatabase db;
@@ -89,12 +93,12 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         db = AppDatabase.getInstance(getApplicationContext());
-
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
+
+
 
         setUpNotesRecyclerView();
         setUpTreatmentsRecyclerViews();
-
         retrieveSymptom();
     }
 
@@ -106,7 +110,7 @@ public class DetailActivity extends AppCompatActivity {
         notesRecyclerView.setHasFixedSize(true);
     }
 
-    private void setUpTreatmentsRecyclerViews(){
+    private void setUpTreatmentsRecyclerViews() {
         currentTreatmentAdapter = new CurrentTreatmentAdapter(new ArrayList<TreatmentEntity>());
         pastTreatmentAdapter = new PastTreatmentAdapter(this, new ArrayList<TreatmentEntity>());
 
@@ -150,7 +154,7 @@ public class DetailActivity extends AppCompatActivity {
      * Update isChronic with opposite value in db
      */
     @OnLongClick(R.id.statusChronic)
-    public boolean setStatusChronic(){
+    public boolean setStatusChronic() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -165,7 +169,7 @@ public class DetailActivity extends AppCompatActivity {
      * Update doctorIsInformed with opposite value in db
      */
     @OnLongClick(R.id.statusDoctorInformed)
-    public boolean setStatusDoctorIsInformed(){
+    public boolean setStatusDoctorIsInformed() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -180,7 +184,7 @@ public class DetailActivity extends AppCompatActivity {
      * Update isResolved with opposite value in db
      */
     @OnClick({R.id.switchResolved})
-    public void setStatusResolved(){
+    public void setStatusResolved() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -190,21 +194,15 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.addNote)
-    public void addNote(){
-        final NoteEntity note = new NoteEntity("Catching cold increases the pain", symptomId,
-                new Date().getTime());
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.noteDao().insertNote(note);
-            }
-        });
-
+    public void addNote() {
+        AddNoteDialog addNoteDialog = new AddNoteDialog();
+        addNoteDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        addNoteDialog.setOnSAveNoteListener(this);
+        addNoteDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_NOTE);
     }
 
     @OnClick(R.id.addCurrentTreatment)
-    public void addCurrentTreatment(){
+    public void addCurrentTreatment() {
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, "Treatment X",
                 360000, 3, true);
 
@@ -217,7 +215,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.addPastTreatment)
-    public void addPastTreatment(){
+    public void addPastTreatment() {
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, "Treatment X",
                 3600, 3, false);
 
@@ -229,8 +227,8 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setIsChronicInUi(boolean isChronic){
-        if(isChronic){
+    private void setIsChronicInUi(boolean isChronic) {
+        if (isChronic) {
             statusIsChronic.setText(R.string.status_chronic);
             statusIsChronic.setTextColor(colorStatusDefault);
             statusIsChronic.setBackground(backgroundStatusDefault);
@@ -241,27 +239,27 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setDoctorIsInformedInUi(boolean doctorIsInformed){
-        if(doctorIsInformed){
+    private void setDoctorIsInformedInUi(boolean doctorIsInformed) {
+        if (doctorIsInformed) {
             statusDoctorInformed.setText(R.string.status_doctor_informed);
             statusDoctorInformed.setTextColor(colorStatusGood);
             statusDoctorInformed.setBackground(backgroundStatusGood);
-        }else{
+        } else {
             statusDoctorInformed.setText(R.string.status_doctor_not_informed);
             statusDoctorInformed.setTextColor(colorStatusAttention);
             statusDoctorInformed.setBackground(backgroundStatusAttention);
         }
     }
 
-    private void setIsResolvedInUi(boolean isResolved){
-        if(isResolved){
+    private void setIsResolvedInUi(boolean isResolved) {
+        if (isResolved) {
             statusIsResolved.setText(R.string.status_resolved);
         } else {
             statusIsResolved.setText(R.string.status_not_resolved);
         }
     }
 
-    private void retrieveCurrentTreatments(){
+    private void retrieveCurrentTreatments() {
         final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
                 .loadTreatmentsByIsActive(symptomId, true);
         treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
@@ -272,7 +270,7 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void retrievePastTreatments(){
+    private void retrievePastTreatments() {
         final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
                 .loadTreatmentsByIsActive(symptomId, false);
         treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
@@ -293,7 +291,20 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void makeGraph(){
+    private void makeGraph() {
         GraphUtils.initGraphView(graph, GraphUtils.getRandomDataPoints());
+    }
+
+    @Override
+    public void onSaveNote(String note) {
+        final NoteEntity noteEntity = new NoteEntity(note, symptomId,
+                new Date().getTime());
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.noteDao().insertNote(noteEntity);
+            }
+        });
     }
 }

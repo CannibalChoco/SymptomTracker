@@ -66,6 +66,9 @@ public class AddSymptomActivity extends AppCompatActivity {
 
     private int id;
 
+    /**
+     * Detect when a view is clicked to keep track if user has made any changes
+     */
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
