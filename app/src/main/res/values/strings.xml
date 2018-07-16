@@ -28,4 +28,9 @@
     <string name="status_resolved">Resolved</string>
     <string name="status_not_resolved">Not Resolved</string>
 
+    <!-- Dialog fragment messages -->
+    <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
+    <string name="dialog_action_keep_editing">Keep editing</string>
+    <string name="dialog_action_discard">Discard</string>
+
 </resources>
