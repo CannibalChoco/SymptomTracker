@@ -21,9 +21,12 @@ import android.arch.persistence.room.PrimaryKey;
         indices = {@Index(value = "symptom_id")})
 public class TreatmentEntity {
 
+    public static final long TIME_NOT_SELECTED = -1;
+
+
     public static final int WAS_SUCCESSFUL_NOT_SET = 0;
     public static final int WAS_SUCCESSFUL_YES = 1;
-    public static final int WAS_SUCCESSFUL_NO= 2;
+    public static final int WAS_SUCCESSFUL_NO = 2;
 
     @PrimaryKey(autoGenerate = true)
     private int id;

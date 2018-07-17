@@ -14,6 +14,9 @@
     <string name="label_status">Status</string>
     <string name="label_notes">Notes</string>
 
+    <!-- Default strings for when no information is provided -->
+    <string name="default_no_treatment_time_provided">-</string>
+
     <!-- Statuses -->
     <string name="status_doctor_informed">Doctor is informed</string>
     <string name="status_doctor_not_informed">Doctor not informed</string>
@@ -42,7 +45,7 @@
     <!-- Add New Current Treatment -->
     <string name="add_current_treatment_title">Add Current Treatment</string>
     <string name="label_treatment">Treatment</string>
-    <string name="label_takes_effect">Takes effect in</string>
+    <string name="label_takes_effect">Takes effect in (optional)</string>
 
     <!-- Time Radio Group -->
     <string name="radio_time_hour">Hour</string>

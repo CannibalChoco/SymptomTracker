@@ -8,13 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +21,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddCurrentTreatmentDialog extends DialogFragment{
+public class AddCurrentTreatmentDialog extends DialogFragment {
+
+    public static final int TIME_UNIT_NOT_SELECTED = -1;
+    private static final int TIME_UNIT_HOUR = 0;
+    private static final int TIME_UNIT_DAY = 1;
+    private static final int TIME_UNIT_WEEK = 2;
+    private static final int TIME_UNIT_MONTH = 3;
+
+    private static final int WEEK_IN_DAYS = 7;
+    private static final int MONTH_IN_DAYS = 30;
 
     @BindView(R.id.editCurrentTreatmentName)
     EditText editTreatment;
@@ -37,15 +45,15 @@ public class AddCurrentTreatmentDialog extends DialogFragment{
     @BindView(R.id.radioTimeMonth)
     RadioButton timeMonth;
 
-    private long selectedTimeUnit;
+    private int selectedTimeUnit;
 
-    public interface OnSaveCurrentTreatment{
+    public interface OnSaveCurrentTreatment {
         void onSaveCurrentTreatment(String name, long takesEffectIn);
     }
 
     private OnSaveCurrentTreatment listener;
 
-    public void setOnSaveCurrentTreatmentListener(OnSaveCurrentTreatment listener){
+    public void setOnSaveCurrentTreatmentListener(OnSaveCurrentTreatment listener) {
         this.listener = listener;
     }
 
@@ -55,20 +63,14 @@ public class AddCurrentTreatmentDialog extends DialogFragment{
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        selectedTimeUnit = -1;
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_current_treatment_title)
                 .setPositiveButton(R.string.dialog_action_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        String treatment = editTreatment.getText().toString();
-                        String time = editTime.getText().toString();
-                        if (!treatment.isEmpty() && !time.isEmpty()){
-                            // TODO: send data through listener
-                            listener.onSaveCurrentTreatment(treatment, selectedTimeUnit);
-                        } else {
-                            dialog.dismiss();
-                        }
+                        saveSymptom(dialog);
                     }
                 })
                 .setNegativeButton(R.string.dialog_action_discard, new DialogInterface.OnClickListener() {
@@ -86,20 +88,69 @@ public class AddCurrentTreatmentDialog extends DialogFragment{
         return dialogBuilder.create();
     }
 
-    @OnClick({R.id.radioTimeHour, R.id.radioTimeDay, R.id.radioTimeWeek, R.id.radioTimeMonth})
-    public void timeUnitSelected(){
-        int time = Integer.valueOf(editTime.getText().toString());
+    /**
+     * Extract data entered in EditText fields, send it via listener
+     * @param dialog
+     */
+    private void saveSymptom(DialogInterface dialog) {
+        String timeString = editTime.getText().toString();
+        String treatment = editTreatment.getText().toString();
 
-        if (!editTime.getText().toString().isEmpty()){
-            if (timeHour.isChecked()){
-                selectedTimeUnit = TimeUnit.HOURS.toMillis(time);
-            } else if (timeDay.isChecked()){
-                selectedTimeUnit = TimeUnit.DAYS.toMillis(time);
-            } else if (timeWeek.isChecked()){
-                selectedTimeUnit = TimeUnit.DAYS.toMillis(time) * 7;
-            } else if (timeMonth.isChecked()){
-                selectedTimeUnit = TimeUnit.DAYS.toMillis(time) * 30;
+        if (!timeString.isEmpty()
+                && selectedTimeUnit != TIME_UNIT_NOT_SELECTED
+                && !treatment.isEmpty()){
+            // all data is provided, send treatments name and estimated time to take effect
+            int time = Integer.valueOf(timeString);
+            long timeInMilis = getTimeInMilis(time);
+            listener.onSaveCurrentTreatment(treatment, timeInMilis);
+        } else if ((timeString.isEmpty()
+                    && selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
+                    && !treatment.isEmpty()){
+            // only name is provided
+            listener.onSaveCurrentTreatment(treatment, TreatmentEntity.TIME_NOT_SELECTED);
+        } else if ((timeString.isEmpty()
+                    || selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
+                    && treatment.isEmpty()){
+            // TODO: Don't exit dialog
+            Toast.makeText(getContext(), "Please fill all necessary fields", Toast.LENGTH_SHORT).show();
+        } else {
+            dialog.dismiss();
+        }
+    }
+
+    // TODO: allow to uncheck
+    @OnClick({R.id.radioTimeHour, R.id.radioTimeDay, R.id.radioTimeWeek, R.id.radioTimeMonth})
+    public void timeUnitSelected() {
+        Toast.makeText(getContext(), "timeUnitSelected", Toast.LENGTH_SHORT).show();
+        if (timeHour.isChecked()) {
+            selectedTimeUnit = TIME_UNIT_HOUR;
+        } else if (timeDay.isChecked()) {
+            selectedTimeUnit = TIME_UNIT_DAY;
+        } else if (timeWeek.isChecked()) {
+            selectedTimeUnit = TIME_UNIT_WEEK;
+        } else if (timeMonth.isChecked()) {
+            selectedTimeUnit = TIME_UNIT_MONTH;
+        }
+    }
+
+    /**
+     * Calculate time in miliseconds from the data user has entered in dialog
+     * @param time count of time units
+     * @return time in miliseconds
+     */
+    private long getTimeInMilis(int time) {
+        if (selectedTimeUnit != TIME_UNIT_NOT_SELECTED){
+            switch (selectedTimeUnit){
+                case TIME_UNIT_HOUR:
+                    return TimeUnit.HOURS.toMillis(time);
+                case TIME_UNIT_DAY:
+                    return TimeUnit.DAYS.toMillis(time);
+                case TIME_UNIT_WEEK:
+                    return TimeUnit.DAYS.toMillis(time) * WEEK_IN_DAYS;
+                case TIME_UNIT_MONTH:
+                    return TimeUnit.DAYS.toMillis(time) * MONTH_IN_DAYS;
             }
         }
+        return 0;
     }
 }

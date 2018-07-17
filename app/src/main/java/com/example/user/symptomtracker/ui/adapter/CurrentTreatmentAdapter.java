@@ -36,7 +36,14 @@ public class CurrentTreatmentAdapter extends RecyclerView.Adapter<CurrentTreatme
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TreatmentEntity treatment = treatments.get(position);
         holder.name.setText(treatment.getName());
-        holder.takesEffect.setText(String.valueOf(treatment.getTakesEffectIn()));
+
+        // don't display invalid data
+        if (treatment.getTakesEffectIn() != TreatmentEntity.TIME_NOT_SELECTED){
+            holder.takesEffect.setText(String.valueOf(treatment.getTakesEffectIn()));
+        } else {
+            holder.takesEffect.setText(R.string.default_no_treatment_time_provided);
+        }
+
     }
 
     @Override
