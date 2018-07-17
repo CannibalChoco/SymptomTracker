@@ -26,58 +26,14 @@
             android:id="@+id/labelTreatments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Treatments"
+            android:text="@string/label_treatments"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
-
-        <TextView
-            android:id="@+id/labelCurrent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Current"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelTreatments" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/currentTreatmentRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/labelCurrent"
-            app:layout_constraintTop_toBottomOf="@+id/labelCurrent" />
-
-        <TextView
-            android:id="@+id/labelPast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Past"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/currentTreatmentRv" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/pastTreatmentsRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/labelPast"
-            app:layout_constraintTop_toBottomOf="@+id/labelPast" />
+            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
@@ -86,38 +42,16 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/labelTakesEffect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="Takes effect"
-            app:layout_constraintBaseline_toBaselineOf="@+id/labelTreatments"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <!-- TODO: Move to separate layout-->
+        <!--<TextView-->
+            <!--android:id="@+id/labelTakesEffect"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="Takes effect"-->
+            <!--app:layout_constraintBaseline_toBaselineOf="@+id/labelTreatments"-->
+            <!--app:layout_constraintEnd_toEndOf="parent" />-->
 
-        <TextView
-            android:id="@+id/labelNotes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Notes"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pastTreatmentsRv" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/notesRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/labelNotes"
-            app:layout_constraintTop_toBottomOf="@+id/addNote" />
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -195,35 +129,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusIsResolved" />
 
-        <ImageView
-            android:id="@+id/addNote"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/currentTreatments"
+            layout="@layout/current_treatments"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/labelNotes"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelNotes"
-            app:srcCompat="@drawable/ic_action_add_dark" />
+            app:layout_constraintTop_toBottomOf="@+id/labelTreatments" />
 
-        <ImageView
-            android:id="@+id/addCurrentTreatment"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/pastTreatments"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/labelCurrent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelCurrent"
-            app:srcCompat="@drawable/ic_action_add_dark" />
+            android:layout_marginTop="8dp"
+            layout="@layout/past_treatments"
+            app:layout_constraintTop_toBottomOf="@id/currentTreatments"/>
 
-        <ImageView
-            android:id="@+id/addPastTreatment"
-            android:layout_width="wrap_content"
+        <include
+            layout="@layout/notes"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/labelPast"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelPast"
-            app:srcCompat="@drawable/ic_action_add_dark" />
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pastTreatments" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
