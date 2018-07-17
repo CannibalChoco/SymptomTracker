@@ -33,10 +33,6 @@ public class AddSymptomActivity extends AppCompatActivity {
 
     @BindView(R.id.editSymptomName)
     EditText editSymptomName;
-    @BindView(R.id.editCurrentTreatments)
-    EditText editCurrentTreatment;
-    @BindView(R.id.editPastTreatments)
-    EditText editPastTreatment;
     @BindView(R.id.radioStatusDoctor)
     RadioButton radioStatusDoctor;
     @BindView(R.id.radioGroupStatus)
@@ -106,17 +102,9 @@ public class AddSymptomActivity extends AppCompatActivity {
                 db.symptomDao().insertSymptom(symptom);
                 id = db.symptomDao().getSymptomsId(symptomName);
 
-                final TreatmentEntity treatment = new TreatmentEntity(id, "vitamin Z",
-                        3600, 0, false);
-
-                db.treatmentDao().insertTreatment(treatment);
-
-                final TreatmentEntity treatment2 = new TreatmentEntity(id, "bath",
-                        360000, 0, false);
-
-                db.treatmentDao().insertTreatment(treatment2);
-
-                db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
+                if (!note.isEmpty()){
+                    db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
+                }
 
                 // TODO: refactor. The same code in OverviewFragment
                 Intent intent = new Intent(AddSymptomActivity.this, DetailActivity.class);
@@ -185,8 +173,6 @@ public class AddSymptomActivity extends AppCompatActivity {
     private void setTouchListener() {
         editSymptomName.setOnTouchListener(touchListener);
         editAddNote.setOnTouchListener(touchListener);
-        editCurrentTreatment.setOnTouchListener(touchListener);
-        editPastTreatment.setOnTouchListener(touchListener);
         radioGroupStatus.setOnTouchListener(touchListener);
         radioStatusChronic.setOnTouchListener(touchListener);
         radioStatusReoccurring.setOnTouchListener(touchListener);

@@ -31,26 +31,33 @@
     <string name="status_resolved">Resolved</string>
     <string name="status_not_resolved">Not Resolved</string>
 
-    <!-- Dialog fragments -->
+    <!-- Dialog Fragments Actions-->
     <string name="dialog_action_save">Save</string>
+    <string name="dialog_action_cancel">Cancel</string>
+    <string name="dialog_action_discard">Discard</string>
 
     <!-- AddSymptomActivity -->
     <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
     <string name="dialog_action_keep_editing">Keep editing</string>
-    <string name="dialog_action_discard">Discard</string>
 
-    <!-- Add New Note -->
+    <!-- Add New Note Dialog -->
     <string name="add_note_title">Add Note</string>
 
-    <!-- Add New Current Treatment -->
+    <!-- Add New Treatment  Dialog-->
     <string name="add_current_treatment_title">Add Current Treatment</string>
+    <string name="add_past_treatment_title">Add Past Treatment</string>
     <string name="label_treatment">Treatment</string>
     <string name="label_takes_effect">Takes effect in (optional)</string>
+    <string name="label_was_successful">Treatment success (optional)</string>
 
     <!-- Time Radio Group -->
-    <string name="radio_time_hour">Hour</string>
-    <string name="radio_time_day">Day</string>
-    <string name="radio_time_week">Week</string>
-    <string name="radio_time_month">Month</string>
+    <string name="radio_time_hour">Hours</string>
+    <string name="radio_time_day">Days</string>
+    <string name="radio_time_week">Weeks</string>
+    <string name="radio_time_month">Months</string>
+
+    <!-- Treatment Successful Radio Group -->
+    <string name="radio_treatment_successful">Successful</string>
+    <string name="radio_treatment_unsuccessful">Unsuccessful</string>
 
 </resources>

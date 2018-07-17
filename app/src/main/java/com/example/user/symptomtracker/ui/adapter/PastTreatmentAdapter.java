@@ -1,6 +1,5 @@
 package com.example.user.symptomtracker.ui.adapter;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -40,7 +39,12 @@ public class PastTreatmentAdapter extends RecyclerView.Adapter<PastTreatmentAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TreatmentEntity treatment = treatments.get(position);
         holder.name.setText(treatment.getName());
-        holder.takesEffect.setText(String.valueOf(treatment.getTakesEffectIn()));
+
+        if (treatment.getTakesEffectIn() != TreatmentEntity.TIME_NOT_SELECTED){
+            holder.takesEffect.setText(String.valueOf(treatment.getTakesEffectIn()));
+        } else {
+            holder.takesEffect.setText(R.string.default_no_treatment_time_provided);
+        }
 
         if (treatment.getWasSuccessful() == TreatmentEntity.WAS_SUCCESSFUL_NO) {
             holder.name.setTextColor(context.getResources().getColor(R.color.color_status_attention));

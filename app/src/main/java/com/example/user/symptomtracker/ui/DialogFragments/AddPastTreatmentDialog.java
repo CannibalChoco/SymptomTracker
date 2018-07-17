@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddCurrentTreatmentDialog extends DialogFragment {
+public class AddPastTreatmentDialog extends DialogFragment {
 
     public static final int TIME_UNIT_NOT_SELECTED = -1;
     private static final int TIME_UNIT_HOUR = 0;
@@ -45,28 +45,35 @@ public class AddCurrentTreatmentDialog extends DialogFragment {
     @BindView(R.id.radioTimeMonth)
     RadioButton timeMonth;
 
-    private int selectedTimeUnit;
+    @BindView(R.id.radioTreatmentSuccessful)
+    RadioButton treatmentSuccessful;
+    @BindView(R.id.radioTreatmentUnsuccessful)
+    RadioButton treatmentUnsuccessful;
 
-    public interface OnSaveCurrentTreatment {
-        void onSaveCurrentTreatment(String name, long takesEffectIn);
+    private int selectedTimeUnit;
+    private int treatmentSuccessInt;
+
+    public interface OnSavePastTreatment {
+        void onSavePastTreatment(String name, long takesEffectIn, int wasSuccessful);
     }
 
-    private OnSaveCurrentTreatment listener;
+    private OnSavePastTreatment listener;
 
-    public void setOnSaveCurrentTreatmentListener(OnSaveCurrentTreatment listener) {
+    public void setOnSavePastTreatmentListener(OnSavePastTreatment listener) {
         this.listener = listener;
     }
 
-    public AddCurrentTreatmentDialog() {
+    public AddPastTreatmentDialog() {
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         selectedTimeUnit = -1;
+        treatmentSuccessInt = TreatmentEntity.WAS_SUCCESSFUL_NOT_SET;
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.add_current_treatment_title)
+                .setTitle(R.string.add_past_treatment_title)
                 .setPositiveButton(R.string.dialog_action_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -81,7 +88,7 @@ public class AddCurrentTreatmentDialog extends DialogFragment {
                 });
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_add_current_treatment, null);
+        View view = inflater.inflate(R.layout.dialog_add_past_treatment, null);
         ButterKnife.bind(this, view);
 
         dialogBuilder.setView(view);
@@ -102,15 +109,16 @@ public class AddCurrentTreatmentDialog extends DialogFragment {
             // all data is provided, send treatments name and estimated time to take effect
             int time = Integer.valueOf(timeString);
             long timeInMilis = getTimeInMilis(time);
-            listener.onSaveCurrentTreatment(treatment, timeInMilis);
+            listener.onSavePastTreatment(treatment, timeInMilis, treatmentSuccessInt);
         } else if ((timeString.isEmpty()
-                    && selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
-                    && !treatment.isEmpty()){
+                && selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
+                && !treatment.isEmpty()){
             // only name is provided
-            listener.onSaveCurrentTreatment(treatment, TreatmentEntity.TIME_NOT_SELECTED);
+            listener.onSavePastTreatment(treatment, TreatmentEntity.TIME_NOT_SELECTED,
+                    treatmentSuccessInt);
         } else if ((timeString.isEmpty()
-                    || selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
-                    && treatment.isEmpty()){
+                || selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
+                && treatment.isEmpty()){
             // TODO: Don't exit dialog
             Toast.makeText(getContext(), "Please fill all necessary fields", Toast.LENGTH_SHORT).show();
         } else {
@@ -129,6 +137,15 @@ public class AddCurrentTreatmentDialog extends DialogFragment {
             selectedTimeUnit = TIME_UNIT_WEEK;
         } else if (timeMonth.isChecked()) {
             selectedTimeUnit = TIME_UNIT_MONTH;
+        }
+    }
+
+    @OnClick({R.id.radioTreatmentSuccessful, R.id.radioTreatmentUnsuccessful})
+    public void successSelected(){
+        if(treatmentSuccessful.isChecked()){
+            treatmentSuccessInt = TreatmentEntity.WAS_SUCCESSFUL_YES;
+        } else if (treatmentUnsuccessful.isChecked()){
+            treatmentSuccessInt = TreatmentEntity.WAS_SUCCESSFUL_NO;
         }
     }
 

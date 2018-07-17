@@ -60,7 +60,7 @@ public class AddNoteDialog extends DialogFragment {
                 });
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.add_note_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_add_note, null);
         ButterKnife.bind(this, view);
 
         dialogBuilder.setView(view);

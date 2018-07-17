@@ -21,6 +21,7 @@ import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddCurrentTreatmentDialog;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
+import com.example.user.symptomtracker.ui.DialogFragments.AddPastTreatmentDialog;
 import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
@@ -39,11 +40,13 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote,
-        AddCurrentTreatmentDialog.OnSaveCurrentTreatment{
+        AddCurrentTreatmentDialog.OnSaveCurrentTreatment,
+        AddPastTreatmentDialog.OnSavePastTreatment{
 
     public static final String KEY_ID = "id";
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
     public static final String FRAGMENT_ADD_CURRENT_TREATMENT = "fragmentAddCurrentTreatment";
+    public static final String FRAGMENT_ADD_PAST_TREATMENT = "fragmentAddPastTreatment";
     private int symptomId;
 
     private AppDatabase db;
@@ -214,15 +217,10 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
     @OnClick(R.id.addPastTreatment)
     public void addPastTreatment() {
-        final TreatmentEntity treatment = new TreatmentEntity(symptomId, "Treatment X",
-                3600, 3, false);
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.treatmentDao().insertTreatment(treatment);
-            }
-        });
+        AddPastTreatmentDialog addPastTreatmentDialog = new AddPastTreatmentDialog();
+        addPastTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        addPastTreatmentDialog.setOnSavePastTreatmentListener(this);
+        addPastTreatmentDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_PAST_TREATMENT);
     }
 
     private void setIsChronicInUi(boolean isChronic) {
@@ -310,6 +308,19 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     public void onSaveCurrentTreatment(String name, long takesEffectIn) {
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
                 takesEffectIn, 3, true);
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.treatmentDao().insertTreatment(treatment);
+            }
+        });
+    }
+
+    @Override
+    public void onSavePastTreatment(String name, long takesEffectIn, int wasSuccessful) {
+        final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
+                takesEffectIn, wasSuccessful, false);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

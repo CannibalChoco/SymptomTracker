@@ -39,7 +39,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.overview_list_item, parent, false);
+                .inflate(R.layout.list_item_overview, parent, false);
         return new ViewHolder(view, clickListener);
     }
 
