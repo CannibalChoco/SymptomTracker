@@ -1,15 +1,21 @@
 package com.example.user.symptomtracker.ui;
 
 import android.app.DialogFragment;
-import android.app.FragmentManager;
+
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewParent;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -39,28 +45,24 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote,
-        AddCurrentTreatmentDialog.OnSaveCurrentTreatment,
-        AddPastTreatmentDialog.OnSavePastTreatment{
+public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote {
 
     public static final String KEY_ID = "id";
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
     public static final String FRAGMENT_ADD_CURRENT_TREATMENT = "fragmentAddCurrentTreatment";
     public static final String FRAGMENT_ADD_PAST_TREATMENT = "fragmentAddPastTreatment";
+
+    public static final int NUM_PAGES = 2;
+
     private int symptomId;
 
     private AppDatabase db;
     private SymptomEntity symptom;
-    private List<TreatmentEntity> treatments;
 
     @BindView(R.id.graph)
     GraphView graph;
     @BindView(R.id.notesRv)
     RecyclerView notesRecyclerView;
-    @BindView(R.id.currentTreatmentRv)
-    RecyclerView currentTreatmentRv;
-    @BindView(R.id.pastTreatmentsRv)
-    RecyclerView pastTreatmentRv;
 
     @BindView(R.id.statusIsResolved)
     TextView statusIsResolved;
@@ -70,6 +72,13 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     TextView statusIsChronic;
     @BindView(R.id.statusDoctorInformed)
     TextView statusDoctorInformed;
+
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.sliding_tabs)
+    TabLayout tabs;
+
+    private TreatmentPagerAdapter treatmentPagerAdapter;
 
     @BindDrawable(R.drawable.background_status_attention)
     Drawable backgroundStatusAttention;
@@ -85,12 +94,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     @BindColor(R.color.color_status_default)
     int colorStatusDefault;
 
-    NotesAdapter notesAdapter;
-    CurrentTreatmentAdapter currentTreatmentAdapter;
-    PastTreatmentAdapter pastTreatmentAdapter;
-    LinearLayoutManager notesLayoutManager;
-    LinearLayoutManager currentTreatmentLayoutManager;
-    LinearLayoutManager pastTreatmentLayoutManager;
+    private NotesAdapter notesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,27 +114,16 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
     private void setUpNotesRecyclerView() {
         notesAdapter = new NotesAdapter(new ArrayList<NoteEntity>());
-        notesLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setAdapter(notesAdapter);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
         notesRecyclerView.setHasFixedSize(true);
     }
 
     private void setUpTreatmentsRecyclerViews() {
-        currentTreatmentAdapter = new CurrentTreatmentAdapter(new ArrayList<TreatmentEntity>());
-        pastTreatmentAdapter = new PastTreatmentAdapter(this, new ArrayList<TreatmentEntity>());
-
-        currentTreatmentLayoutManager = new LinearLayoutManager(this);
-        pastTreatmentLayoutManager = new LinearLayoutManager(this);
-
-        currentTreatmentRv.setLayoutManager(currentTreatmentLayoutManager);
-        pastTreatmentRv.setLayoutManager(pastTreatmentLayoutManager);
-
-        currentTreatmentRv.setAdapter(currentTreatmentAdapter);
-        pastTreatmentRv.setAdapter(pastTreatmentAdapter);
-
-        currentTreatmentRv.setHasFixedSize(true);
-        pastTreatmentRv.setHasFixedSize(true);
+        treatmentPagerAdapter = new TreatmentPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(treatmentPagerAdapter);
+        tabs.setupWithViewPager(viewPager);
     }
 
     /**
@@ -150,8 +143,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
                 makeGraph();
 
                 retrieveNotes();
-                retrieveCurrentTreatments();
-                retrievePastTreatments();
             }
         });
     }
@@ -207,22 +198,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         addNoteDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_NOTE);
     }
 
-    @OnClick(R.id.addCurrentTreatment)
-    public void addCurrentTreatment() {
-        AddCurrentTreatmentDialog addCurrentTreatmentDialog = new AddCurrentTreatmentDialog();
-        addCurrentTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        addCurrentTreatmentDialog.setOnSaveCurrentTreatmentListener(this);
-        addCurrentTreatmentDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_CURRENT_TREATMENT);
-    }
-
-    @OnClick(R.id.addPastTreatment)
-    public void addPastTreatment() {
-        AddPastTreatmentDialog addPastTreatmentDialog = new AddPastTreatmentDialog();
-        addPastTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        addPastTreatmentDialog.setOnSavePastTreatmentListener(this);
-        addPastTreatmentDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_PAST_TREATMENT);
-    }
-
     private void setIsChronicInUi(boolean isChronic) {
         if (isChronic) {
             statusIsChronic.setText(R.string.status_chronic);
@@ -255,28 +230,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         }
     }
 
-    private void retrieveCurrentTreatments() {
-        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
-                .loadTreatmentsByIsActive(symptomId, true);
-        treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                currentTreatmentAdapter.replaceDataSet(treatmentEntities);
-            }
-        });
-    }
-
-    private void retrievePastTreatments() {
-        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
-                .loadTreatmentsByIsActive(symptomId, false);
-        treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                pastTreatmentAdapter.replaceDataSet(treatmentEntities);
-            }
-        });
-    }
-
     private void retrieveNotes() {
         final LiveData<List<NoteEntity>> notes = db.noteDao().loadAllNotesForSymptom(symptomId);
         notes.observe(this, new Observer<List<NoteEntity>>() {
@@ -304,29 +257,43 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         });
     }
 
-    @Override
-    public void onSaveCurrentTreatment(String name, long takesEffectIn) {
-        final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
-                takesEffectIn, 3, true);
+    /**
+     * A simple pager adapter that represents 2 TreatmentFragment objects, in
+     * sequence.
+     */
+    private class TreatmentPagerAdapter extends FragmentStatePagerAdapter {
+        public TreatmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.treatmentDao().insertTreatment(treatment);
+        @Override
+        public Fragment getItem(int position) {
+            TreatmentFragment fragment = new TreatmentFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt(TreatmentFragment.KEY_FRAGMENT_ID, position);
+            bundle.putInt(TreatmentFragment.KEY_SYMPTOM_ID, symptomId);
+            fragment.setArguments(bundle);
+
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch(position) {
+                case 0:
+                    return getString(R.string.label_current_treatments);
+                case 1:
+                    return getString(R.string.label_past_treatments);
+                default:
+                    return null;
             }
-        });
-    }
-
-    @Override
-    public void onSavePastTreatment(String name, long takesEffectIn, int wasSuccessful) {
-        final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
-                takesEffectIn, wasSuccessful, false);
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.treatmentDao().insertTreatment(treatment);
-            }
-        });
+        }
     }
 }
