@@ -24,7 +24,8 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_action_add_light"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="@dimen/elevation_fab"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

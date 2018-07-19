@@ -54,6 +54,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/label_status"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
+    <!-- TODO: move to button in action bar -->
     <Button
         android:id="@+id/btnSaveInDb"
         android:layout_width="wrap_content"

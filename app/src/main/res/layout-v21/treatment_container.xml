@@ -13,7 +13,8 @@
         android:background="#e0e0e0"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorAccent"/>
+        app:tabSelectedTextColor="@color/colorAccent"
+        android:elevation="@dimen/elevation_tabs_in_card"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
