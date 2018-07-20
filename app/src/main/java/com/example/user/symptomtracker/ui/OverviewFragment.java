@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
+import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.adapter.OverviewAdapter;
 
@@ -50,7 +51,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         retrieveSymptoms();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new OverviewAdapter(getContext(), new ArrayList<SymptomEntity>(), this);
+        adapter = new OverviewAdapter(new ArrayList<SymptomEntity>(), this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 

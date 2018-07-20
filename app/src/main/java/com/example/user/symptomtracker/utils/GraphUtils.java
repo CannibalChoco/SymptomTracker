@@ -1,9 +1,13 @@
 package com.example.user.symptomtracker.utils;
 
 
+import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility methods for managing GraphView
@@ -21,8 +25,8 @@ public class GraphUtils {
         graph.removeAllSeries();
 
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoints);
-
         graph.addSeries(series);
+
         graph.getViewport().setScalable(true);
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMaxY(10);
@@ -36,5 +40,17 @@ public class GraphUtils {
         }
 
         return points;
+    }
+
+    public static DataPoint[] getDataPoints(List<SeverityEntity> severityList){
+        DataPoint[] dataPoints = new DataPoint[severityList.size()];
+
+        for (int i = 0; i < dataPoints.length; i++){
+            SeverityEntity severityEntity = severityList.get(i);
+            // TODO: show time instead of i
+            dataPoints[i] = new DataPoint(i, severityEntity.getSeverity());
+        }
+
+        return dataPoints;
     }
 }

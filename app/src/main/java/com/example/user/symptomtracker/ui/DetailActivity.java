@@ -23,6 +23,7 @@ import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
+import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddCurrentTreatmentDialog;
@@ -33,6 +34,7 @@ import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,7 +142,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
                 switchResolved.setChecked(symptom.isResolved());
                 setIsChronicInUi(symptom.isChronic());
                 setDoctorIsInformedInUi(symptom.isDoctorIsInformed());
-                makeGraph();
+                retrieveSeverity();
 
                 retrieveNotes();
             }
@@ -253,6 +255,17 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
             @Override
             public void run() {
                 db.noteDao().insertNote(noteEntity);
+            }
+        });
+    }
+
+    private void retrieveSeverity(){
+        LiveData<List<SeverityEntity>> severityList = db.severityDao().loadSeverityForSymptom(symptomId);
+        severityList.observe(this, new Observer<List<SeverityEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<SeverityEntity> severityEntities) {
+                DataPoint[] dataPoint = GraphUtils.getDataPoints(severityEntities);
+                GraphUtils.initGraphView(graph, dataPoint);
             }
         });
     }

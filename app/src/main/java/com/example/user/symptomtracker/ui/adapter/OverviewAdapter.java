@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
 
-    private Context context;
     private List<SymptomEntity> symptomList;
     private OnSymptomClickListener clickListener;
 
@@ -28,9 +27,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         void onSymptomSelected(int id);
     }
 
-    public OverviewAdapter(Context context, List<SymptomEntity> symptomList,
+    public OverviewAdapter(List<SymptomEntity> symptomList,
                            OnSymptomClickListener listener) {
-        this.context = context;
         this.symptomList = symptomList;
         this.clickListener = listener;
     }

@@ -94,7 +94,7 @@ public class AddSymptomActivity extends AppCompatActivity {
                 isChronic,
                 isReoccurring,
                 doctorIsInformed,
-                true);
+                false);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

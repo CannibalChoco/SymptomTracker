@@ -9,12 +9,13 @@
 
     <string name="label_treatments">Treatments</string>
 
-    <!-- Labels for Add New Symptom Activity -->
+    <!-- Labels for Symptom related data -->
     <string name="label_symptom">Symptom</string>
     <string name="label_current_treatments">Current Treatments</string>
     <string name="label_past_treatments">Past Treatments</string>
     <string name="label_status">Status</string>
     <string name="label_notes">Notes</string>
+    <string name="label_severity">Severity</string>
 
     <!-- Default strings for when no information is provided -->
     <string name="default_no_treatment_time_provided">-</string>
@@ -61,5 +62,18 @@
     <!-- Treatment Successful Radio Group -->
     <string name="radio_treatment_successful">Successful</string>
     <string name="radio_treatment_unsuccessful">Unsuccessful</string>
+
+    <!-- Severity -->
+    <string name="severity_00">0</string>
+    <string name="severity_1">1</string>
+    <string name="severity_2">2</string>
+    <string name="severity_3">3</string>
+    <string name="severity_4">4</string>
+    <string name="severity_5">5</string>
+    <string name="severity_6">6</string>
+    <string name="severity_7">7</string>
+    <string name="severity_8">8</string>
+    <string name="severity_9">9</string>
+    <string name="severity_10">10</string>
 
 </resources>
