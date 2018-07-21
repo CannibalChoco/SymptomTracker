@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.utils.GraphUtils;
@@ -38,6 +39,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         void onSeverityClicked(int parentId, int severity);
     }
 
+    // TODO: should
     public TodayAdapter(List<SymptomEntity> symptomList, OnSeverityClickListener clickListener) {
         this.symptomList = symptomList;
         this.clickListener = clickListener;
@@ -147,5 +149,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         }
 
     }
+
+
 
 }
