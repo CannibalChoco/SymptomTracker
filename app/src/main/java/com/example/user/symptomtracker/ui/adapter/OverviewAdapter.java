@@ -47,7 +47,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Symptom symptom = symptomList.get(position);
 
-        holder.graph.setTitle(symptom.getSymptom().getName());
+        holder.name.setText(symptom.getSymptom().getName());
 
         DataPoint[] points = GraphUtils.getDataPoints(symptom.getSeverity());
         GraphUtils.initGraphView(holder.graph, points);
@@ -78,8 +78,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
         private OnSymptomClickListener listener;
 
-        @BindView(R.id.symptomId)
-        TextView id;
+        @BindView(R.id.symptomName)
+        TextView name;
         @BindView(R.id.list_item_graph)
         GraphView graph;
 
