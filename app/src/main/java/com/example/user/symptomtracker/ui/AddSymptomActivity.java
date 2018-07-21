@@ -31,6 +31,8 @@ import butterknife.OnClick;
  */
 public class AddSymptomActivity extends AppCompatActivity {
 
+
+    public static final String KEY_DATA_HAS_CHANGED = "DATA_HAS_CHANGED";
     @BindView(R.id.editSymptomName)
     EditText editSymptomName;
     @BindView(R.id.radioStatusDoctor)
@@ -79,6 +81,10 @@ public class AddSymptomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_symptom);
         ButterKnife.bind(this);
 
+        if (savedInstanceState != null){
+            dataHasChanged = savedInstanceState.getBoolean(KEY_DATA_HAS_CHANGED);
+        }
+
         setTitle(R.string.title_add_new);
 
         db = AppDatabase.getInstance(getApplicationContext());
@@ -114,6 +120,12 @@ public class AddSymptomActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_DATA_HAS_CHANGED, dataHasChanged);
     }
 
     @Override
