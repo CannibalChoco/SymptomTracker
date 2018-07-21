@@ -2,13 +2,20 @@
 <resources>
     <color name="colorPrimary">#721156</color>
     <color name="colorPrimaryDark">#43002d</color>
+    <color name="colorPrimaryLight">#a34483</color>
+
     <color name="colorAccent">#d84315</color>
 
     <color name="green">#1faa00</color>
     <color name="neutralGrey">#757575</color>
 
     <!-- Status colors -->
-    <color name="color_status_good">@color/green</color>
-    <color name="color_status_attention">@color/colorAccent</color>
-    <color name="color_status_default">@color/neutralGrey</color>
+    <color name="colorStatusGood">@color/green</color>
+    <color name="colorStatusAttention">@color/colorAccent</color>
+    <color name="colorStatusDefault">@color/neutralGrey</color>
+
+    <!-- Severity button state colors -->
+    <color name="colorSeverityDefault">#ffffff</color>
+    <color name="colorSeverityPressed">#906672</color>
+    <color name="colorSeverityFocused">#906672</color>
 </resources>

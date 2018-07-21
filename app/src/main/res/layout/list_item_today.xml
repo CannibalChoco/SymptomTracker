@@ -49,133 +49,135 @@
                 android:layout_marginBottom="8dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <Button
                     android:id="@+id/severity0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_00"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_1"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_2"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_3"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_4"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_5"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_6"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_7"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_8"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_9"
                     android:textSize="18sp" />
 
-                <TextView
+                <Button
                     android:id="@+id/severity10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/btn_severity_dimension"
+                    android:layout_height="@dimen/btn_severity_dimension"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/background_severity_default"
+                    android:background="@drawable/button_severity_default"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/severity_10"

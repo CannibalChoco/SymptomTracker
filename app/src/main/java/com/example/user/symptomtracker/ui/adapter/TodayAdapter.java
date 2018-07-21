@@ -13,7 +13,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
+import butterknife.OnTouch;
 
 /**
  * responsible for displaying all active symptoms in Todays View for allowing the user to log data
@@ -92,49 +95,51 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         public void severitySet(View view) {
             int severity;
 
-            int id = view.getId();
+//            int id = view.getId();
+//
+//            switch (id) {
+//                case R.id.severity0:
+//                    severity = 0;
+//                    break;
+//                case R.id.severity1:
+//                    severity = 1;
+//                    break;
+//                case R.id.severity2:
+//                    severity = 2;
+//                    break;
+//                case R.id.severity3:
+//                    severity = 3;
+//                    break;
+//                case R.id.severity4:
+//                    severity = 4;
+//                    break;
+//                case R.id.severity5:
+//                    severity = 5;
+//                    break;
+//                case R.id.severity6:
+//                    severity = 6;
+//                    break;
+//                case R.id.severity7:
+//                    severity = 7;
+//                    break;
+//                case R.id.severity8:
+//                    severity = 8;
+//                    break;
+//                case R.id.severity9:
+//                    severity = 9;
+//                    break;
+//                case R.id.severity10:
+//                    severity = 10;
+//                    break;
+//                default:
+//                    severity = 0;
+//                    break;
+//            }
 
-            switch (id) {
-                case R.id.severity0:
-                    severity = 0;
-                    break;
-                case R.id.severity1:
-                    severity = 1;
-                    break;
-                case R.id.severity2:
-                    severity = 2;
-                    break;
-                case R.id.severity3:
-                    severity = 3;
-                    break;
-                case R.id.severity4:
-                    severity = 4;
-                    break;
-                case R.id.severity5:
-                    severity = 5;
-                    break;
-                case R.id.severity6:
-                    severity = 6;
-                    break;
-                case R.id.severity7:
-                    severity = 7;
-                    break;
-                case R.id.severity8:
-                    severity = 8;
-                    break;
-                case R.id.severity9:
-                    severity = 9;
-                    break;
-                case R.id.severity10:
-                    severity = 10;
-                    break;
-                default:
-                    severity = 0;
-                    break;
-            }
+            //int parentId = symptomList.get(getAdapterPosition()).getId();
+            //listener.onSeverityClicked(parentId, severity);
 
-            int parentId = symptomList.get(getAdapterPosition()).getId();
-            listener.onSeverityClicked(parentId, severity);
+            view.setPressed(true);
         }
 
     }

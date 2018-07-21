@@ -47,9 +47,9 @@ public class PastTreatmentAdapter extends RecyclerView.Adapter<PastTreatmentAdap
         }
 
         if (treatment.getWasSuccessful() == TreatmentEntity.WAS_SUCCESSFUL_NO) {
-            holder.name.setTextColor(context.getResources().getColor(R.color.color_status_attention));
+            holder.name.setTextColor(context.getResources().getColor(R.color.colorStatusAttention));
         } else if (treatment.getWasSuccessful() == TreatmentEntity.WAS_SUCCESSFUL_YES){
-            holder.name.setTextColor(context.getResources().getColor(R.color.color_status_good));
+            holder.name.setTextColor(context.getResources().getColor(R.color.colorStatusGood));
         }
 
     }

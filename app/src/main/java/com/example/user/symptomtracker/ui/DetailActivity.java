@@ -15,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewParent;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -25,13 +24,8 @@ import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
-import com.example.user.symptomtracker.database.entity.TreatmentEntity;
-import com.example.user.symptomtracker.ui.DialogFragments.AddCurrentTreatmentDialog;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
-import com.example.user.symptomtracker.ui.DialogFragments.AddPastTreatmentDialog;
-import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
-import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -89,11 +83,11 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     @BindDrawable(R.drawable.background_status_default)
     Drawable backgroundStatusDefault;
 
-    @BindColor(R.color.color_status_attention)
+    @BindColor(R.color.colorStatusAttention)
     int colorStatusAttention;
-    @BindColor(R.color.color_status_good)
+    @BindColor(R.color.colorStatusGood)
     int colorStatusGood;
-    @BindColor(R.color.color_status_default)
+    @BindColor(R.color.colorStatusDefault)
     int colorStatusDefault;
 
     private NotesAdapter notesAdapter;
