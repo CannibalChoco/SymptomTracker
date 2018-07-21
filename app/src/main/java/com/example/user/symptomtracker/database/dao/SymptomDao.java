@@ -8,6 +8,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface SymptomDao {
 
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     LiveData<List<SymptomEntity>> loadUnResolvedSymptoms();
+
+    @Query("SELECT * FROM symptom")
+    LiveData<List<Symptom>> loadAllSymptomData();
 
     @Insert
     void insertSymptom(SymptomEntity symptom);

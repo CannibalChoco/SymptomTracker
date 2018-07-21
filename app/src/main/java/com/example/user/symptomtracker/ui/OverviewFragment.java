@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
+import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.adapter.OverviewAdapter;
 
@@ -51,7 +52,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         retrieveSymptoms();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new OverviewAdapter(new ArrayList<SymptomEntity>(), this);
+        adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -59,11 +60,11 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     }
 
     private void retrieveSymptoms() {
-        LiveData<List<SymptomEntity>> symptoms = db.symptomDao().loadAllSymptoms();
-        symptoms.observe(this, new Observer<List<SymptomEntity>>() {
+        LiveData<List<Symptom>> symptoms = db.symptomDao().loadAllSymptomData();
+        symptoms.observe(this, new Observer<List<Symptom>>() {
             @Override
-            public void onChanged(@Nullable List<SymptomEntity> symptomList) {
-                adapter.replaceDataSet(symptomList);
+            public void onChanged(@Nullable List<Symptom> symptoms) {
+                adapter.replaceDataSet(symptoms);
             }
         });
     }

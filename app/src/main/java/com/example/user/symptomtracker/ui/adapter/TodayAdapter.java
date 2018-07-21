@@ -1,30 +1,19 @@
 package com.example.user.symptomtracker.ui.adapter;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.database.AppDatabase;
-import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
-import com.example.user.symptomtracker.utils.GraphUtils;
-import com.jjoe64.graphview.series.DataPoint;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 /**
  * responsible for displaying all active symptoms in Todays View for allowing the user to log data

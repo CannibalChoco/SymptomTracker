@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.List;
 
@@ -20,14 +22,14 @@ import butterknife.ButterKnife;
 
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
 
-    private List<SymptomEntity> symptomList;
+    private List<Symptom> symptomList;
     private OnSymptomClickListener clickListener;
 
     public interface OnSymptomClickListener{
         void onSymptomSelected(int id);
     }
 
-    public OverviewAdapter(List<SymptomEntity> symptomList,
+    public OverviewAdapter(List<Symptom> symptomList,
                            OnSymptomClickListener listener) {
         this.symptomList = symptomList;
         this.clickListener = listener;
@@ -43,11 +45,12 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SymptomEntity symptom = symptomList.get(position);
-        holder.id.setText(String.valueOf(symptom.getId()));
+        Symptom symptom = symptomList.get(position);
 
-        holder.graph.setTitle(symptom.getName());
-        GraphUtils.initGraphView(holder.graph, GraphUtils.getRandomDataPoints());
+        holder.graph.setTitle(symptom.getSymptom().getName());
+
+        DataPoint[] points = GraphUtils.getDataPoints(symptom.getSeverity());
+        GraphUtils.initGraphView(holder.graph, points);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         notifyItemRangeChanged(0, size);
     }
 
-    public void replaceDataSet(List<SymptomEntity> symptomList){
+    public void replaceDataSet(List<Symptom> symptomList){
         if (!this.symptomList.isEmpty()){
             this.symptomList.clear();
         }
@@ -95,8 +98,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         public void onClick(View v) {
             // the item id in db
             int position = getAdapterPosition();
-            SymptomEntity symptom = symptomList.get(position);
-            int id = symptom.getId();
+            Symptom symptom = symptomList.get(position);
+            int id = symptom.getSymptom().getId();
             clickListener.onSymptomSelected(id);
         }
     }
