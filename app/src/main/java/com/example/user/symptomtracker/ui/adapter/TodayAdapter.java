@@ -2,6 +2,7 @@ package com.example.user.symptomtracker.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +140,9 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             //int parentId = symptomList.get(getAdapterPosition()).getId();
             //listener.onSeverityClicked(parentId, severity);
 
-            view.setPressed(true);
+            Log.d("IS_SELECTED", String.valueOf(view.isSelected()));
+            view.setSelected(!view.isSelected());
+            Log.d("IS_SELECTED", String.valueOf(view.isSelected()));
         }
 
     }
