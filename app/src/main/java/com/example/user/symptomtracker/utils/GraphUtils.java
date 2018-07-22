@@ -33,5 +33,7 @@ public class GraphUtils {
         dataSet.setColor(R.color.colorPrimaryDark);
         BarData barData = new BarData(dataSet);
         graph.setData(barData);
+        graph.setVisibleXRange(10, 30);
+        graph.moveViewToX(30);
     }
 }
