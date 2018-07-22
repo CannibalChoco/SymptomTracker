@@ -29,11 +29,12 @@ public class GraphUtils {
             entries.add(new BarEntry(i, severity.getSeverity()));
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, "Label");
+        BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColor(R.color.colorPrimaryDark);
         BarData barData = new BarData(dataSet);
         graph.setData(barData);
         graph.setVisibleXRange(10, 30);
         graph.moveViewToX(30);
+        graph.getLegend().setEnabled(false);
     }
 }

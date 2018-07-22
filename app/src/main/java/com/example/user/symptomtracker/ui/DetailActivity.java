@@ -251,7 +251,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         severityList.observe(this, new Observer<List<SeverityEntity>>() {
             @Override
             public void onChanged(@Nullable List<SeverityEntity> severityEntities) {
-
                 GraphUtils.initBarChart(graph, severityEntities);
             }
         });
