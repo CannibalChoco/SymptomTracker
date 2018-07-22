@@ -45,6 +45,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$aac_version"
     annotationProcessor "android.arch.lifecycle:compiler:$aac_version"
 
-    // graphview
-    implementation "com.jjoe64:graphview:$graph_view_version"
+    // MPAndroidChart
+    implementation "com.github.PhilJay:MPAndroidChart:$mpandroidchart_version"
 }

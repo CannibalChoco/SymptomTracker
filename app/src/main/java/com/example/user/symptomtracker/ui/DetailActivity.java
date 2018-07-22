@@ -27,8 +27,7 @@ import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
+import com.github.mikephil.charting.charts.BarChart;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +55,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     private SymptomEntity symptom;
 
     @BindView(R.id.graph)
-    GraphView graph;
+    BarChart graph;
     @BindView(R.id.notesRv)
     RecyclerView notesRecyclerView;
 
@@ -100,8 +99,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
         db = AppDatabase.getInstance(getApplicationContext());
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
-
-
 
         setUpNotesRecyclerView();
         setUpTreatmentsRecyclerViews();
@@ -236,10 +233,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         });
     }
 
-    private void makeGraph() {
-        GraphUtils.initGraphView(graph, GraphUtils.getRandomDataPoints());
-    }
-
     @Override
     public void onSaveNote(String note) {
         final NoteEntity noteEntity = new NoteEntity(note, symptomId,
@@ -258,8 +251,8 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         severityList.observe(this, new Observer<List<SeverityEntity>>() {
             @Override
             public void onChanged(@Nullable List<SeverityEntity> severityEntities) {
-                DataPoint[] dataPoint = GraphUtils.getDataPoints(severityEntities);
-                GraphUtils.initGraphView(graph, dataPoint);
+
+                GraphUtils.initBarChart(graph, severityEntities);
             }
         });
     }
@@ -303,4 +296,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
             }
         }
     }
+
+
 }

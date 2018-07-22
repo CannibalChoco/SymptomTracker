@@ -1,6 +1,5 @@
 package com.example.user.symptomtracker.ui.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +9,8 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.Symptom;
-import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.utils.GraphUtils;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-
+import com.github.mikephil.charting.charts.BarChart;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,11 +42,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Symptom symptom = symptomList.get(position);
-
         holder.name.setText(symptom.getSymptom().getName());
-
-        DataPoint[] points = GraphUtils.getDataPoints(symptom.getSeverity());
-        GraphUtils.initGraphView(holder.graph, points);
+        GraphUtils.initBarChart(holder.graph, symptom.getSeverity());
     }
 
     @Override
@@ -81,7 +74,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         @BindView(R.id.symptomName)
         TextView name;
         @BindView(R.id.list_item_graph)
-        GraphView graph;
+        BarChart graph;
 
         public ViewHolder(View itemView, OnSymptomClickListener listener) {
             super(itemView);
