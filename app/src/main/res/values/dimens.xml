@@ -22,5 +22,9 @@
     <dimen name="treatment_layout_height">300dp</dimen>
     <dimen name="graph_view_height">250dp</dimen>
 
+    <!-- Severity button -->
     <dimen name="btn_severity_dimension">48dp</dimen>
+    <dimen name="btn_severity_margin">8dp</dimen>
+
+
 </resources>

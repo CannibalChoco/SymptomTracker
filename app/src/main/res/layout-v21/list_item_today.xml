@@ -43,146 +43,66 @@
             app:layout_constraintTop_toBottomOf="@+id/todaySymptom"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <LinearLayout
+            <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+                android:id="@+id/selectionGroup"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity0"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_00"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_00" />
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity1"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_1"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_1"/>
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity2"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_2"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_2" />
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity3"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_3"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_3"/>
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity4"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_4"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_4" />
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity5"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_5"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_5" />
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity6"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_6"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_6"/>
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity7"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_7"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_7"/>
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity8"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_8"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_8"/>
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity9"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_9"
-                    android:textSize="18sp" />
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_9" />
 
-                <Button
+                <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity10"
-                    android:layout_width="@dimen/btn_severity_dimension"
-                    android:layout_height="@dimen/btn_severity_dimension"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/button_severity"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/severity_10"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
+                    style="@style/ButtonSeverityStyle"
+                    android:text="@string/severity_10" />
+            </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
 
         </HorizontalScrollView>
 
