@@ -18,7 +18,6 @@ public interface SeverityDao {
     @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC")
     LiveData<List<SeverityEntity>> loadSeverityForSymptom(int symptomId);
 
-    // TODO: ********* test this **********
     @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC LIMIT 1")
     LiveData<SeverityEntity> loadLastSeverityForSymptom(int symptomId);
 

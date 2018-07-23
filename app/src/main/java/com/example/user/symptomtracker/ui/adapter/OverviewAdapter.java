@@ -43,7 +43,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Symptom symptom = symptomList.get(position);
         holder.name.setText(symptom.getSymptom().getName());
-        GraphUtils.initBarChart(holder.graph, symptom.getSeverity());
+        GraphUtils.initBarChart(holder.graph, symptom.getSeverityList());
     }
 
     @Override

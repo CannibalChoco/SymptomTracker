@@ -16,7 +16,7 @@ import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
-import com.example.user.symptomtracker.database.entity.SymptomEntity;
+import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.ui.adapter.TodayAdapter;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         ButterKnife.bind(this, rootView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new TodayAdapter(new ArrayList<SymptomEntity>(), this);
+        adapter = new TodayAdapter(new ArrayList<Symptom>(), this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -59,11 +59,11 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     }
 
     private void retrieveSymptoms() {
-        LiveData<List<SymptomEntity>> symptoms = db.symptomDao().loadUnResolvedSymptoms();
-        symptoms.observe(this, new Observer<List<SymptomEntity>>() {
+        LiveData<List<Symptom>> symptoms = db.symptomDao().loadAllUnresolvedSymptomData();
+        symptoms.observe(this, new Observer<List<Symptom>>() {
             @Override
-            public void onChanged(@Nullable List<SymptomEntity> symptomList) {
-                adapter.replaceDataSet(symptomList);
+            public void onChanged(@Nullable List<Symptom> symptomList) {
+                adapter.replaceSymptomData(symptomList);
             }
         });
     }

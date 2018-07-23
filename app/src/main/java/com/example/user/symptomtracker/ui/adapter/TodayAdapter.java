@@ -1,6 +1,10 @@
 package com.example.user.symptomtracker.ui.adapter;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,29 +12,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.database.entity.SymptomEntity;
+import com.example.user.symptomtracker.database.AppDatabase;
+import com.example.user.symptomtracker.database.entity.SeverityEntity;
+import com.example.user.symptomtracker.database.entity.Symptom;
+import com.example.user.symptomtracker.ui.TodayFragment;
+import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 /**
  * responsible for displaying all active symptoms in Todays View for allowing the user to log data
  */
 public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> {
 
+    private static final int VIEW_NOT_FOUND = -1;
 
-    private List<SymptomEntity> symptomList;
+    private List<Symptom> symptomList;
     private OnSeverityClickListener clickListener;
-
 
     public interface OnSeverityClickListener {
         void onSeverityClicked(int parentId, int severity);
     }
 
-    // TODO: should
-    public TodayAdapter(List<SymptomEntity> symptomList, OnSeverityClickListener clickListener) {
+    public TodayAdapter(List<Symptom> symptomList, OnSeverityClickListener clickListener) {
         this.symptomList = symptomList;
         this.clickListener = clickListener;
     }
@@ -46,9 +54,18 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SymptomEntity symptom = symptomList.get(position);
-        holder.name.setText(symptom.getName());
-        // TODO: set the last added severity to selected state
+        Symptom symptom = symptomList.get(position);
+        holder.name.setText(symptom.getSymptom().getName());
+
+        List<SeverityEntity> severityList = symptom.getSeverityList();
+        int severityListSize = severityList.size();
+        if (severityList.size() > 0){
+            SeverityEntity severity = severityList.get(severityListSize - 1);
+            int viewId = holder.getViewForSeverity(severity.getSeverity());
+            if (viewId != VIEW_NOT_FOUND) {
+                holder.selectionGroup.check(viewId);
+            }
+        }
 
     }
 
@@ -57,7 +74,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         return symptomList != null ? symptomList.size() : 0;
     }
 
-    public void replaceDataSet(List<SymptomEntity> symptomList){
+    public void replaceSymptomData(List<Symptom> symptomList){
         if (!this.symptomList.isEmpty()){
             this.symptomList.clear();
         }
@@ -70,6 +87,8 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
         @BindView(R.id.todaySymptom)
         TextView name;
+        @BindView(R.id.selectionGroup)
+        SingleSelectToggleGroup selectionGroup;
         View view;
 
         OnSeverityClickListener listener;
@@ -79,7 +98,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             ButterKnife.bind(this, itemView);
             this.view = itemView;
             this.listener = listener;
-        }
+            }
 
         @OnClick({R.id.severity0,
                 R.id.severity1,
@@ -93,11 +112,15 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                 R.id.severity9,
                 R.id.severity10})
         public void severitySet(View view) {
+            int severity = getSeverityForView(view.getId());
+            int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
+            listener.onSeverityClicked(parentId, severity);
+            notifyDataSetChanged();
+        }
+
+        private int getSeverityForView(int checkedId) {
             int severity;
-
-            int id = view.getId();
-
-            switch (id) {
+            switch (checkedId) {
                 case R.id.severity0:
                     severity = 0;
                     break;
@@ -135,14 +158,50 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                     severity = 0;
                     break;
             }
-
-            // TODO:
-            view.setSelected(!view.isSelected());
-
-            int parentId = symptomList.get(getAdapterPosition()).getId();
-            listener.onSeverityClicked(parentId, severity);
+            return severity;
         }
 
+        private int getViewForSeverity(int severity) {
+            int viewId;
+            switch (severity) {
+                case 0:
+                    viewId = R.id.severity0;
+                    break;
+                case 1:
+                    viewId = R.id.severity1;
+                    break;
+                case 2:
+                    viewId = R.id.severity2;
+                    break;
+                case 3:
+                    viewId = R.id.severity3;
+                    break;
+                case 4:
+                    viewId = R.id.severity4;
+                    break;
+                case 5:
+                    viewId = R.id.severity5;
+                    break;
+                case 6:
+                    viewId = R.id.severity6;
+                    break;
+                case 7:
+                    viewId = R.id.severity7;
+                    break;
+                case 8:
+                    viewId = R.id.severity8;
+                    break;
+                case 9:
+                    viewId = R.id.severity9;
+                    break;
+                case 10:
+                    viewId = R.id.severity10;
+                    break;
+                default:
+                    viewId = VIEW_NOT_FOUND;
+                    break;
+            }
+            return viewId;
+        }
     }
-
 }
