@@ -2,8 +2,6 @@ package com.example.user.symptomtracker.database.entity;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Relation;
-import android.arch.persistence.room.Transaction;
-import android.support.transition.Transition;
 
 import java.util.List;
 
