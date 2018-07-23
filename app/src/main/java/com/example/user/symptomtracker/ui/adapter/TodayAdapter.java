@@ -2,7 +2,6 @@ package com.example.user.symptomtracker.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +9,12 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
-import butterknife.OnTouch;
-
 /**
  * responsible for displaying all active symptoms in Todays View for allowing the user to log data
  */
@@ -27,6 +23,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     private List<SymptomEntity> symptomList;
     private OnSeverityClickListener clickListener;
+
 
     public interface OnSeverityClickListener {
         void onSeverityClicked(int parentId, int severity);
@@ -51,6 +48,8 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SymptomEntity symptom = symptomList.get(position);
         holder.name.setText(symptom.getName());
+        // TODO: set the last added severity to selected state
+
     }
 
     @Override
@@ -137,16 +136,13 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                     break;
             }
 
-            Log.d("IS_SELECTED", String.valueOf(view.isSelected()));
+            // TODO:
             view.setSelected(!view.isSelected());
-            Log.d("IS_SELECTED", String.valueOf(view.isSelected()));
 
             int parentId = symptomList.get(getAdapterPosition()).getId();
             listener.onSeverityClicked(parentId, severity);
         }
 
     }
-
-
 
 }
