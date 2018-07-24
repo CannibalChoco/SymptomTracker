@@ -14,6 +14,7 @@ import com.example.user.symptomtracker.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private FirebaseAnalytics firebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +70,14 @@ public class MainActivity extends AppCompatActivity {
         }
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        // add Ads
         MobileAds.initialize(this, DUMMY_AD_ID);
-
         AdRequest adRequest = new AdRequest.Builder().build();
         bannerAd.loadAd(adRequest);
+
+        // add Firebase Analytics
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
     }
 
     @OnClick(R.id.fab_add_new)

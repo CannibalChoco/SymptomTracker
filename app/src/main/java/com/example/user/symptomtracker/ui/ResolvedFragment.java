@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.symptomtracker.R;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import butterknife.ButterKnife;
 
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
  */
 public class ResolvedFragment extends Fragment {
 
+    private static final String NAME = ResolvedFragment.class.getSimpleName();
 
     public ResolvedFragment() {
         // Required empty public constructor
@@ -28,6 +30,8 @@ public class ResolvedFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_resolved, container, false);
         ButterKnife.bind(this, rootView);
+
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
         return rootView;
     }

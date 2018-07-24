@@ -18,6 +18,7 @@ import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.ui.adapter.TodayAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,8 @@ import butterknife.ButterKnife;
  * A fragment for displaying and editing Today
  */
 public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityClickListener{
+
+    private static final String NAME = TodayFragment.class.getSimpleName();
 
     public TodayFragment() {
         // Required empty public constructor
@@ -54,6 +57,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
         retrieveSymptoms();
+
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
         return rootView;
     }

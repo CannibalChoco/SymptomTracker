@@ -19,6 +19,7 @@ import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.adapter.OverviewAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ import butterknife.ButterKnife;
  * A fragment for displaying an overview of all the symptoms
  */
 public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymptomClickListener{
+
+    private static final String NAME = OverviewFragment.class.getSimpleName();
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -55,6 +58,8 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
         return rootView;
     }
