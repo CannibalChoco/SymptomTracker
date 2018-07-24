@@ -52,8 +52,9 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         holder.name.setText(symptom.getSymptom().getName());
 
         List<SeverityEntity> severityList = symptom.getSeverityList();
+
         int severityListSize = severityList.size();
-        if (severityList.size() > 0){
+        if (severityList.size() > 0) {
             SeverityEntity severity = severityList.get(severityListSize - 1);
             int viewId = holder.getViewForSeverity(severity.getSeverity());
             if (viewId != VIEW_NOT_FOUND) {
@@ -68,8 +69,8 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         return symptomList != null ? symptomList.size() : 0;
     }
 
-    public void replaceSymptomData(List<Symptom> symptomList){
-        if (!this.symptomList.isEmpty()){
+    public void replaceSymptomData(List<Symptom> symptomList) {
+        if (!this.symptomList.isEmpty()) {
             this.symptomList.clear();
         }
 
@@ -77,7 +78,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.todaySymptom)
         TextView name;
@@ -92,7 +93,20 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             ButterKnife.bind(this, itemView);
             this.view = itemView;
             this.listener = listener;
-            }
+
+            //setSelectionListener();
+        }
+
+        private void setSelectionListener() {
+            selectionGroup.setOnCheckedChangeListener(new SingleSelectToggleGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(SingleSelectToggleGroup group, int checkedId) {
+                    int severity = getSeverityForView(checkedId);
+                    int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
+                    listener.onSeverityClicked(parentId, severity);
+                }
+            });
+        }
 
         @OnClick({R.id.severity0,
                 R.id.severity1,
@@ -109,7 +123,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             int severity = getSeverityForView(view.getId());
             int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
             listener.onSeverityClicked(parentId, severity);
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
         }
 
         private int getSeverityForView(int checkedId) {

@@ -51,11 +51,13 @@
                 <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity0"
                     style="@style/ButtonSeverityStyle"
+                    app:tbgMarkerColor="@color/colorAccent"
                     android:text="@string/severity_00" />
 
                 <com.nex3z.togglebuttongroup.button.CircularToggle
                     android:id="@+id/severity1"
                     style="@style/ButtonSeverityStyle"
+                    app:tbgMarkerColor="@color/colorAccent"
                     android:text="@string/severity_1"/>
 
                 <com.nex3z.togglebuttongroup.button.CircularToggle
