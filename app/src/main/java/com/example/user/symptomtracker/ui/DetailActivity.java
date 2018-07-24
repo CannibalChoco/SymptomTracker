@@ -28,6 +28,9 @@ import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.github.mikephil.charting.charts.BarChart;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +42,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+
+import static com.example.user.symptomtracker.ui.MainActivity.DUMMY_AD_ID;
 
 public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote {
 
@@ -72,6 +77,8 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     ViewPager viewPager;
     @BindView(R.id.sliding_tabs)
     TabLayout tabs;
+    @BindView(R.id.adView)
+    AdView bannerAd;
 
     private TreatmentPagerAdapter treatmentPagerAdapter;
 
@@ -103,6 +110,11 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         setUpNotesRecyclerView();
         setUpTreatmentsRecyclerViews();
         retrieveSymptom();
+
+        MobileAds.initialize(this, DUMMY_AD_ID);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        bannerAd.loadAd(adRequest);
     }
 
     private void setUpNotesRecyclerView() {

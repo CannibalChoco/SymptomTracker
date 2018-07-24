@@ -25,7 +25,7 @@ import butterknife.OnClick;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String DUMMY_AD_ID = "ca-app-pub-3940256099942544~3347511713";
+    public static final String DUMMY_AD_ID = "ca-app-pub-3940256099942544~3347511713";
 
     @BindView(R.id.navigation)
     BottomNavigationView navigationView;
