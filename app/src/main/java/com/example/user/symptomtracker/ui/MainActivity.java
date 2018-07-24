@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private FirebaseAnalytics firebaseAnalytics;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         bannerAd.loadAd(adRequest);
 
         // add Firebase Analytics
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.setAnalyticsCollectionEnabled(true);
     }
 

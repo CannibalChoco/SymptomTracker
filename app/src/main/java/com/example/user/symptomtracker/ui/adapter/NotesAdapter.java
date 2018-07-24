@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
-import com.example.user.symptomtracker.database.entity.SymptomEntity;
+import com.example.user.symptomtracker.utils.TimeUtils;
 
 import java.util.List;
 
@@ -36,7 +36,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NoteEntity note = notes.get(position);
-        holder.date.setText(String.valueOf(note.getTimestamp()));
+
+        String date = TimeUtils.getDateStringFromTimestamp(note.getTimestamp());
+        holder.date.setText(date);
         holder.note.setText(note.getContent());
     }
 

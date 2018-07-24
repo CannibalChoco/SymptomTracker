@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.utils.TimeUtils;
 
 import java.util.List;
 
@@ -41,7 +42,9 @@ public class PastTreatmentAdapter extends RecyclerView.Adapter<PastTreatmentAdap
         holder.name.setText(treatment.getName());
 
         if (treatment.getTakesEffectIn() != TreatmentEntity.TIME_NOT_SELECTED){
-            holder.takesEffect.setText(String.valueOf(treatment.getTakesEffectIn()));
+            String takesEffect = TimeUtils.getTimeUnitFromTimestamp(context,
+                    treatment.getTakesEffectIn());
+            holder.takesEffect.setText(takesEffect);
         } else {
             holder.takesEffect.setText(R.string.default_no_treatment_time_provided);
         }

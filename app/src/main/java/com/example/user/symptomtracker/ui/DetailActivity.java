@@ -27,6 +27,7 @@ import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
+import com.example.user.symptomtracker.utils.TimeUtils;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;

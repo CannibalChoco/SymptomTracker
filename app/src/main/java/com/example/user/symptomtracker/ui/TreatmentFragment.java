@@ -82,7 +82,7 @@ public class TreatmentFragment extends Fragment implements
 
         if (id == ID_FRAGMENT_CURRENT){
             currentTreatmentAdapter = new
-                    CurrentTreatmentAdapter(new ArrayList<TreatmentEntity>());
+                    CurrentTreatmentAdapter(getContext(), new ArrayList<TreatmentEntity>());
             treatmentRv.setAdapter(currentTreatmentAdapter);
         } else if (id == ID_FRAGMENT_PAST){
             pastTreatmentAdapter = new PastTreatmentAdapter(getContext(),

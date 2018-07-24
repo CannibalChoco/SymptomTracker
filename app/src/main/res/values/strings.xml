@@ -53,7 +53,7 @@
     <string name="label_takes_effect">Takes effect in (optional)</string>
     <string name="label_was_successful">Treatment success (optional)</string>
 
-    <!-- Time Radio Group -->
+    <!-- Time Radio Group; Time for treatment to take effect displayed in DetailActivity-->
     <string name="radio_time_hour">Hours</string>
     <string name="radio_time_day">Days</string>
     <string name="radio_time_week">Weeks</string>
@@ -75,5 +75,6 @@
     <string name="severity_8">8</string>
     <string name="severity_9">9</string>
     <string name="severity_10">10</string>
+
 
 </resources>

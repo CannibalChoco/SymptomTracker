@@ -1,5 +1,6 @@
 package com.example.user.symptomtracker.ui.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.utils.TimeUtils;
 
 import java.util.List;
 
@@ -18,9 +20,11 @@ import butterknife.ButterKnife;
 public class CurrentTreatmentAdapter extends RecyclerView.Adapter<CurrentTreatmentAdapter.ViewHolder> {
 
     private List<TreatmentEntity> treatments;
+    private Context context;
 
-    public CurrentTreatmentAdapter(List<TreatmentEntity> treatments) {
+    public CurrentTreatmentAdapter(Context context, List<TreatmentEntity> treatments) {
         this.treatments = treatments;
+        this.context = context;
     }
 
     @NonNull
@@ -39,7 +43,9 @@ public class CurrentTreatmentAdapter extends RecyclerView.Adapter<CurrentTreatme
 
         // don't display invalid data
         if (treatment.getTakesEffectIn() != TreatmentEntity.TIME_NOT_SELECTED){
-            holder.takesEffect.setText(String.valueOf(treatment.getTakesEffectIn()));
+            String takesEffect = TimeUtils.getTimeUnitFromTimestamp(context,
+                    treatment.getTakesEffectIn());
+            holder.takesEffect.setText(takesEffect);
         } else {
             holder.takesEffect.setText(R.string.default_no_treatment_time_provided);
         }
