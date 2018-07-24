@@ -11,6 +11,9 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +25,14 @@ import butterknife.OnClick;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String DUMMY_AD_ID = "ca-app-pub-3940256099942544~3347511713";
+
     @BindView(R.id.navigation)
     BottomNavigationView navigationView;
     @BindView(R.id.dest_fragment_container)
     FrameLayout fragmentContainer;
+    @BindView(R.id.adView)
+    AdView bannerAd;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
             navigationView.setSelectedItemId(R.id.navigation_overview);
         }
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        MobileAds.initialize(this, DUMMY_AD_ID);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        bannerAd.loadAd(adRequest);
     }
 
     @OnClick(R.id.fab_add_new)

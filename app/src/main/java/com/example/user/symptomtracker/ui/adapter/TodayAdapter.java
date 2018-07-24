@@ -78,6 +78,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    // TODO: fix button toggling
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.todaySymptom)
@@ -123,7 +124,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             int severity = getSeverityForView(view.getId());
             int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
             listener.onSeverityClicked(parentId, severity);
-            //notifyDataSetChanged();
+            notifyDataSetChanged();
         }
 
         private int getSeverityForView(int checkedId) {

@@ -50,4 +50,7 @@ dependencies {
 
     // ToggleButtonGroup
     implementation 'com.nex3z:toggle-button-group:1.1.4'
+
+    // MobileAds
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
 }
