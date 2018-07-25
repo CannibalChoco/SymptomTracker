@@ -3,6 +3,7 @@ package com.example.user.symptomtracker.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -64,11 +65,26 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     }
 
     private void retrieveSymptoms() {
-        LiveData<List<Symptom>> symptoms = db.symptomDao().loadAllUnresolvedSymptomData();
-        symptoms.observe(this, new Observer<List<Symptom>>() {
+
+//        symptoms.observe(this, new Observer<List<Symptom>>() {
+//            @Override
+//            public void onChanged(@Nullable List<Symptom> symptomList) {
+//                adapter.replaceSymptomData(symptomList);
+//            }
+//        });
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
-            public void onChanged(@Nullable List<Symptom> symptomList) {
-                adapter.replaceSymptomData(symptomList);
+            public void run() {
+                final List<Symptom> symptoms = db.symptomDao().loadAllUnresolvedSymptomData();
+
+                // DONE (7) Wrap the setTask call in a call to runOnUiThread
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.replaceSymptomData(symptoms);
+                    }
+                });
+
             }
         });
     }

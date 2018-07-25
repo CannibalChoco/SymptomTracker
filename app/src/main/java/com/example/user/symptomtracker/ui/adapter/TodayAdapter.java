@@ -24,6 +24,7 @@ import butterknife.OnClick;
 public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> {
 
     private static final int VIEW_NOT_FOUND = -1;
+    private boolean userHasChecked = false;
 
     private List<Symptom> symptomList;
     private OnSeverityClickListener clickListener;
@@ -78,7 +79,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // TODO: fix button toggling
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.todaySymptom)
@@ -95,7 +95,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             this.view = itemView;
             this.listener = listener;
 
-            //setSelectionListener();
+            setSelectionListener();
         }
 
         private void setSelectionListener() {
@@ -104,7 +104,10 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                 public void onCheckedChanged(SingleSelectToggleGroup group, int checkedId) {
                     int severity = getSeverityForView(checkedId);
                     int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
-                    listener.onSeverityClicked(parentId, severity);
+                    if (userHasChecked){
+                        listener.onSeverityClicked(parentId, severity);
+                    }
+
                 }
             });
         }
@@ -121,10 +124,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                 R.id.severity9,
                 R.id.severity10})
         public void severitySet(View view) {
-            int severity = getSeverityForView(view.getId());
-            int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
-            listener.onSeverityClicked(parentId, severity);
-            notifyDataSetChanged();
+            userHasChecked = true;
         }
 
         private int getSeverityForView(int checkedId) {

@@ -25,7 +25,7 @@ public interface SymptomDao {
     LiveData<List<Symptom>> loadAllSymptomData();
 
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
-    LiveData<List<Symptom>> loadAllUnresolvedSymptomData();
+    List<Symptom> loadAllUnresolvedSymptomData();
 
     @Insert
     void insertSymptom(SymptomEntity symptom);
