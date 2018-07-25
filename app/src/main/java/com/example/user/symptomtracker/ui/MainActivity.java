@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.utils.NotificationUtils;
+import com.example.user.symptomtracker.service.ReminderNotificationIntentService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -88,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @OnClick(R.id.button)
     public void testNotification(){
-        NotificationUtils.buildNotification(this);
+        Intent intent = new Intent(this, ReminderNotificationIntentService.class);
+        intent.setAction(ReminderNotificationIntentService.ACTION_CHECK_UNRESOLVED_SYMPTOMS);
+        startService(intent);
     }
 
     /**

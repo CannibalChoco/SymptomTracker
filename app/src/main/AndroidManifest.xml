@@ -17,8 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailActivity"
-            android:parentActivityName=".ui.MainActivity"/>
+        <activity
+            android:name=".ui.DetailActivity"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <service
+            android:name=".service.ReminderNotificationIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

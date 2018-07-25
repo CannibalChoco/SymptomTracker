@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.ui.MainActivity;
@@ -26,7 +27,10 @@ public class NotificationUtils {
      * Build a notification for reminding user to schedule a doctors appointment
      * @param context activity context
      */
-    public static void buildNotification (Context context){
+    public static void buildNotification (Context context, String title){
+
+        Log.d("CHECKDB", "building notification");
+
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -44,7 +48,8 @@ public class NotificationUtils {
                 context, REMINDER_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.ic_notification_small)
-                .setContentTitle(context.getString(R.string.notification_schedule_appointment_title))
+                //TODO: replace title and body
+                .setContentTitle(title)
                 .setContentText(context.getString(R.string.notification_schedule_appointment_body))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
                         context.getString(R.string.notification_schedule_appointment_body)))
