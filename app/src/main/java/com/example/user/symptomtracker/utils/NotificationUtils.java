@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.ui.MainActivity;
@@ -28,8 +27,6 @@ public class NotificationUtils {
      * @param context activity context
      */
     public static void buildNotification (Context context, String title){
-
-        Log.d("CHECKDB", "building notification");
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
