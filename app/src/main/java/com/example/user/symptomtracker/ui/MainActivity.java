@@ -1,16 +1,16 @@
 package com.example.user.symptomtracker.ui;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.utils.NotificationUtils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -82,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
     public void addNewSymptom(){
         Intent intent = new Intent(MainActivity.this, AddSymptomActivity.class);
         startActivity(intent);
+    }
+
+    // TODO: remove test notification button
+    @Nullable
+    @OnClick(R.id.button)
+    public void testNotification(){
+        NotificationUtils.buildNotification(this);
     }
 
     /**
