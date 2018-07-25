@@ -1,6 +1,7 @@
 package com.example.user.symptomtracker.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.example.user.symptomtracker.R;
 
@@ -17,26 +18,27 @@ public class TimeUtils {
     public static final int WEEK = 7;
     public static final int MONTH = 30;
 
-    public static String getDateStringFromTimestamp(long timestamp){
+    public static String getDateStringFromTimestamp(long timestamp) {
         Date date = new Date(timestamp);
         return DateFormat.getDateInstance(DateFormat.SHORT).format(date);
     }
 
     // TODO: make return value prettier
-    public static String getTimeUnitFromTimestamp(Context context, long timestamp){
+    public static String getTimeUnitFromTimestamp(Context context, long timestamp) {
         int days = (int) TimeUnit.MILLISECONDS.toDays(timestamp);
+        Resources res = context.getResources();
 
-        if (days < DAY){
+        if (days < DAY) {
             int hours = (int) TimeUnit.MILLISECONDS.toHours(timestamp);
-            return context.getString(R.string.radio_time_hour) + " " + hours;
-        } else if (days < WEEK){
-            return context.getString(R.string.radio_time_day) + " " + days;
-        } else if (days < MONTH){
-            String weeks = String.valueOf(days / WEEK);
-            return context.getString(R.string.radio_time_week) + " " + weeks;
+            return res.getQuantityString(R.plurals.number_of_hours, hours, hours);
+        } else if (days < WEEK) {
+            return res.getQuantityString(R.plurals.number_of_days, days, days);
+        } else if (days < MONTH) {
+            int weeks = days / WEEK;
+            return res.getQuantityString(R.plurals.number_of_weeks, weeks, weeks);
         } else {
-            String months = String.valueOf(days / MONTH);
-            return context.getString(R.string.radio_time_month) + " " + months;
+            int months = days / MONTH;
+            return res.getQuantityString(R.plurals.number_of_months, months, months);
         }
     }
 }

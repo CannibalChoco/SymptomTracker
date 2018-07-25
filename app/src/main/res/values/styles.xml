@@ -1,4 +1,5 @@
-<resources>
+<resources
+    xmlns:app="http://schemas.android.com/apk/res/app/com.nex3z:toggle-button-group">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
