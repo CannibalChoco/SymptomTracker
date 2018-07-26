@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
@@ -95,31 +96,34 @@ public class AddSymptomActivity extends AppCompatActivity {
     public void saveInDb(){
         getEnteredData();
 
-        final SymptomEntity symptom = new SymptomEntity(symptomName,
-                isChronic,
-                isReoccurring,
-                doctorIsInformed,
-                false,
-                System.currentTimeMillis());
+        if(symptomName.isEmpty()){
+            Toast.makeText(this, R.string.message_must_provide_name, Toast.LENGTH_SHORT).show();
+            editSymptomName.requestFocus();
+        } else {
+            final SymptomEntity symptom = new SymptomEntity(symptomName,
+                    isChronic,
+                    isReoccurring,
+                    doctorIsInformed,
+                    false,
+                    System.currentTimeMillis());
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.symptomDao().insertSymptom(symptom);
-                id = db.symptomDao().getSymptomsId(symptomName);
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.symptomDao().insertSymptom(symptom);
+                    id = db.symptomDao().getSymptomsId(symptomName);
 
-                if (!note.isEmpty()){
-                    db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
+                    if (!note.isEmpty()){
+                        db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
+                    }
+
+                    // TODO: refactor. The same code in OverviewFragment
+                    Intent intent = new Intent(AddSymptomActivity.this, DetailActivity.class);
+                    intent.putExtra(DetailActivity.KEY_ID, id);
+                    startActivity(intent);
                 }
-
-                // TODO: refactor. The same code in OverviewFragment
-                Intent intent = new Intent(AddSymptomActivity.this, DetailActivity.class);
-                intent.putExtra(DetailActivity.KEY_ID, id);
-                startActivity(intent);
-                }
-        });
-
-
+            });
+        }
     }
 
     @Override
@@ -175,6 +179,7 @@ public class AddSymptomActivity extends AppCompatActivity {
     private void getEnteredData (){
 
         symptomName = editSymptomName.getText().toString();
+
         doctorIsInformed = radioStatusDoctor.isChecked();
         isChronic = radioStatusChronic.isChecked();
         isReoccurring = radioStatusReoccurring.isChecked();

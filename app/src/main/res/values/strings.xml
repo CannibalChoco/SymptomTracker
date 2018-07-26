@@ -42,6 +42,7 @@
     <!-- AddSymptomActivity -->
     <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
     <string name="dialog_action_keep_editing">Keep editing</string>
+    <string name="message_must_provide_name">You must provide a name for the symptom</string>
 
     <!-- Add New Note Dialog -->
     <string name="add_note_title">Add Note</string>

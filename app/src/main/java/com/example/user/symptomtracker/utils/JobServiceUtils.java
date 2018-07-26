@@ -1,7 +1,6 @@
 package com.example.user.symptomtracker.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.user.symptomtracker.service.ReminderNotificationJobService;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -32,8 +31,6 @@ public class JobServiceUtils {
      */
     synchronized public static void scheduleCheckUnresolvedSymptoms(final Context context){
         if (sInitialized) return;
-
-        Log.d("SCHEDULE", "JobServiceUtils scheduling job...");
 
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
         Job checkSymptomsJob = dispatcher.newJobBuilder()
