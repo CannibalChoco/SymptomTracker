@@ -22,25 +22,37 @@ public class SymptomEntity {
     private boolean doctorIsInformed;
     @ColumnInfo(name = "is_resolved")
     private boolean isResolved;
+    @ColumnInfo(name = "not_resolved_timestamp")
+    private long notResolvedTimestamp;
 
     public SymptomEntity(int id, String name, boolean isChronic, boolean isReoccurring,
-                         boolean doctorIsInformed, boolean isResolved) {
+                         boolean doctorIsInformed, boolean isResolved, long notResolvedTimestamp) {
         this.id = id;
         this.name = name;
         this.isChronic = isChronic;
         this.isReoccurring = isReoccurring;
         this.doctorIsInformed = doctorIsInformed;
         this.isResolved = isResolved;
+        this.notResolvedTimestamp = notResolvedTimestamp;
     }
 
     @Ignore
     public SymptomEntity(String name, boolean isChronic, boolean isReoccurring,
-                         boolean doctorIsInformed, boolean isResolved) {
+                         boolean doctorIsInformed, boolean isResolved, long notResolvedTimestamp) {
         this.name = name;
         this.isChronic = isChronic;
         this.isReoccurring = isReoccurring;
         this.doctorIsInformed = doctorIsInformed;
         this.isResolved = isResolved;
+        this.notResolvedTimestamp = notResolvedTimestamp;
+    }
+
+    public long getNotResolvedTimestamp() {
+        return notResolvedTimestamp;
+    }
+
+    public void setNotResolvedTimestamp(long notResolvedTimestamp) {
+        this.notResolvedTimestamp = notResolvedTimestamp;
     }
 
     public int getId() {

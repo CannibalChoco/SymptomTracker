@@ -3,14 +3,13 @@ package com.example.user.symptomtracker.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.service.ReminderNotificationIntentService;
+import com.example.user.symptomtracker.utils.JobServiceUtils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -76,21 +75,14 @@ public class MainActivity extends AppCompatActivity {
         // add Firebase Analytics
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+        JobServiceUtils.scheduleCheckUnresolvedSymptoms(this);
     }
 
     @OnClick(R.id.fab_add_new)
     public void addNewSymptom(){
         Intent intent = new Intent(MainActivity.this, AddSymptomActivity.class);
         startActivity(intent);
-    }
-
-    // TODO: remove test notification button
-    @Nullable
-    @OnClick(R.id.button)
-    public void testNotification(){
-        Intent intent = new Intent(this, ReminderNotificationIntentService.class);
-        intent.setAction(ReminderNotificationIntentService.ACTION_CHECK_UNRESOLVED_SYMPTOMS);
-        startService(intent);
     }
 
     /**

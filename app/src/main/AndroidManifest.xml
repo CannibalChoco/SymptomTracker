@@ -21,9 +21,12 @@
             android:name=".ui.DetailActivity"
             android:parentActivityName=".ui.MainActivity" />
 
-        <service
-            android:name=".service.ReminderNotificationIntentService"
-            android:exported="false"></service>
+        <service android:name=".service.ReminderNotificationJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

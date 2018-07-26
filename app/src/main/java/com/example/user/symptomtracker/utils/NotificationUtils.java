@@ -14,7 +14,8 @@ import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.ui.MainActivity;
 
 /**
- * Building of notification code base taken from Udacity Water Reminder app
+ * Building of notification code base taken from Udacity Hydration Reminder app
+ * https://github.com/udacity/ud851-Exercises/blob/student/Lesson10-Hydration-Reminder/T10.02-Solution-CreateNotification/app/src/main/java/com/example/android/background/utilities/NotificationUtils.java
  */
 public class NotificationUtils {
 
@@ -45,7 +46,6 @@ public class NotificationUtils {
                 context, REMINDER_NOTIFICATION_CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.ic_notification_small)
-                //TODO: replace title and body
                 .setContentTitle(title)
                 .setContentText(context.getString(R.string.notification_schedule_appointment_body))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(
@@ -71,6 +71,4 @@ public class NotificationUtils {
                 startActivityIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-
 }

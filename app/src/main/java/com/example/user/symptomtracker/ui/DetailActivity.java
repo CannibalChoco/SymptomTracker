@@ -1,7 +1,6 @@
 package com.example.user.symptomtracker.ui;
 
 import android.app.DialogFragment;
-
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.graphics.drawable.Drawable;
@@ -27,7 +26,6 @@ import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
-import com.example.user.symptomtracker.utils.TimeUtils;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -192,6 +190,10 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
             @Override
             public void run() {
                 db.symptomDao().updateIsResolved(symptomId, !symptom.isResolved());
+
+                if (!symptom.isResolved()){
+                    db.symptomDao().updateNotResolvedTimestamp(symptomId, System.currentTimeMillis());
+                }
             }
         });
     }

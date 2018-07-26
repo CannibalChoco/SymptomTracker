@@ -99,5 +99,6 @@
     <string name="notification_schedule_appointment_title">The symptom hasn\'t been resolved for a week</string>
     <string name="notification_schedule_appointment_body">Perhaps it\'s time to schedule a doctors appointment</string>
     <string name="main_notification_channel_name">Primary</string>
+    <string name="notification_title_append"> is unresolved</string>
 
 </resources>

@@ -57,7 +57,8 @@ dependencies {
     // ToggleButtonGroup
     implementation 'com.nex3z:toggle-button-group:1.1.4'
 
-
+    // Firebase JobDispatcher
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

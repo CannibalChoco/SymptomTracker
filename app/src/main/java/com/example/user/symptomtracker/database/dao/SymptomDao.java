@@ -27,8 +27,9 @@ public interface SymptomDao {
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     List<Symptom> loadAllUnresolvedSymptomData();
 
-    @Query("SELECT * FROM symptom WHERE NOT is_resolved")
-    List<SymptomEntity> loadAllUnresolvedSymptoms();
+    @Query("SELECT * FROM symptom WHERE NOT is_resolved AND not_resolved_timestamp < :timeWeekAgo " +
+            "AND NOT doctor_is_informed")
+    List<SymptomEntity> loadAllUnresolvedSymptoms(long timeWeekAgo);
 
     @Insert
     void insertSymptom(SymptomEntity symptom);
@@ -83,5 +84,13 @@ public interface SymptomDao {
      */
     @Query("UPDATE symptom SET doctor_is_informed = :doctorIsInformed WHERE id =:id")
     void updateDoctorIsInformed(int id, boolean doctorIsInformed);
+
+    /**
+     * Update the timestamp of when symptom is set to not resolved
+     * @param id symptom ID
+     * @param timestamp current time in milliseconds
+     */
+    @Query("UPDATE symptom SET not_resolved_timestamp = :timestamp WHERE id = :id")
+    void updateNotResolvedTimestamp(int id, long timestamp);
 
 }

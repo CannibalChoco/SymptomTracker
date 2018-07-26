@@ -9,10 +9,14 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * Simple Utility methods for converting time from and to timestamps
  */
 public class TimeUtils {
+
+    private static final long DEBUG_MINUTE_TO_MILLIS = TimeUnit.MINUTES.toMillis(1);
+    public static final long WEEK_TO_MILLIS = TimeUnit.DAYS.toMillis(7);
 
     public static final int DAY = 1;
     public static final int WEEK = 7;
@@ -23,7 +27,6 @@ public class TimeUtils {
         return DateFormat.getDateInstance(DateFormat.SHORT).format(date);
     }
 
-    // TODO: make return value prettier
     public static String getTimeUnitFromTimestamp(Context context, long timestamp) {
         int days = (int) TimeUnit.MILLISECONDS.toDays(timestamp);
         Resources res = context.getResources();
@@ -40,5 +43,9 @@ public class TimeUtils {
             int months = days / MONTH;
             return res.getQuantityString(R.plurals.number_of_months, months, months);
         }
+    }
+
+    public static long getTimeWeekAgo(){
+        return System.currentTimeMillis() - WEEK_TO_MILLIS;
     }
 }
