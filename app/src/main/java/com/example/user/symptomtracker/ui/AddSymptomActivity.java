@@ -118,6 +118,7 @@ public class AddSymptomActivity extends AppCompatActivity {
                 repository.saveNote(new NoteEntity(note, id, new Date().getTime()));
             }
         }
+        finish();
     }
 
     @Override
