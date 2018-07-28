@@ -66,7 +66,6 @@ public class AddSymptomActivity extends AppCompatActivity {
 
     private boolean dataHasChanged;
 
-    private int id;
     /**
      * Detect when a view is clicked to keep track if user has made any changes
      */
@@ -113,10 +112,7 @@ public class AddSymptomActivity extends AppCompatActivity {
                     System.currentTimeMillis());
 
             // save
-            new SaveSymptomAsyncTask(this, symptom, db).execute();
-            if (!note.isEmpty()){
-                repository.saveNote(new NoteEntity(note, id, new Date().getTime()));
-            }
+            new SaveSymptomAsyncTask(this, symptom, db, note).execute();
         }
         finish();
     }
@@ -137,12 +133,9 @@ public class AddSymptomActivity extends AppCompatActivity {
         // Otherwise if there are unsaved changes, setup a dialog to warn the user.
         // Create a click listener to handle the user confirming that changes should be discarded.
         DialogInterface.OnClickListener discardButtonClickListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // User clicked "Discard" button, close the current activity.
-                        finish();
-                    }
+                (dialogInterface, i) -> {
+                    // User clicked "Discard" button, close the current activity.
+                    finish();
                 };
 
         // Show dialog that there are unsaved changes
@@ -156,13 +149,11 @@ public class AddSymptomActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_msg_unsaved_changes);
         builder.setPositiveButton(R.string.dialog_action_discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.dialog_action_keep_editing, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the symptom.
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
+        builder.setNegativeButton(R.string.dialog_action_keep_editing, (dialog, id) -> {
+            // User clicked the "Keep editing" button, so dismiss the dialog
+            // and continue editing the symptom.
+            if (dialog != null) {
+                dialog.dismiss();
             }
         });
 
@@ -198,16 +189,24 @@ public class AddSymptomActivity extends AppCompatActivity {
         private final WeakReference<Context> context;
         private final WeakReference<SymptomEntity> symptom;
         private final AppDatabase db;
+        private final String note;
 
-        SaveSymptomAsyncTask(Context context, SymptomEntity symptom, AppDatabase db) {
+        SaveSymptomAsyncTask(Context context, SymptomEntity symptom, AppDatabase db, String note) {
             this.context = new WeakReference<>(context);
             this.symptom = new WeakReference<>(symptom);
             this.db = db;
+            this.note = note;
         }
 
         @Override
         protected Integer doInBackground(Void... voids) {
-            return (int) db.symptomDao().insertSymptom(symptom.get());
+            Integer id = (int) db.symptomDao().insertSymptom(symptom.get());
+
+            if (!note.isEmpty()){
+                db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
+            }
+
+            return id;
         }
 
         @Override
@@ -218,4 +217,5 @@ public class AddSymptomActivity extends AppCompatActivity {
             context.get().startActivity(intent);
         }
     }
+
 }
