@@ -1,7 +1,9 @@
 package com.example.user.symptomtracker.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +15,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 
+import java.lang.ref.WeakReference;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -59,11 +62,11 @@ public class AddSymptomActivity extends AppCompatActivity {
     private String note;
 
     private AppDatabase db;
+    private Repository repository;
 
     private boolean dataHasChanged;
 
     private int id;
-
     /**
      * Detect when a view is clicked to keep track if user has made any changes
      */
@@ -88,6 +91,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         setTitle(R.string.title_add_new);
 
         db = AppDatabase.getInstance(getApplicationContext());
+        repository = Repository.getInstance(db);
 
         setTouchListener();
     }
@@ -97,7 +101,8 @@ public class AddSymptomActivity extends AppCompatActivity {
         getEnteredData();
 
         if(symptomName.isEmpty()){
-            Toast.makeText(this, R.string.message_must_provide_name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_must_provide_name,
+                    Toast.LENGTH_SHORT).show();
             editSymptomName.requestFocus();
         } else {
             final SymptomEntity symptom = new SymptomEntity(symptomName,
@@ -107,22 +112,11 @@ public class AddSymptomActivity extends AppCompatActivity {
                     false,
                     System.currentTimeMillis());
 
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.symptomDao().insertSymptom(symptom);
-                    id = db.symptomDao().getSymptomsId(symptomName);
-
-                    if (!note.isEmpty()){
-                        db.noteDao().insertNote(new NoteEntity(note, id, new Date().getTime()));
-                    }
-
-                    // TODO: refactor. The same code in OverviewFragment
-                    Intent intent = new Intent(AddSymptomActivity.this, DetailActivity.class);
-                    intent.putExtra(DetailActivity.KEY_ID, id);
-                    startActivity(intent);
-                }
-            });
+            // save
+            new SaveSymptomAsyncTask(this, symptom, db).execute();
+            if (!note.isEmpty()){
+                repository.saveNote(new NoteEntity(note, id, new Date().getTime()));
+            }
         }
     }
 
@@ -193,5 +187,34 @@ public class AddSymptomActivity extends AppCompatActivity {
         radioGroupStatus.setOnTouchListener(touchListener);
         radioStatusChronic.setOnTouchListener(touchListener);
         radioStatusReoccurring.setOnTouchListener(touchListener);
+    }
+
+    /**
+     * AsyncTask for saving the symptom. Up on insertion completion, launches the DetailActivity
+     * for newly inserted symptom
+     */
+    private static class SaveSymptomAsyncTask extends AsyncTask<Void, Void, Integer>{
+        private final WeakReference<Context> context;
+        private final WeakReference<SymptomEntity> symptom;
+        private final AppDatabase db;
+
+        SaveSymptomAsyncTask(Context context, SymptomEntity symptom, AppDatabase db) {
+            this.context = new WeakReference<>(context);
+            this.symptom = new WeakReference<>(symptom);
+            this.db = db;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return (int) db.symptomDao().insertSymptom(symptom.get());
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            Intent intent = new Intent(context.get(),
+                    DetailActivity.class);
+            intent.putExtra(DetailActivity.KEY_ID, integer);
+            context.get().startActivity(intent);
+        }
     }
 }

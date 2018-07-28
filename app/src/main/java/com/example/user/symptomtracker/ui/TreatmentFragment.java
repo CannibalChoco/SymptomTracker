@@ -1,7 +1,6 @@
 package com.example.user.symptomtracker.ui;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,17 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddCurrentTreatmentDialog;
 import com.example.user.symptomtracker.ui.DialogFragments.AddPastTreatmentDialog;
 import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
+import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
+import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,11 +47,11 @@ public class TreatmentFragment extends Fragment implements
 
     private int id;
     private int symptomId;
-    private List<TreatmentEntity> treatments;
     private CurrentTreatmentAdapter currentTreatmentAdapter;
     private PastTreatmentAdapter pastTreatmentAdapter;
     private AppDatabase db;
-
+    private DetailActivityViewModel model;
+    private Repository repository;
     public TreatmentFragment() {
     }
 
@@ -65,7 +65,7 @@ public class TreatmentFragment extends Fragment implements
         ButterKnife.bind(this, rootView);
 
         db = AppDatabase.getInstance(getContext());
-
+        repository = Repository.getInstance(db);
         Bundle arguments = getArguments();
         if (arguments != null){
             if(arguments.containsKey(KEY_FRAGMENT_ID)){
@@ -76,17 +76,20 @@ public class TreatmentFragment extends Fragment implements
             }
         }
 
+        DetailActivityViewModelFactory factory = new DetailActivityViewModelFactory(db, symptomId);
+        model = ViewModelProviders.of(getActivity(), factory).get(DetailActivityViewModel.class);
+
         LinearLayoutManager treatmentLayoutManager = new LinearLayoutManager(getContext());
         treatmentRv.setLayoutManager(treatmentLayoutManager);
         treatmentRv.setHasFixedSize(true);
 
         if (id == ID_FRAGMENT_CURRENT){
             currentTreatmentAdapter = new
-                    CurrentTreatmentAdapter(getContext(), new ArrayList<TreatmentEntity>());
+                    CurrentTreatmentAdapter(getContext(), new ArrayList<>());
             treatmentRv.setAdapter(currentTreatmentAdapter);
         } else if (id == ID_FRAGMENT_PAST){
             pastTreatmentAdapter = new PastTreatmentAdapter(getContext(),
-                    new ArrayList<TreatmentEntity>());
+                    new ArrayList<>());
             treatmentRv.setAdapter(pastTreatmentAdapter);
         }
 
@@ -115,25 +118,13 @@ public class TreatmentFragment extends Fragment implements
     }
 
     private void retrieveCurrentTreatments() {
-        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
-                .loadTreatmentsByIsActive(symptomId, true);
-        treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                currentTreatmentAdapter.replaceDataSet(treatmentEntities);
-            }
-        });
+        model.getCurrentTreatments().observe(this, treatmentEntities ->
+                currentTreatmentAdapter.replaceDataSet(treatmentEntities));
     }
 
     private void retrievePastTreatments() {
-        final LiveData<List<TreatmentEntity>> treatmentLiveData = db.treatmentDao()
-                .loadTreatmentsByIsActive(symptomId, false);
-        treatmentLiveData.observe(this, new Observer<List<TreatmentEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<TreatmentEntity> treatmentEntities) {
-                pastTreatmentAdapter.replaceDataSet(treatmentEntities);
-            }
-        });
+        model.getPastTreatments().observe(this, treatmentEntities ->
+                pastTreatmentAdapter.replaceDataSet(treatmentEntities));
     }
 
     public void addCurrentTreatment() {
@@ -154,25 +145,13 @@ public class TreatmentFragment extends Fragment implements
     public void onSaveCurrentTreatment(String name, long takesEffectIn) {
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
                 takesEffectIn, 3, true);
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.treatmentDao().insertTreatment(treatment);
-            }
-        });
+        repository.saveTreatment(treatment);
     }
 
     @Override
     public void onSavePastTreatment(String name, long takesEffectIn, int wasSuccessful) {
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
                 takesEffectIn, wasSuccessful, false);
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.treatmentDao().insertTreatment(treatment);
-            }
-        });
+        repository.saveTreatment(treatment);
     }
 }

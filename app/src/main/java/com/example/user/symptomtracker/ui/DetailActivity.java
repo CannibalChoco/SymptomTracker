@@ -1,8 +1,7 @@
 package com.example.user.symptomtracker.ui;
 
 import android.app.DialogFragment;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,15 +16,16 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.user.symptomtracker.AppExecutors;
 import com.example.user.symptomtracker.R;
+import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
-import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
+import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
+import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -33,7 +33,6 @@ import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindDrawable;
@@ -97,6 +96,9 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
     private NotesAdapter notesAdapter;
 
+    private DetailActivityViewModel model;
+    private Repository repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +106,11 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         ButterKnife.bind(this);
 
         db = AppDatabase.getInstance(getApplicationContext());
+        repository = Repository.getInstance(db);
         symptomId = getIntent().getIntExtra(KEY_ID, 0);
+
+        DetailActivityViewModelFactory factory = new DetailActivityViewModelFactory(db, symptomId);
+        model = ViewModelProviders.of(this, factory).get(DetailActivityViewModel.class);
 
         setUpNotesRecyclerView();
         setUpTreatmentsRecyclerViews();
@@ -115,6 +121,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         AdRequest adRequest = new AdRequest.Builder().build();
         bannerAd.loadAd(adRequest);
     }
+
 
     private void setUpNotesRecyclerView() {
         notesAdapter = new NotesAdapter(new ArrayList<NoteEntity>());
@@ -134,20 +141,16 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
      * Get new symptom data from Db whenever changes are observed
      */
     private void retrieveSymptom() {
-        final LiveData<SymptomEntity> symptomLiveData = db.symptomDao().loadSymptomById(symptomId);
-        symptomLiveData.observe(this, new Observer<SymptomEntity>() {
-            @Override
-            public void onChanged(@Nullable SymptomEntity symptomEntity) {
-                symptom = symptomLiveData.getValue();
-                setTitle(symptom.getName());
-                setIsResolvedInUi(symptom.isResolved());
-                switchResolved.setChecked(symptom.isResolved());
-                setIsChronicInUi(symptom.isChronic());
-                setDoctorIsInformedInUi(symptom.isDoctorIsInformed());
-                retrieveSeverity();
+        model.getSymptomEntity().observe(this, symptomEntity -> {
+            symptom = symptomEntity;
+            setTitle(symptom.getName());
+            setIsResolvedInUi(symptom.isResolved());
+            switchResolved.setChecked(symptom.isResolved());
+            setIsChronicInUi(symptom.isChronic());
+            setDoctorIsInformedInUi(symptom.isDoctorIsInformed());
 
-                retrieveNotes();
-            }
+            retrieveSeverity();
+            retrieveNotes();
         });
     }
 
@@ -156,13 +159,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
      */
     @OnLongClick(R.id.statusChronic)
     public boolean setStatusChronic() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.symptomDao().updateIsChronic(symptomId, !symptom.isChronic());
-            }
-        });
-
+        repository.setStatusIsChronic(symptomId, !symptom.isChronic());
         return true;
     }
 
@@ -171,13 +168,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
      */
     @OnLongClick(R.id.statusDoctorInformed)
     public boolean setStatusDoctorIsInformed() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.symptomDao().updateDoctorIsInformed(symptomId, !symptom.isDoctorIsInformed());
-            }
-        });
-
+        repository.setStatusDoctorIsInformed(symptomId, !symptom.isDoctorIsInformed());
         return true;
     }
 
@@ -186,16 +177,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
      */
     @OnClick({R.id.switchResolved})
     public void setStatusResolved() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.symptomDao().updateIsResolved(symptomId, !symptom.isResolved());
-
-                if (!symptom.isResolved()){
-                    db.symptomDao().updateNotResolvedTimestamp(symptomId, System.currentTimeMillis());
-                }
-            }
-        });
+        repository.setStatusResolved(symptomId, !symptom.isResolved());
     }
 
     @OnClick(R.id.addNote)
@@ -239,36 +221,20 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     }
 
     private void retrieveNotes() {
-        final LiveData<List<NoteEntity>> notes = db.noteDao().loadAllNotesForSymptom(symptomId);
-        notes.observe(this, new Observer<List<NoteEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<NoteEntity> noteEntities) {
-                notesAdapter.replaceDataSet(noteEntities);
-            }
-        });
+        model.getNoteList().observe(this, noteEntities ->
+                notesAdapter.replaceDataSet(noteEntities));
     }
 
     @Override
     public void onSaveNote(String note) {
         final NoteEntity noteEntity = new NoteEntity(note, symptomId,
                 new Date().getTime());
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.noteDao().insertNote(noteEntity);
-            }
-        });
+        repository.saveNote(noteEntity);
     }
 
     private void retrieveSeverity(){
-        LiveData<List<SeverityEntity>> severityList = db.severityDao().loadSeverityForSymptom(symptomId);
-        severityList.observe(this, new Observer<List<SeverityEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<SeverityEntity> severityEntities) {
-                GraphUtils.initBarChart(graph, severityEntities);
-            }
-        });
+        model.getSeverityList().observe(this, severityEntities ->
+                GraphUtils.initBarChart(graph, severityEntities));
     }
 
     /**
@@ -310,6 +276,4 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
             }
         }
     }
-
-
 }

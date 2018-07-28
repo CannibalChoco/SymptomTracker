@@ -1,11 +1,8 @@
 package com.example.user.symptomtracker.ui;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.os.AsyncTask;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +16,11 @@ import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.ui.adapter.TodayAdapter;
+import com.example.user.symptomtracker.viewmodel.MainActivityViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +41,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     TodayAdapter adapter;
     AppDatabase db;
 
+    private MainActivityViewModel model;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,36 +56,18 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         recyclerView.setAdapter(adapter);
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
-        retrieveSymptoms();
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
+
+        getDataFromViewModel();
 
         return rootView;
     }
 
-    private void retrieveSymptoms() {
-
-//        symptoms.observe(this, new Observer<List<Symptom>>() {
-//            @Override
-//            public void onChanged(@Nullable List<Symptom> symptomList) {
-//                adapter.replaceSymptomData(symptomList);
-//            }
-//        });
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                final List<Symptom> symptoms = db.symptomDao().loadAllUnresolvedSymptomData();
-
-                // DONE (7) Wrap the setTask call in a call to runOnUiThread
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.replaceSymptomData(symptoms);
-                    }
-                });
-
-            }
-        });
+    private void getDataFromViewModel() {
+        model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
+        model.getUnresolvedSymptomsLiveData().observe(this, symptomList ->
+                adapter.replaceSymptomData(symptomList));
     }
 
     @Override

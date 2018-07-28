@@ -15,24 +15,18 @@ import java.util.List;
 @Dao
 public interface SymptomDao {
 
-    @Query("SELECT * FROM symptom")
-    LiveData<List<SymptomEntity>> loadAllSymptoms();
+    @Query("SELECT * FROM symptom WHERE NOT is_resolved")
+    LiveData<List<Symptom>> loadUnresolvedSymptomLiveData();
 
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
-    LiveData<List<SymptomEntity>> loadUnResolvedSymptoms();
-
-    @Query("SELECT * FROM symptom")
-    LiveData<List<Symptom>> loadAllSymptomData();
-
-    @Query("SELECT * FROM symptom WHERE NOT is_resolved")
-    List<Symptom> loadAllUnresolvedSymptomData();
+    List<Symptom> loadUnresolvedSymptoms();
 
     @Query("SELECT * FROM symptom WHERE NOT is_resolved AND not_resolved_timestamp < :timeWeekAgo " +
             "AND NOT doctor_is_informed")
     List<SymptomEntity> loadAllUnresolvedSymptoms(long timeWeekAgo);
 
     @Insert
-    void insertSymptom(SymptomEntity symptom);
+    long insertSymptom(SymptomEntity symptom);
 
     @Delete
     void deleteSymptom(SymptomEntity symptom);

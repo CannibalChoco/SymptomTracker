@@ -1,11 +1,9 @@
 package com.example.user.symptomtracker.ui;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.database.AppDatabase;
-import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
-import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.adapter.OverviewAdapter;
+import com.example.user.symptomtracker.viewmodel.MainActivityViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,8 +33,8 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         // Required empty public constructor
     }
 
-    private AppDatabase db;
     private OverviewAdapter adapter;
+    private MainActivityViewModel model;
 
     @BindView(R.id.overviewRecyclerView)
     RecyclerView recyclerView;
@@ -51,9 +46,6 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, rootView);
 
-        db = AppDatabase.getInstance(getActivity().getApplicationContext());
-        retrieveSymptoms();
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
         recyclerView.setLayoutManager(layoutManager);
@@ -61,17 +53,16 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
+        getDataFromViewModel();
+
         return rootView;
     }
 
-    private void retrieveSymptoms() {
-        LiveData<List<Symptom>> symptoms = db.symptomDao().loadAllSymptomData();
-        symptoms.observe(this, new Observer<List<Symptom>>() {
-            @Override
-            public void onChanged(@Nullable List<Symptom> symptoms) {
-                adapter.replaceDataSet(symptoms);
-            }
-        });
+    // TODO: fix bug with LiveData + ToggleButtons
+    private void getDataFromViewModel() {
+        model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
+        model.getUnresolvedSymptomsLiveData().observe(getActivity(), symptoms ->
+                adapter.replaceDataSet(symptoms));
     }
 
     @Override

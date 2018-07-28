@@ -13,7 +13,7 @@ import java.util.List;
 public interface NoteDao {
 
     @Query("SELECT * FROM notes WHERE symptom_id = :symptomId ORDER BY timestamp DESC")
-    LiveData<List<NoteEntity>> loadAllNotesForSymptom(int symptomId);
+    LiveData<List<NoteEntity>> loadNotesForSymptom(int symptomId);
 
     @Insert
     void insertNote(NoteEntity note);
