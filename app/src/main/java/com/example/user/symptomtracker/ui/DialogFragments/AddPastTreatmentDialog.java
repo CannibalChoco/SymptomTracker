@@ -98,8 +98,8 @@ public class AddPastTreatmentDialog extends DialogFragment {
                 && !treatment.isEmpty()){
             // all data is provided, send treatments name and estimated time to take effect
             int time = Integer.valueOf(timeString);
-            long timeInMilis = getTimeInMilis(time);
-            listener.onSavePastTreatment(treatment, timeInMilis, treatmentSuccessInt);
+            long timeInMillis = getTimeInMillis(time);
+            listener.onSavePastTreatment(treatment, timeInMillis, treatmentSuccessInt);
         } else if ((timeString.isEmpty()
                 && selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
                 && !treatment.isEmpty()){
@@ -144,7 +144,7 @@ public class AddPastTreatmentDialog extends DialogFragment {
      * @param time count of time units
      * @return time in miliseconds
      */
-    private long getTimeInMilis(int time) {
+    private long getTimeInMillis(int time) {
         if (selectedTimeUnit != TIME_UNIT_NOT_SELECTED){
             switch (selectedTimeUnit){
                 case TIME_UNIT_HOUR:
