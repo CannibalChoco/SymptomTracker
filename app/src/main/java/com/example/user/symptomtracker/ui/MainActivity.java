@@ -2,10 +2,8 @@ package com.example.user.symptomtracker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.user.symptomtracker.R;
@@ -35,25 +33,21 @@ public class MainActivity extends AppCompatActivity {
     AdView bannerAd;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_today:
+                        fragmentReplaceWithToday();
+                        return true;
+                    case R.id.navigation_overview:
+                        fragmentReplaceWithOverview();
+                        return true;
+                    case R.id.navigation_resolved:
+                        fragmentReplaceWithResolved();
+                        return true;
+                }
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_today:
-                    fragmentReplaceWithToday();
-                    return true;
-                case R.id.navigation_overview:
-                    fragmentReplaceWithOverview();
-                    return true;
-                case R.id.navigation_resolved:
-                    fragmentReplaceWithResolved();
-                    return true;
-            }
-
-            return false;
-        }
-    };
+                return false;
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

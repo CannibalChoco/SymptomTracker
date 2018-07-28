@@ -41,7 +41,8 @@
         android:inputType="textCapWords"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        android:hint="@string/content_treatment_name"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -58,6 +59,7 @@
         android:layout_marginStart="16dp"
         android:inputType="number"
         android:textSize="14sp"
+        android:hint="@string/content_treatment_time"
         app:layout_constraintEnd_toStartOf="@+id/radioGroup"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/label_current_treatments" />

@@ -18,19 +18,16 @@ public class ReminderNotificationJobService extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters job) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-                List<SymptomEntity> symptoms = db.symptomDao().loadAllUnresolvedSymptoms(
-                        TimeUtils.getTimeWeekAgo());
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            List<SymptomEntity> symptoms = db.symptomDao().loadAllUnresolvedSymptoms(
+                    TimeUtils.getTimeWeekAgo());
 
-                // TODO: either use the rest of symptoms returned or query just for one
-                if (symptoms.size() > 0){
-                    String title = symptoms.get(0).getName() +
-                            getString(R.string.notification_title_append);
-                    NotificationUtils.buildNotification(getApplicationContext(), title);
-                }
+            // TODO: either use the rest of symptoms returned or query just for one
+            if (symptoms.size() > 0){
+                String title = symptoms.get(0).getName() +
+                        getString(R.string.notification_title_append);
+                NotificationUtils.buildNotification(getApplicationContext(), title);
             }
         });
 

@@ -102,4 +102,10 @@
     <string name="main_notification_channel_name">Primary</string>
     <string name="notification_title_append"> is unresolved</string>
 
+    <!-- Content Description -->
+    <string name="content_button_add_treatment">Add treatment</string>
+    <string name="content_button_add_note">Add note</string>
+    <string name="content_button_note_text">Note text</string>
+    <string name="content_treatment_name">Treatment name</string>
+    <string name="content_treatment_time">Time</string>
 </resources>

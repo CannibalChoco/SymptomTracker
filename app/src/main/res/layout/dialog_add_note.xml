@@ -15,6 +15,7 @@
         android:ems="10"
         android:inputType="textCapSentences"
         android:imeOptions="actionDone"
+        android:hint="@string/content_button_note_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

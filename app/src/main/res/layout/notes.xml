@@ -10,8 +10,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <ImageView
             android:id="@+id/addNote"
@@ -21,7 +20,8 @@
             app:layout_constraintBottom_toTopOf="@+id/labelNotes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelNotes"
-            app:srcCompat="@drawable/ic_action_add_dark" />
+            app:srcCompat="@drawable/ic_action_add_dark"
+            android:contentDescription="@string/content_button_add_note" />
 
         <TextView
             android:id="@+id/labelNotes"

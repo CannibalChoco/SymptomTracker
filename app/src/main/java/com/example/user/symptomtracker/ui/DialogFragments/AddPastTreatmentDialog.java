@@ -74,18 +74,8 @@ public class AddPastTreatmentDialog extends DialogFragment {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_past_treatment_title)
-                .setPositiveButton(R.string.dialog_action_save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveSymptom(dialog);
-                    }
-                })
-                .setNegativeButton(R.string.dialog_action_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                .setPositiveButton(R.string.dialog_action_save, (dialog, which) -> saveSymptom(dialog))
+                .setNegativeButton(R.string.dialog_action_cancel, (dialog, which) -> dialog.dismiss());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_add_past_treatment, null);

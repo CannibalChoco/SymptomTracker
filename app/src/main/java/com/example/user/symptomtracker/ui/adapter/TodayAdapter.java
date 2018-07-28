@@ -99,16 +99,13 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         }
 
         private void setSelectionListener() {
-            selectionGroup.setOnCheckedChangeListener(new SingleSelectToggleGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(SingleSelectToggleGroup group, int checkedId) {
-                    int severity = getSeverityForView(checkedId);
-                    int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
-                    if (userHasChecked){
-                        listener.onSeverityClicked(parentId, severity);
-                    }
-
+            selectionGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                int severity = getSeverityForView(checkedId);
+                int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
+                if (userHasChecked){
+                    listener.onSeverityClicked(parentId, severity);
                 }
+
             });
         }
 

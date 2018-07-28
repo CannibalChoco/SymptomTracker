@@ -72,13 +72,10 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     @Override
     public void onSeverityClicked(int parentId, final int severity) {
-        final SeverityEntity severityEntity = new SeverityEntity(parentId, severity, new Date().getTime());
+        final SeverityEntity severityEntity = new SeverityEntity(parentId, severity,
+                new Date().getTime());
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.severityDao().insertSeverity(severityEntity);
-            }
-        });
+        AppExecutors.getInstance().diskIO().execute(() ->
+                db.severityDao().insertSeverity(severityEntity));
     }
 }
