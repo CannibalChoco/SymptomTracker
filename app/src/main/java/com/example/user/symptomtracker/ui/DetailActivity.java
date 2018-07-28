@@ -84,6 +84,8 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     Drawable backgroundStatusAttention;
     @BindDrawable(R.drawable.background_status_good)
     Drawable backgroundStatusGood;
+    @BindDrawable(R.drawable.background_status_good1)
+    Drawable backgroundStatusGood1;
     @BindDrawable(R.drawable.background_status_default)
     Drawable backgroundStatusDefault;
 
@@ -115,6 +117,8 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         setUpNotesRecyclerView();
         setUpTreatmentsRecyclerViews();
         retrieveSymptom();
+        retrieveSeverity();
+        retrieveNotes();
 
         MobileAds.initialize(this, DUMMY_AD_ID);
 
@@ -124,7 +128,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
 
     private void setUpNotesRecyclerView() {
-        notesAdapter = new NotesAdapter(new ArrayList<NoteEntity>());
+        notesAdapter = new NotesAdapter(new ArrayList<>());
         LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setAdapter(notesAdapter);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
@@ -146,12 +150,19 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
             setTitle(symptom.getName());
             setIsResolvedInUi(symptom.isResolved());
             switchResolved.setChecked(symptom.isResolved());
-            setIsChronicInUi(symptom.isChronic());
             setDoctorIsInformedInUi(symptom.isDoctorIsInformed());
-
-            retrieveSeverity();
-            retrieveNotes();
+            setIsChronicInUi(symptom.isChronic());
         });
+    }
+
+    private void retrieveSeverity(){
+        model.getSeverityList().observe(this, severityEntities ->
+                GraphUtils.initBarChart(graph, severityEntities));
+    }
+
+    private void retrieveNotes() {
+        model.getNoteList().observe(this, noteEntities ->
+                notesAdapter.replaceDataSet(noteEntities));
     }
 
     /**
@@ -204,7 +215,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         if (doctorIsInformed) {
             statusDoctorInformed.setText(R.string.status_doctor_informed);
             statusDoctorInformed.setTextColor(colorStatusGood);
-            statusDoctorInformed.setBackground(backgroundStatusGood);
+            statusDoctorInformed.setBackground(backgroundStatusGood1);
         } else {
             statusDoctorInformed.setText(R.string.status_doctor_not_informed);
             statusDoctorInformed.setTextColor(colorStatusAttention);
@@ -220,11 +231,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         }
     }
 
-    private void retrieveNotes() {
-        model.getNoteList().observe(this, noteEntities ->
-                notesAdapter.replaceDataSet(noteEntities));
-    }
-
     @Override
     public void onSaveNote(String note) {
         final NoteEntity noteEntity = new NoteEntity(note, symptomId,
@@ -232,10 +238,6 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         repository.saveNote(noteEntity);
     }
 
-    private void retrieveSeverity(){
-        model.getSeverityList().observe(this, severityEntities ->
-                GraphUtils.initBarChart(graph, severityEntities));
-    }
 
     /**
      * A simple pager adapter that represents 2 TreatmentFragment objects, in
@@ -260,7 +262,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
         @Override
         public int getCount() {
-            return 2;
+            return NUM_PAGES;
         }
 
         @Nullable
