@@ -6,8 +6,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Provides all necessary information for a symptoms treatments. All entities of this class
@@ -21,7 +19,7 @@ import android.os.Parcelable;
                         childColumns = "symptom_id",
                         onDelete = ForeignKey.CASCADE)},
         indices = {@Index(value = "symptom_id")})
-public class TreatmentEntity implements Parcelable{
+public class TreatmentEntity {
 
     public static final long TIME_NOT_SELECTED = -1;
 
@@ -60,27 +58,6 @@ public class TreatmentEntity implements Parcelable{
         this.wasSuccessful = wasSuccessful;
         this.isActive = isActive;
     }
-
-    protected TreatmentEntity(Parcel in) {
-        id = in.readInt();
-        symptomId = in.readInt();
-        name = in.readString();
-        takesEffectIn = in.readLong();
-        wasSuccessful = in.readInt();
-        isActive = in.readByte() != 0;
-    }
-
-    public static final Creator<TreatmentEntity> CREATOR = new Creator<TreatmentEntity>() {
-        @Override
-        public TreatmentEntity createFromParcel(Parcel in) {
-            return new TreatmentEntity(in);
-        }
-
-        @Override
-        public TreatmentEntity[] newArray(int size) {
-            return new TreatmentEntity[size];
-        }
-    };
 
     public int getId() {
         return id;
@@ -128,20 +105,5 @@ public class TreatmentEntity implements Parcelable{
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeInt(symptomId);
-        dest.writeString(name);
-        dest.writeLong(takesEffectIn);
-        dest.writeInt(wasSuccessful);
-        dest.writeByte((byte) (isActive ? 1 : 0));
     }
 }

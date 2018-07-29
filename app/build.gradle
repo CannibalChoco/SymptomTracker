@@ -63,6 +63,9 @@ dependencies {
 
     // Firebase JobDispatcher
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
+    // stetho
+    implementation 'com.facebook.stetho:stetho:1.5.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

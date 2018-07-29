@@ -112,7 +112,7 @@ public class AddSymptomActivity extends AppCompatActivity {
                     System.currentTimeMillis());
 
             // save
-            new SaveSymptomAsyncTask(this, symptom, db, note).execute();
+            new SaveSymptomAsyncTask(this, db, symptom, note).execute();
         }
         finish();
     }
@@ -185,13 +185,13 @@ public class AddSymptomActivity extends AppCompatActivity {
      * AsyncTask for saving the symptom. Up on insertion completion, launches the DetailActivity
      * for newly inserted symptom
      */
-    private static class SaveSymptomAsyncTask extends AsyncTask<Void, Void, Integer>{
+    private static class SaveSymptomAsyncTask extends AsyncTask<Void, Void, Integer> {
         private final WeakReference<Context> context;
         private final WeakReference<SymptomEntity> symptom;
         private final AppDatabase db;
         private final String note;
 
-        SaveSymptomAsyncTask(Context context, SymptomEntity symptom, AppDatabase db, String note) {
+        public SaveSymptomAsyncTask(Context context, AppDatabase db, SymptomEntity symptom, String note) {
             this.context = new WeakReference<>(context);
             this.symptom = new WeakReference<>(symptom);
             this.db = db;

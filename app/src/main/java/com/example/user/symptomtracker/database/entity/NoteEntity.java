@@ -14,7 +14,7 @@ import android.arch.persistence.room.PrimaryKey;
                         childColumns = "symptom_id",
                         onDelete = ForeignKey.CASCADE)},
         indices = {@Index(value = "symptom_id")})
-public class NoteEntity {
+public class NoteEntity{
 
     @PrimaryKey(autoGenerate = true)
     private int id;

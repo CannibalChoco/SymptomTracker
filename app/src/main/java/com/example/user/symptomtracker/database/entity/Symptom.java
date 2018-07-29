@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Class contains all details for a symptom
  */
-public class Symptom {
+public class Symptom{
     @Embedded
     private SymptomEntity symptom;
 
@@ -26,6 +26,9 @@ public class Symptom {
                 entityColumn = "symptom_id",
                 entity = TreatmentEntity.class)
     private List<TreatmentEntity> treatmentsList;
+
+    public Symptom() {
+    }
 
     public SymptomEntity getSymptom() {
         return symptom;
