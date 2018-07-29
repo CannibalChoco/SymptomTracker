@@ -58,7 +58,6 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         return rootView;
     }
 
-    // TODO: fix bug with LiveData + ToggleButtons
     private void getDataFromViewModel() {
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
         model.getUnresolvedSymptomsLiveData().observe(getActivity(), symptoms ->

@@ -17,7 +17,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Fixed layout heights -->
-    <dimen name="treatment_rv_height">200dp</dimen>
+    <dimen name="detail_rv_height">150dp</dimen>
     <!-- TODO: calculate actual size -->
     <dimen name="treatment_layout_height">300dp</dimen>
     <dimen name="graph_view_height">250dp</dimen>

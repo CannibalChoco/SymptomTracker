@@ -39,7 +39,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/notesRv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/detail_rv_height"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
