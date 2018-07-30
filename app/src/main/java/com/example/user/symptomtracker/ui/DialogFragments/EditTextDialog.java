@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +18,29 @@ import com.example.user.symptomtracker.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddNoteDialog extends DialogFragment {
+public class EditTextDialog extends DialogFragment {
+
+    public static final String KEY_ID = "keyId";
+    public static final String KEY_TEXT = "text";
+    public static final int ID_NEW_NOTE = 0;
+    public static final int ID_UPDATE_NOTE = 1;
+    public static final int ID_UPDATE_NAME = 2;
+
+    private int id;
 
     @BindView(R.id.editNewNote)
     EditText noteText;
 
-    public AddNoteDialog() {
+    public EditTextDialog() {
     }
 
-    private OnSaveNote listener;
+    private OnSaveText listener;
 
-    public interface OnSaveNote{
-        void onSaveNote(String note);
+    public interface OnSaveText {
+        void onSaveText(int id, String text);
     }
 
-    public void setOnSAveNoteListener(OnSaveNote listener){
+    public void setOnSAveNoteListener(OnSaveText listener){
         this.listener = listener;
     }
 
@@ -43,7 +52,7 @@ public class AddNoteDialog extends DialogFragment {
                 .setPositiveButton(R.string.action_save, (dialog, which) -> {
                     String note = noteText.getText().toString();
                     if (!note.isEmpty()){
-                        listener.onSaveNote(note);
+                        listener.onSaveText(id, note);
                     } else {
                         dialog.dismiss();
                     }
@@ -62,6 +71,15 @@ public class AddNoteDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        Bundle bundle = getArguments();
+        String text = bundle.getString(KEY_TEXT);
+        id = bundle.getInt(KEY_ID);
+
+        if (!TextUtils.isEmpty(text)){
+            noteText.setText(text);
+            noteText.setSelection(text.length());
+        }
 
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);

@@ -20,8 +20,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     private List<NoteEntity> notes;
 
-    public NotesAdapter(List<NoteEntity> notes) {
+    private OnNoteLongClickListener listener;
+
+    public interface OnNoteLongClickListener {
+        void onNoteEdit(int id, String text);
+    }
+
+    public NotesAdapter(List<NoteEntity> notes, OnNoteLongClickListener listener) {
         this.notes = notes;
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,7 +37,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         View rootView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_note, parent, false);
 
-        return new ViewHolder(rootView);
+        return new ViewHolder(rootView, listener);
     }
 
     @Override
@@ -56,16 +63,28 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         @BindView(R.id.date)
         TextView date;
         @BindView(R.id.note)
         TextView note;
 
-        public ViewHolder(View itemView) {
+        private OnNoteLongClickListener listener;
+
+        public ViewHolder(View itemView, OnNoteLongClickListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.listener = listener;
+
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            NoteEntity note = notes.get(getAdapterPosition());
+            listener.onNoteEdit(note.getId(), note.getContent());
+            return false;
         }
     }
 }

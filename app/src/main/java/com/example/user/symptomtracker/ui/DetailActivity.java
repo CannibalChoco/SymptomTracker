@@ -26,7 +26,7 @@ import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
-import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
+import com.example.user.symptomtracker.ui.DialogFragments.EditTextDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.example.user.symptomtracker.utils.UnsavedChangeDialogUtils;
@@ -49,7 +49,8 @@ import butterknife.OnLongClick;
 
 import static com.example.user.symptomtracker.ui.MainActivity.DUMMY_AD_ID;
 
-public class DetailActivity extends AppCompatActivity implements AddNoteDialog.OnSaveNote {
+public class DetailActivity extends AppCompatActivity implements EditTextDialog.OnSaveText,
+        NotesAdapter.OnNoteLongClickListener{
 
     public static final String KEY_ID = "id";
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
@@ -62,6 +63,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
     private AppDatabase db;
     private SymptomEntity symptom;
+    private int editNoteId;
 
     @BindView(R.id.graph)
     BarChart graph;
@@ -140,10 +142,10 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO
-        switch (item.getItemId()){
-            case R.id.action_edit:
-                // TODO: launch AddSymptomActivity, make it populate views
+        switch (item.getItemId()) {
+            case R.id.action_edit_name:
+                String name = symptom.getName();
+                showEditTextDialog(EditTextDialog.ID_UPDATE_NAME, name);
                 return true;
             case R.id.action_delete:
                 showDeleteDialog();
@@ -154,7 +156,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     }
 
     private void setUpNotesRecyclerView() {
-        notesAdapter = new NotesAdapter(new ArrayList<>());
+        notesAdapter = new NotesAdapter(new ArrayList<>(), this);
         LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setAdapter(notesAdapter);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
@@ -181,7 +183,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         });
     }
 
-    private void retrieveSeverity(){
+    private void retrieveSeverity() {
         model.getSeverityList().observe(this, severityEntities ->
                 GraphUtils.initBarChart(graph, severityEntities));
     }
@@ -217,12 +219,22 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         repository.setStatusResolved(symptomId, !symptom.isResolved());
     }
 
+    // TODO: add option for editing notes text- long click?
     @OnClick(R.id.addNote)
     public void addNote() {
-        AddNoteDialog addNoteDialog = new AddNoteDialog();
-        addNoteDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        addNoteDialog.setOnSAveNoteListener(this);
-        addNoteDialog.show(getSupportFragmentManager(), FRAGMENT_ADD_NOTE);
+        showEditTextDialog(EditTextDialog.ID_NEW_NOTE, "");
+    }
+
+    private void showEditTextDialog(int id, String text) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(EditTextDialog.KEY_ID, id);
+        bundle.putString(EditTextDialog.KEY_TEXT, text);
+
+        EditTextDialog dialog = new EditTextDialog();
+        dialog.setArguments(bundle);
+        dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        dialog.setOnSAveNoteListener(this);
+        dialog.show(getSupportFragmentManager(), FRAGMENT_ADD_NOTE);
     }
 
     private void setIsChronicInUi(boolean isChronic) {
@@ -258,10 +270,18 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
     }
 
     @Override
-    public void onSaveNote(String note) {
-        final NoteEntity noteEntity = new NoteEntity(note, symptomId,
-                new Date().getTime());
-        repository.saveNote(noteEntity);
+    public void onSaveText(int id, String text) {
+        switch (id) {
+            case EditTextDialog.ID_NEW_NOTE:
+                saveNote(text);
+                break;
+            case EditTextDialog.ID_UPDATE_NOTE:
+                updateNote(text);
+                break;
+            case EditTextDialog.ID_UPDATE_NAME:
+                updateName(text);
+                break;
+        }
     }
 
     @NonNull
@@ -281,6 +301,26 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         alertDialog.show();
     }
 
+    private void saveNote(String note) {
+        final NoteEntity noteEntity = new NoteEntity(note, symptomId,
+                new Date().getTime());
+        repository.saveNote(noteEntity);
+    }
+
+    private void updateNote(String note){
+        // TODO: get Id before updating
+        repository.updateNote(editNoteId, note);
+    }
+
+    private void updateName (String name){
+        repository.updateSymptomName(symptomId, name);
+    }
+
+    @Override
+    public void onNoteEdit(int id, String text) {
+        showEditTextDialog(EditTextDialog.ID_UPDATE_NOTE, text);
+        editNoteId = id;
+    }
 
     /**
      * A simple pager adapter that represents 2 TreatmentFragment objects, in
@@ -311,7 +351,7 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            switch(position) {
+            switch (position) {
                 case 0:
                     return getString(R.string.label_current_treatments);
                 case 1:

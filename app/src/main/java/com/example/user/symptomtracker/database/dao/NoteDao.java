@@ -18,6 +18,9 @@ public interface NoteDao {
     @Query("DELETE FROM notes WHERE symptom_id = :symptomId")
     void deleteNotesForSymptom(int symptomId);
 
+    @Query("UPDATE notes SET content = :text WHERE id = :id")
+    void updateNote(int id, String text);
+
     @Insert
     void insertNote(NoteEntity note);
 }

@@ -38,6 +38,15 @@ public class Repository {
         return sInstance;
     }
 
+    public void updateNote(int id, String text){
+        executors.diskIO().execute(() ->
+        db.noteDao().updateNote(id, text));
+    }
+
+    public void updateSymptomName(int id, String name){
+        executors.diskIO().execute(() -> db.symptomDao().updateName(id, name));
+    }
+
     public void deleteAllSymptomDataForId(int id){
         executors.diskIO().execute(() -> {
             db.treatmentDao().deleteTreatmentsForSymptom(id);
