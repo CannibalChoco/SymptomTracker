@@ -1,5 +1,7 @@
 package com.example.user.symptomtracker.ui.adapter;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
+import com.example.user.symptomtracker.ui.DetailActivity;
 import com.example.user.symptomtracker.utils.TimeUtils;
 
 import java.util.List;
@@ -19,16 +22,17 @@ import butterknife.ButterKnife;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
     private List<NoteEntity> notes;
-
+    private Context context;
     private OnNoteLongClickListener listener;
 
     public interface OnNoteLongClickListener {
         void onNoteEdit(int id, String text);
     }
 
-    public NotesAdapter(List<NoteEntity> notes, OnNoteLongClickListener listener) {
+    public NotesAdapter(Context context, List<NoteEntity> notes, OnNoteLongClickListener listener) {
         this.notes = notes;
         this.listener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -84,6 +88,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         public boolean onLongClick(View v) {
             NoteEntity note = notes.get(getAdapterPosition());
             listener.onNoteEdit(note.getId(), note.getContent());
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(DetailActivity.VIBRATE_MILLIS);
             return false;
         }
     }

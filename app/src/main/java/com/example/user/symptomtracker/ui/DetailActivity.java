@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -56,6 +57,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
     public static final String FRAGMENT_ADD_CURRENT_TREATMENT = "fragmentAddCurrentTreatment";
     public static final String FRAGMENT_ADD_PAST_TREATMENT = "fragmentAddPastTreatment";
+    public static final int VIBRATE_MILLIS = 100;
 
     public static final int NUM_PAGES = 2;
 
@@ -109,6 +111,8 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     private DetailActivityViewModel model;
     private Repository repository;
 
+    private Vibrator vibrator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +136,8 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
         AdRequest adRequest = new AdRequest.Builder().build();
         bannerAd.loadAd(adRequest);
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
     }
 
     @Override
@@ -156,7 +162,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     }
 
     private void setUpNotesRecyclerView() {
-        notesAdapter = new NotesAdapter(new ArrayList<>(), this);
+        notesAdapter = new NotesAdapter(this, new ArrayList<>(), this);
         LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setAdapter(notesAdapter);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
@@ -199,6 +205,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     @OnLongClick(R.id.statusChronic)
     public boolean setStatusChronic() {
         repository.setStatusIsChronic(symptomId, !symptom.isChronic());
+        vibrator.vibrate(VIBRATE_MILLIS);
         return true;
     }
 
@@ -208,6 +215,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     @OnLongClick(R.id.statusDoctorInformed)
     public boolean setStatusDoctorIsInformed() {
         repository.setStatusDoctorIsInformed(symptomId, !symptom.isDoctorIsInformed());
+        vibrator.vibrate(VIBRATE_MILLIS);
         return true;
     }
 
