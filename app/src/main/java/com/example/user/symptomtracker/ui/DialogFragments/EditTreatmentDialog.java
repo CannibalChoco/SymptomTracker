@@ -12,28 +12,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 import com.example.user.symptomtracker.ui.TreatmentFragment;
-
-import java.util.concurrent.TimeUnit;
+import com.example.user.symptomtracker.utils.TimeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddTreatmentDialog extends DialogFragment {
+import static com.example.user.symptomtracker.utils.TimeUtils.TIME_UNIT_DAY;
+import static com.example.user.symptomtracker.utils.TimeUtils.TIME_UNIT_HOUR;
+import static com.example.user.symptomtracker.utils.TimeUtils.TIME_UNIT_MONTH;
+import static com.example.user.symptomtracker.utils.TimeUtils.TIME_UNIT_NOT_SELECTED;
+import static com.example.user.symptomtracker.utils.TimeUtils.TIME_UNIT_WEEK;
+import static com.example.user.symptomtracker.utils.TimeUtils.getTimeInMillis;
 
-    public static final int TIME_UNIT_NOT_SELECTED = -1;
-    private static final int TIME_UNIT_HOUR = 0;
-    private static final int TIME_UNIT_DAY = 1;
-    private static final int TIME_UNIT_WEEK = 2;
-    private static final int TIME_UNIT_MONTH = 3;
+public class EditTreatmentDialog extends DialogFragment {
 
-    private static final int DAYS_IN_WEEK = 7;
-    private static final int DAYS_IN_MONTH = 30;
+    public static final int ID_UPDATE_TREATMENT = 4;
+    public static final int ID_NEW_TREATMENT = 5;
 
     @BindView(R.id.editCurrentTreatmentName)
     EditText editTreatment;
@@ -48,6 +49,11 @@ public class AddTreatmentDialog extends DialogFragment {
     @BindView(R.id.radioTimeMonth)
     RadioButton timeMonth;
 
+    @BindView(R.id.radioGroupTime)
+    RadioGroup radioGroupTime;
+    @BindView(R.id.radioGroupSuccess)
+    RadioGroup radioGroupSuccess;
+
     @BindView(R.id.radioTreatmentSuccessful)
     RadioButton treatmentSuccessful;
     @BindView(R.id.radioTreatmentUnsuccessful)
@@ -55,10 +61,13 @@ public class AddTreatmentDialog extends DialogFragment {
 
     private int selectedTimeUnit;
     private int treatmentSuccessInt;
-    private int id;
+    private int fragmentId;
+    private int actionSaveOrEdit;
+    private TreatmentEntity treatment;
+    private int symptomId;
 
     public interface OnSaveTreatment {
-        void onSaveTreatment(String name, long takesEffectIn, int wasSuccessful, boolean isActive);
+        void onSaveTreatment(TreatmentEntity treatment, int actionSaveOrEdit);
     }
 
     private OnSaveTreatment listener;
@@ -67,15 +76,12 @@ public class AddTreatmentDialog extends DialogFragment {
         this.listener = listener;
     }
 
-    public AddTreatmentDialog() {
+    public EditTreatmentDialog() {
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        selectedTimeUnit = -1;
-        treatmentSuccessInt = TreatmentEntity.WAS_SUCCESSFUL_NOT_SET;
-
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_past_treatment_title)
                 .setPositiveButton(R.string.action_save, (dialog, which) -> saveSymptom(dialog))
@@ -92,9 +98,27 @@ public class AddTreatmentDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         Bundle bundle = getArguments();
-        id = bundle.getInt(TreatmentFragment.KEY_FRAGMENT_ID);
+        fragmentId = bundle.getInt(TreatmentFragment.KEY_FRAGMENT_ID);
+        symptomId = bundle.getInt(TreatmentFragment.KEY_SYMPTOM_ID);
+        actionSaveOrEdit = bundle.getInt(TreatmentFragment.KEY_ACTION_SAVE_OR_EDIT);
+
+        // populate views if editing existing treatment
+        if (actionSaveOrEdit == TreatmentFragment.ID_ACTION_EDIT){
+            treatment = bundle.getParcelable(TreatmentFragment.KEY_TREATMENT);
+            editTreatment.setText(treatment.getName());
+
+            long takesEffectIn = treatment.getTakesEffectIn();
+            if (takesEffectIn != TreatmentEntity.TIME_NOT_SELECTED){
+                int timeUnit = TimeUtils.getTimeUnitForMillis(takesEffectIn);
+                editTime.setText(String.valueOf(timeUnit));
+                radioGroupTime.check(TimeUtils.getRadioButtonIdForTimestamp(takesEffectIn));
+            } else {
+                selectedTimeUnit = -1;
+            }
+
+            setRadioSuccessId(radioGroupSuccess, treatment.getWasSuccessful());
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -105,32 +129,41 @@ public class AddTreatmentDialog extends DialogFragment {
      */
     private void saveSymptom(DialogInterface dialog) {
         String timeString = editTime.getText().toString();
-        String treatment = editTreatment.getText().toString();
+        String name = editTreatment.getText().toString();
 
-        boolean isActive;
-        isActive = id == TreatmentFragment.ID_FRAGMENT_CURRENT;
+        long timeInMillis;
+        boolean isActive = fragmentId == TreatmentFragment.ID_FRAGMENT_CURRENT;
 
-        if (!timeString.isEmpty()
-                && selectedTimeUnit != TIME_UNIT_NOT_SELECTED
-                && !treatment.isEmpty()){
-            // all data is provided, send treatments name and estimated time to take effect
+        if (timeString.isEmpty()){
+            timeInMillis = TreatmentEntity.TIME_NOT_SELECTED;
+        } else {
             int time = Integer.valueOf(timeString);
-            long timeInMillis = getTimeInMillis(time);
-            listener.onSaveTreatment(treatment, timeInMillis, treatmentSuccessInt, isActive);
-        } else if ((timeString.isEmpty()
-                && selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
-                && !treatment.isEmpty()){
-            // only name is provided
-            listener.onSaveTreatment(treatment, TreatmentEntity.TIME_NOT_SELECTED,
-                    treatmentSuccessInt, isActive);
-        } else if ((timeString.isEmpty()
+            timeInMillis = getTimeInMillis(selectedTimeUnit, time);
+        }
+
+        if ((timeString.isEmpty()
                 || selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
-                && treatment.isEmpty()){
+                && name.isEmpty()){
             // TODO: Don't exit dialog
             Toast.makeText(getContext(), "Please fill all necessary fields", Toast.LENGTH_SHORT).show();
         } else {
+            constructTreatment(symptomId, name, timeInMillis, treatmentSuccessInt, isActive);
+            listener.onSaveTreatment(treatment, actionSaveOrEdit);
             dialog.dismiss();
         }
+    }
+
+    private void constructTreatment (int symptomId, String name, long timeInMillis,  int wasSuccessful,
+                                     boolean isActive){
+        if (treatment == null){
+            treatment = new TreatmentEntity(symptomId, name, timeInMillis, wasSuccessful, isActive);
+        } else {
+            treatment.setName(name);
+            treatment.setTakesEffectIn(timeInMillis);
+            treatment.setWasSuccessful(wasSuccessful);
+            treatment.setActive(isActive);
+        }
+
     }
 
     @OnClick({R.id.radioTimeHour, R.id.radioTimeDay, R.id.radioTimeWeek, R.id.radioTimeMonth})
@@ -155,24 +188,12 @@ public class AddTreatmentDialog extends DialogFragment {
         }
     }
 
-    /**
-     * Calculate time in miliseconds from the data user has entered in dialog
-     * @param time count of time units
-     * @return time in miliseconds
-     */
-    private long getTimeInMillis(int time) {
-        if (selectedTimeUnit != TIME_UNIT_NOT_SELECTED){
-            switch (selectedTimeUnit){
-                case TIME_UNIT_HOUR:
-                    return TimeUnit.HOURS.toMillis(time);
-                case TIME_UNIT_DAY:
-                    return TimeUnit.DAYS.toMillis(time);
-                case TIME_UNIT_WEEK:
-                    return TimeUnit.DAYS.toMillis(time) * DAYS_IN_WEEK;
-                case TIME_UNIT_MONTH:
-                    return TimeUnit.DAYS.toMillis(time) * DAYS_IN_MONTH;
-            }
+    private void setRadioSuccessId(RadioGroup group, int id){
+        if (id == TreatmentEntity.WAS_SUCCESSFUL_NO){
+            group.check(R.id.radioTreatmentUnsuccessful);
+        } else if (id == TreatmentEntity.WAS_SUCCESSFUL_YES){
+            group.check(R.id.radioTreatmentSuccessful);
         }
-        return 0;
+        treatmentSuccessInt = id;
     }
 }

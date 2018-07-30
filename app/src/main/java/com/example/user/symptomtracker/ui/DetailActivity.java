@@ -55,8 +55,6 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
     public static final String KEY_ID = "id";
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
-    public static final String FRAGMENT_ADD_CURRENT_TREATMENT = "fragmentAddCurrentTreatment";
-    public static final String FRAGMENT_ADD_PAST_TREATMENT = "fragmentAddPastTreatment";
     public static final int VIBRATE_MILLIS = 100;
 
     public static final int NUM_PAGES = 2;
@@ -320,10 +318,6 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
     private void updateName (String name){
         repository.updateSymptomName(symptomId, name);
-    }
-
-    private void updateTreatment(){
-        // TODO: call repo to update
     }
 
     @Override

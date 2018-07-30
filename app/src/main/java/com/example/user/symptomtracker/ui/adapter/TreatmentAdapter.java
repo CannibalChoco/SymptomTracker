@@ -24,14 +24,14 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
     private List<TreatmentEntity> treatments;
     private Context context;
 
-    private OnTreatmentLongClickListener listener;
+    private OnEditTreatment listener;
 
-    public interface OnTreatmentLongClickListener {
-        void onTreatmentSuccessChanged(int id, int isSuccessful);
+    public interface OnEditTreatment {
+        void onEditTreatment(TreatmentEntity treatment);
     }
 
     public TreatmentAdapter(Context context, List<TreatmentEntity> treatments,
-                            OnTreatmentLongClickListener listener) {
+                            OnEditTreatment listener) {
         this.treatments = treatments;
         this.context = context;
         this.listener = listener;
@@ -52,7 +52,7 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
         holder.name.setText(treatment.getName());
 
         if (treatment.getTakesEffectIn() != TreatmentEntity.TIME_NOT_SELECTED){
-            String takesEffect = TimeUtils.getTimeUnitFromTimestamp(context,
+            String takesEffect = TimeUtils.getTimeStringFromTimestamp(context,
                     treatment.getTakesEffectIn());
             holder.takesEffect.setText(takesEffect);
         } else {
@@ -87,9 +87,9 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
         TextView name;
         @BindView(R.id.treatmentTakesEffect)
         TextView takesEffect;
-        private OnTreatmentLongClickListener listener;
+        private OnEditTreatment listener;
 
-        public ViewHolder(View itemView, OnTreatmentLongClickListener listener) {
+        public ViewHolder(View itemView, OnEditTreatment listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;
@@ -100,16 +100,7 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
         @Override
         public boolean onLongClick(View v) {
             TreatmentEntity treatment = treatments.get(getAdapterPosition());
-            int success = treatment.getWasSuccessful();
-            int newSuccess;
-            if (success == TreatmentEntity.WAS_SUCCESSFUL_NO){
-                newSuccess = TreatmentEntity.WAS_SUCCESSFUL_YES;
-            } else if (success == TreatmentEntity.WAS_SUCCESSFUL_YES){
-                newSuccess = TreatmentEntity.WAS_SUCCESSFUL_NO;
-            } else {
-                newSuccess = TreatmentEntity.WAS_SUCCESSFUL_YES;
-            }
-            listener.onTreatmentSuccessChanged(treatment.getId(), newSuccess);
+            listener.onEditTreatment(treatment);
 
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(DetailActivity.VIBRATE_MILLIS);

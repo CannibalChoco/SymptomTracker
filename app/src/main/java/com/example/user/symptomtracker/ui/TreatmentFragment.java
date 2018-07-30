@@ -16,7 +16,7 @@ import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
-import com.example.user.symptomtracker.ui.DialogFragments.AddTreatmentDialog;
+import com.example.user.symptomtracker.ui.DialogFragments.EditTreatmentDialog;
 import com.example.user.symptomtracker.ui.adapter.TreatmentAdapter;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
@@ -27,20 +27,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.user.symptomtracker.ui.DetailActivity.FRAGMENT_ADD_PAST_TREATMENT;
-
 public class TreatmentFragment extends Fragment implements
-        AddTreatmentDialog.OnSaveTreatment, TreatmentAdapter.OnTreatmentLongClickListener {
+        EditTreatmentDialog.OnSaveTreatment,
+        TreatmentAdapter.OnEditTreatment {
 
     public static final int ID_FRAGMENT_CURRENT = 0;
     public static final int ID_FRAGMENT_PAST = 1;
     public static final String KEY_FRAGMENT_ID = "fragmentId";
     public static final String KEY_SYMPTOM_ID = "symptomId";
+    public static final String FRAGMENT_ADD_TREATMENT = "addTreatment";
 
+    public static final String KEY_ACTION_SAVE_OR_EDIT = "actionSaveOrEdit";
+    public static final int ID_ACTION_NEW = 2;
+    public static final int ID_ACTION_EDIT = 3;
+    public static final String KEY_TREATMENT = "key_treatment";
 
     @BindView(R.id.treatmentRv)
     RecyclerView treatmentRv;
 
+    /**
+     * Differentiate for weather to get current or past treatments
+     */
     private int fragmentId;
     private int symptomId;
     private TreatmentAdapter treatmentAdapter;
@@ -99,7 +106,7 @@ public class TreatmentFragment extends Fragment implements
     @Nullable
     @OnClick(R.id.addSymptom)
     public void addSymptom(){
-        addTreatment(fragmentId);
+        showEditTreatmentDialog(ID_ACTION_NEW, null);
     }
 
     private void retrieveCurrentTreatments() {
@@ -112,28 +119,33 @@ public class TreatmentFragment extends Fragment implements
                 treatmentAdapter.replaceDataSet(treatmentEntities));
     }
 
-    public void addTreatment(int id) {
-        AddTreatmentDialog addTreatmentDialog = new AddTreatmentDialog();
+    private void showEditTreatmentDialog(int id, @Nullable TreatmentEntity treatment) {
+        EditTreatmentDialog editTreatmentDialog = new EditTreatmentDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(KEY_FRAGMENT_ID, id);
+        bundle.putInt(KEY_ACTION_SAVE_OR_EDIT, id);
+        if (id == ID_ACTION_EDIT){
+            bundle.putParcelable(KEY_TREATMENT, treatment);
+        }
+        bundle.putInt(KEY_SYMPTOM_ID, symptomId);
 
-        addTreatmentDialog.setArguments(bundle);
-        addTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        addTreatmentDialog.setOnSaveTreatmentListener(this);
-        addTreatmentDialog.show(getFragmentManager(), FRAGMENT_ADD_PAST_TREATMENT);
+        editTreatmentDialog.setArguments(bundle);
+        editTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        editTreatmentDialog.setOnSaveTreatmentListener(this);
+        editTreatmentDialog.show(getFragmentManager(), FRAGMENT_ADD_TREATMENT);
     }
 
     @Override
-    public void onSaveTreatment(String name, long takesEffectIn, int wasSuccessful, boolean isActive) {
-        final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
-                takesEffectIn, wasSuccessful, isActive);
-        repository.saveTreatment(treatment);
+    public void onSaveTreatment(TreatmentEntity treatment, int actionSaveOrEdit) {
+        if (actionSaveOrEdit == ID_ACTION_NEW){
+            repository.saveTreatment(treatment);
+        } else if (actionSaveOrEdit == ID_ACTION_EDIT){
+            repository.updateTreatment(treatment);
+        }
     }
 
     @Override
-    public void onTreatmentSuccessChanged(int id, int isSuccessful) {
-        // TODO: update treatment success
-        repository.updateTreatmentSuccess(id, isSuccessful);
+    public void onEditTreatment(TreatmentEntity treatment) {
+        showEditTreatmentDialog(ID_ACTION_EDIT, treatment);
     }
 }
