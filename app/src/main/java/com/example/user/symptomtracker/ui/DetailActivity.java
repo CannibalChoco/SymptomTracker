@@ -322,6 +322,10 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
         repository.updateSymptomName(symptomId, name);
     }
 
+    private void updateTreatment(){
+        // TODO: call repo to update
+    }
+
     @Override
     public void onNoteEdit(int id, String text) {
         showEditTextDialog(EditTextDialog.ID_UPDATE_NOTE, text);

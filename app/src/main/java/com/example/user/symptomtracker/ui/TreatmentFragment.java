@@ -16,8 +16,7 @@ import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
-import com.example.user.symptomtracker.ui.DialogFragments.AddCurrentTreatmentDialog;
-import com.example.user.symptomtracker.ui.DialogFragments.AddPastTreatmentDialog;
+import com.example.user.symptomtracker.ui.DialogFragments.AddTreatmentDialog;
 import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
 import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
@@ -29,12 +28,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.user.symptomtracker.ui.DetailActivity.FRAGMENT_ADD_CURRENT_TREATMENT;
 import static com.example.user.symptomtracker.ui.DetailActivity.FRAGMENT_ADD_PAST_TREATMENT;
 
 public class TreatmentFragment extends Fragment implements
-        AddCurrentTreatmentDialog.OnSaveCurrentTreatment,
-        AddPastTreatmentDialog.OnSavePastTreatment{
+        AddTreatmentDialog.OnSaveTreatment {
 
     public static final int ID_FRAGMENT_CURRENT = 0;
     public static final int ID_FRAGMENT_PAST = 1;
@@ -110,11 +107,7 @@ public class TreatmentFragment extends Fragment implements
     @Nullable
     @OnClick(R.id.addSymptom)
     public void addSymptom(){
-        if (id == ID_FRAGMENT_CURRENT){
-            addCurrentTreatment();
-        } else if (id == ID_FRAGMENT_PAST){
-            addPastTreatment();
-        }
+        addTreatment(id);
     }
 
     private void retrieveCurrentTreatments() {
@@ -127,31 +120,22 @@ public class TreatmentFragment extends Fragment implements
                 pastTreatmentAdapter.replaceDataSet(treatmentEntities));
     }
 
-    public void addCurrentTreatment() {
-        AddCurrentTreatmentDialog addCurrentTreatmentDialog = new AddCurrentTreatmentDialog();
-        addCurrentTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        addCurrentTreatmentDialog.setOnSaveCurrentTreatmentListener(this);
-        addCurrentTreatmentDialog.show(getFragmentManager(), FRAGMENT_ADD_CURRENT_TREATMENT);
-    }
+    public void addTreatment(int id) {
+        AddTreatmentDialog addTreatmentDialog = new AddTreatmentDialog();
 
-    public void addPastTreatment() {
-        AddPastTreatmentDialog addPastTreatmentDialog = new AddPastTreatmentDialog();
-        addPastTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        addPastTreatmentDialog.setOnSavePastTreatmentListener(this);
-        addPastTreatmentDialog.show(getFragmentManager(), FRAGMENT_ADD_PAST_TREATMENT);
-    }
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_FRAGMENT_ID, id);
 
-    @Override
-    public void onSaveCurrentTreatment(String name, long takesEffectIn) {
-        final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
-                takesEffectIn, 3, true);
-        repository.saveTreatment(treatment);
+        addTreatmentDialog.setArguments(bundle);
+        addTreatmentDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        addTreatmentDialog.setOnSaveTreatmentListener(this);
+        addTreatmentDialog.show(getFragmentManager(), FRAGMENT_ADD_PAST_TREATMENT);
     }
 
     @Override
-    public void onSavePastTreatment(String name, long takesEffectIn, int wasSuccessful) {
+    public void onSaveTreatment(String name, long takesEffectIn, int wasSuccessful, boolean isActive) {
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
-                takesEffectIn, wasSuccessful, false);
+                takesEffectIn, wasSuccessful, isActive);
         repository.saveTreatment(treatment);
     }
 }
