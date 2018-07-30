@@ -38,6 +38,10 @@ public class Repository {
         return sInstance;
     }
 
+    public void updateTreatmentSuccess(int id, int success){
+        executors.diskIO().execute(() -> db.treatmentDao().updateTreatmentSuccess(id, success));
+    }
+
     public void updateNote(int id, String text){
         executors.diskIO().execute(() ->
         db.noteDao().updateNote(id, text));

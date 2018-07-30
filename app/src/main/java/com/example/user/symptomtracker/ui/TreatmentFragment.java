@@ -30,7 +30,7 @@ import butterknife.OnClick;
 import static com.example.user.symptomtracker.ui.DetailActivity.FRAGMENT_ADD_PAST_TREATMENT;
 
 public class TreatmentFragment extends Fragment implements
-        AddTreatmentDialog.OnSaveTreatment {
+        AddTreatmentDialog.OnSaveTreatment, TreatmentAdapter.OnTreatmentLongClickListener {
 
     public static final int ID_FRAGMENT_CURRENT = 0;
     public static final int ID_FRAGMENT_PAST = 1;
@@ -41,7 +41,7 @@ public class TreatmentFragment extends Fragment implements
     @BindView(R.id.treatmentRv)
     RecyclerView treatmentRv;
 
-    private int id;
+    private int fragmentId;
     private int symptomId;
     private TreatmentAdapter treatmentAdapter;
     private AppDatabase db;
@@ -64,7 +64,7 @@ public class TreatmentFragment extends Fragment implements
         Bundle arguments = getArguments();
         if (arguments != null){
             if(arguments.containsKey(KEY_FRAGMENT_ID)){
-                id = arguments.getInt(KEY_FRAGMENT_ID);
+                fragmentId = arguments.getInt(KEY_FRAGMENT_ID);
             }
             if (arguments.containsKey(KEY_SYMPTOM_ID)){
                 symptomId = arguments.getInt(KEY_SYMPTOM_ID);
@@ -79,7 +79,7 @@ public class TreatmentFragment extends Fragment implements
         treatmentRv.setHasFixedSize(true);
 
         treatmentAdapter = new TreatmentAdapter(getContext(),
-                new ArrayList<>(), id);
+                new ArrayList<>(), this);
         treatmentRv.setAdapter(treatmentAdapter);
 
         return rootView;
@@ -89,9 +89,9 @@ public class TreatmentFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if (id == ID_FRAGMENT_CURRENT){
+        if (fragmentId == ID_FRAGMENT_CURRENT){
             retrieveCurrentTreatments();
-        } else if (id == ID_FRAGMENT_PAST){
+        } else if (fragmentId == ID_FRAGMENT_PAST){
             retrievePastTreatments();
         }
     }
@@ -99,7 +99,7 @@ public class TreatmentFragment extends Fragment implements
     @Nullable
     @OnClick(R.id.addSymptom)
     public void addSymptom(){
-        addTreatment(id);
+        addTreatment(fragmentId);
     }
 
     private void retrieveCurrentTreatments() {
@@ -129,5 +129,11 @@ public class TreatmentFragment extends Fragment implements
         final TreatmentEntity treatment = new TreatmentEntity(symptomId, name,
                 takesEffectIn, wasSuccessful, isActive);
         repository.saveTreatment(treatment);
+    }
+
+    @Override
+    public void onTreatmentSuccessChanged(int id, int isSuccessful) {
+        // TODO: update treatment success
+        repository.updateTreatmentSuccess(id, isSuccessful);
     }
 }

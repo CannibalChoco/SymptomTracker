@@ -1,6 +1,7 @@
 package com.example.user.symptomtracker.ui.adapter;
 
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
+import com.example.user.symptomtracker.ui.DetailActivity;
 import com.example.user.symptomtracker.utils.TimeUtils;
 
 import java.util.List;
@@ -19,15 +21,20 @@ import butterknife.ButterKnife;
 
 public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.ViewHolder> {
 
-    // TODO: switch between current and past fragments;
     private List<TreatmentEntity> treatments;
     private Context context;
-    private int id;
 
-    public TreatmentAdapter(Context context, List<TreatmentEntity> treatments, int id) {
+    private OnTreatmentLongClickListener listener;
+
+    public interface OnTreatmentLongClickListener {
+        void onTreatmentSuccessChanged(int id, int isSuccessful);
+    }
+
+    public TreatmentAdapter(Context context, List<TreatmentEntity> treatments,
+                            OnTreatmentLongClickListener listener) {
         this.treatments = treatments;
         this.context = context;
-        this.id = id;
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,7 +43,7 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
         View rootView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_treatment, parent, false);
 
-        return new ViewHolder(rootView);
+        return new ViewHolder(rootView, listener);
     }
 
     @Override
@@ -74,16 +81,40 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         @BindView(R.id.treatmentName)
         TextView name;
         @BindView(R.id.treatmentTakesEffect)
         TextView takesEffect;
+        private OnTreatmentLongClickListener listener;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, OnTreatmentLongClickListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.listener = listener;
+
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            TreatmentEntity treatment = treatments.get(getAdapterPosition());
+            int success = treatment.getWasSuccessful();
+            int newSuccess;
+            if (success == TreatmentEntity.WAS_SUCCESSFUL_NO){
+                newSuccess = TreatmentEntity.WAS_SUCCESSFUL_YES;
+            } else if (success == TreatmentEntity.WAS_SUCCESSFUL_YES){
+                newSuccess = TreatmentEntity.WAS_SUCCESSFUL_NO;
+            } else {
+                newSuccess = TreatmentEntity.WAS_SUCCESSFUL_YES;
+            }
+            listener.onTreatmentSuccessChanged(treatment.getId(), newSuccess);
+
+            Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(DetailActivity.VIBRATE_MILLIS);
+
+            return false;
         }
     }
 }
