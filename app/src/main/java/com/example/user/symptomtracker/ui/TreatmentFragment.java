@@ -17,8 +17,7 @@ import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.TreatmentEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddTreatmentDialog;
-import com.example.user.symptomtracker.ui.adapter.CurrentTreatmentAdapter;
-import com.example.user.symptomtracker.ui.adapter.PastTreatmentAdapter;
+import com.example.user.symptomtracker.ui.adapter.TreatmentAdapter;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
 
@@ -44,8 +43,7 @@ public class TreatmentFragment extends Fragment implements
 
     private int id;
     private int symptomId;
-    private CurrentTreatmentAdapter currentTreatmentAdapter;
-    private PastTreatmentAdapter pastTreatmentAdapter;
+    private TreatmentAdapter treatmentAdapter;
     private AppDatabase db;
     private DetailActivityViewModel model;
     private Repository repository;
@@ -80,15 +78,9 @@ public class TreatmentFragment extends Fragment implements
         treatmentRv.setLayoutManager(treatmentLayoutManager);
         treatmentRv.setHasFixedSize(true);
 
-        if (id == ID_FRAGMENT_CURRENT){
-            currentTreatmentAdapter = new
-                    CurrentTreatmentAdapter(getContext(), new ArrayList<>());
-            treatmentRv.setAdapter(currentTreatmentAdapter);
-        } else if (id == ID_FRAGMENT_PAST){
-            pastTreatmentAdapter = new PastTreatmentAdapter(getContext(),
-                    new ArrayList<>());
-            treatmentRv.setAdapter(pastTreatmentAdapter);
-        }
+        treatmentAdapter = new TreatmentAdapter(getContext(),
+                new ArrayList<>(), id);
+        treatmentRv.setAdapter(treatmentAdapter);
 
         return rootView;
     }
@@ -112,12 +104,12 @@ public class TreatmentFragment extends Fragment implements
 
     private void retrieveCurrentTreatments() {
         model.getCurrentTreatments().observe(this, treatmentEntities ->
-                currentTreatmentAdapter.replaceDataSet(treatmentEntities));
+                treatmentAdapter.replaceDataSet(treatmentEntities));
     }
 
     private void retrievePastTreatments() {
         model.getPastTreatments().observe(this, treatmentEntities ->
-                pastTreatmentAdapter.replaceDataSet(treatmentEntities));
+                treatmentAdapter.replaceDataSet(treatmentEntities));
     }
 
     public void addTreatment(int id) {

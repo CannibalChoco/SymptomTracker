@@ -17,14 +17,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PastTreatmentAdapter extends RecyclerView.Adapter<PastTreatmentAdapter.ViewHolder> {
+public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.ViewHolder> {
 
+    // TODO: switch between current and past fragments;
     private List<TreatmentEntity> treatments;
     private Context context;
+    private int id;
 
-    public PastTreatmentAdapter(Context context, List<TreatmentEntity> treatments) {
+    public TreatmentAdapter(Context context, List<TreatmentEntity> treatments, int id) {
         this.treatments = treatments;
         this.context = context;
+        this.id = id;
     }
 
     @NonNull
