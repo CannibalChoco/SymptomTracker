@@ -122,7 +122,7 @@ public class TreatmentEntity implements Parcelable{
         this.wasSuccessful = wasSuccessful;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 

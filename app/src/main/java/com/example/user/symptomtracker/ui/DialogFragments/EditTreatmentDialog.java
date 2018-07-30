@@ -48,11 +48,17 @@ public class EditTreatmentDialog extends DialogFragment {
     RadioButton timeWeek;
     @BindView(R.id.radioTimeMonth)
     RadioButton timeMonth;
+    @BindView(R.id.radioTreatmentCurrent)
+    RadioButton radioCurrent;
+    @BindView(R.id.radioTreatmentPast)
+    RadioButton radioPast;
 
     @BindView(R.id.radioGroupTime)
     RadioGroup radioGroupTime;
     @BindView(R.id.radioGroupSuccess)
     RadioGroup radioGroupSuccess;
+    @BindView(R.id.radioGroupIsActive)
+    RadioGroup radioIsActive;
 
     @BindView(R.id.radioTreatmentSuccessful)
     RadioButton treatmentSuccessful;
@@ -117,7 +123,8 @@ public class EditTreatmentDialog extends DialogFragment {
                 selectedTimeUnit = -1;
             }
 
-            setRadioSuccessId(radioGroupSuccess, treatment.getWasSuccessful());
+            setRadioSuccessId(treatment.getWasSuccessful());
+            setRadioIsActiveId(treatment.getIsActive());
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -132,7 +139,15 @@ public class EditTreatmentDialog extends DialogFragment {
         String name = editTreatment.getText().toString();
 
         long timeInMillis;
-        boolean isActive = fragmentId == TreatmentFragment.ID_FRAGMENT_CURRENT;
+        boolean isActive;
+
+        if (radioCurrent.isChecked()){
+            isActive = true;
+        } else if (radioPast.isChecked()){
+            isActive = false;
+        } else {
+            isActive  = fragmentId == TreatmentFragment.ID_FRAGMENT_CURRENT;
+        }
 
         if (timeString.isEmpty()){
             timeInMillis = TreatmentEntity.TIME_NOT_SELECTED;
@@ -144,7 +159,6 @@ public class EditTreatmentDialog extends DialogFragment {
         if ((timeString.isEmpty()
                 || selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
                 && name.isEmpty()){
-            // TODO: Don't exit dialog
             Toast.makeText(getContext(), "Please fill all necessary fields", Toast.LENGTH_SHORT).show();
         } else {
             constructTreatment(symptomId, name, timeInMillis, treatmentSuccessInt, isActive);
@@ -153,7 +167,7 @@ public class EditTreatmentDialog extends DialogFragment {
         }
     }
 
-    private void constructTreatment (int symptomId, String name, long timeInMillis,  int wasSuccessful,
+    private void constructTreatment(int symptomId, String name, long timeInMillis,  int wasSuccessful,
                                      boolean isActive){
         if (treatment == null){
             treatment = new TreatmentEntity(symptomId, name, timeInMillis, wasSuccessful, isActive);
@@ -188,12 +202,20 @@ public class EditTreatmentDialog extends DialogFragment {
         }
     }
 
-    private void setRadioSuccessId(RadioGroup group, int id){
+    private void setRadioSuccessId(int id){
         if (id == TreatmentEntity.WAS_SUCCESSFUL_NO){
-            group.check(R.id.radioTreatmentUnsuccessful);
+            radioGroupSuccess.check(R.id.radioTreatmentUnsuccessful);
         } else if (id == TreatmentEntity.WAS_SUCCESSFUL_YES){
-            group.check(R.id.radioTreatmentSuccessful);
+            radioGroupSuccess.check(R.id.radioTreatmentSuccessful);
         }
         treatmentSuccessInt = id;
+    }
+
+    private void setRadioIsActiveId(boolean isActive) {
+        if (isActive){
+            radioIsActive.check(R.id.radioTreatmentCurrent);
+        } else {
+            radioIsActive.check(R.id.radioTreatmentPast);
+        }
     }
 }

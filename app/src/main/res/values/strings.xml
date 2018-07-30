@@ -88,6 +88,10 @@
     <string name="radio_treatment_successful">Successful</string>
     <string name="radio_treatment_unsuccessful">Unsuccessful</string>
 
+    <!-- Treatment Current or past RadioGroup -->
+    <string name="radio_treatment_current">Current Treatment</string>
+    <string name="radio_treatment_past">Past Treatment</string>
+
     <!-- Severity -->
     <string name="severity_00">0</string>
     <string name="severity_1">1</string>
