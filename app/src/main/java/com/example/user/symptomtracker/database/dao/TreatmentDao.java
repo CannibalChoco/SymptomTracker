@@ -21,6 +21,9 @@ public interface TreatmentDao {
     @Query("SELECT * FROM treatments WHERE symptom_id = :symptomId AND is_active = :isActive")
     LiveData<List<TreatmentEntity>> loadTreatmentsByIsActive(int symptomId, boolean isActive);
 
+    @Query("DELETE FROM treatments WHERE symptom_id = :symptomId")
+    void deleteTreatmentsForSymptom(int symptomId);
+
     @Insert
     void insertTreatment(TreatmentEntity treatment);
 

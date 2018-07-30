@@ -22,6 +22,7 @@ import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
+import com.example.user.symptomtracker.utils.UnsavedChangeDialogUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -109,7 +110,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         // If there are unsaved changes, setup a dialog to warn the user.
         // Create a click listener to handle the user confirming that changes should be discarded.
         // Show dialog that there are unsaved changes
-        showUnsavedChangesDialog(getDiscardClickLictener());
+        showUnsavedChangesDialog();
     }
 
     @Override
@@ -126,7 +127,7 @@ public class AddSymptomActivity extends AppCompatActivity {
                 saveInDb();
                 return true;
             case R.id.action_cancel:
-                showUnsavedChangesDialog(getDiscardClickLictener());
+                showUnsavedChangesDialog();
                 return true;
         }
 
@@ -155,30 +156,17 @@ public class AddSymptomActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private DialogInterface.OnClickListener getDiscardClickLictener() {
+    private DialogInterface.OnClickListener getDiscardClickListener() {
         return (dialogInterface, i) -> {
             // User clicked "Discard" button, close the current activity.
             finish();
         };
     }
 
-    private void showUnsavedChangesDialog(
-            DialogInterface.OnClickListener discardButtonClickListener) {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the positive and negative buttons on the dialog.
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.dialog_msg_unsaved_changes);
-        builder.setPositiveButton(R.string.dialog_action_discard, discardButtonClickListener);
-        builder.setNegativeButton(R.string.dialog_action_keep_editing, (dialog, id) -> {
-            // User clicked the "Keep editing" button, so dismiss the dialog
-            // and continue editing the symptom.
-            if (dialog != null) {
-                dialog.dismiss();
-            }
-        });
-
+    private void showUnsavedChangesDialog() {
         // Create and show the AlertDialog
-        AlertDialog alertDialog = builder.create();
+        AlertDialog alertDialog = UnsavedChangeDialogUtils.constructDialog(this,
+                getDiscardClickListener(), UnsavedChangeDialogUtils.ACTION_CANCEL_DIALOG);
         alertDialog.show();
     }
 

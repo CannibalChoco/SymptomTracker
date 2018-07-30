@@ -15,6 +15,9 @@ public interface NoteDao {
     @Query("SELECT * FROM notes WHERE symptom_id = :symptomId ORDER BY timestamp DESC")
     LiveData<List<NoteEntity>> loadNotesForSymptom(int symptomId);
 
+    @Query("DELETE FROM notes WHERE symptom_id = :symptomId")
+    void deleteNotesForSymptom(int symptomId);
+
     @Insert
     void insertNote(NoteEntity note);
 }

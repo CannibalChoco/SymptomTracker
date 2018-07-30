@@ -2,14 +2,17 @@ package com.example.user.symptomtracker.ui;
 
 import android.app.DialogFragment;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +29,7 @@ import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.ui.DialogFragments.AddNoteDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
+import com.example.user.symptomtracker.utils.UnsavedChangeDialogUtils;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
 import com.github.mikephil.charting.charts.BarChart;
@@ -139,10 +143,10 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         // TODO
         switch (item.getItemId()){
             case R.id.action_edit:
-
+                // TODO: launch AddSymptomActivity, make it populate views
                 return true;
             case R.id.action_delete:
-
+                showDeleteDialog();
                 return true;
         }
 
@@ -258,6 +262,23 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         final NoteEntity noteEntity = new NoteEntity(note, symptomId,
                 new Date().getTime());
         repository.saveNote(noteEntity);
+    }
+
+    @NonNull
+    private DialogInterface.OnClickListener getDiscardClickListener() {
+        return (dialogInterface, i) -> {
+            // User clicked "Discard" button, close the current activity.
+            model.getSymptomEntity().removeObservers(this);
+            repository.deleteAllSymptomDataForId(symptomId);
+            finish();
+        };
+    }
+
+    private void showDeleteDialog() {
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = UnsavedChangeDialogUtils.constructDialog(this,
+                getDiscardClickListener(), UnsavedChangeDialogUtils.ACTION_DELETE_DIALOG);
+        alertDialog.show();
     }
 
 

@@ -40,7 +40,7 @@ public class AddNoteDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_note_title)
-                .setPositiveButton(R.string.dialog_action_save, (dialog, which) -> {
+                .setPositiveButton(R.string.action_save, (dialog, which) -> {
                     String note = noteText.getText().toString();
                     if (!note.isEmpty()){
                         listener.onSaveNote(note);
@@ -48,7 +48,7 @@ public class AddNoteDialog extends DialogFragment {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(R.string.dialog_action_discard, (dialog, which) -> dialog.dismiss());
+                .setNegativeButton(R.string.action_discard, (dialog, which) -> dialog.dismiss());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_add_note, null);

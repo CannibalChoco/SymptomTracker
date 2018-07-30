@@ -1,7 +1,6 @@
 package com.example.user.symptomtracker;
 
 import android.arch.lifecycle.LiveData;
-import android.os.AsyncTask;
 
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
@@ -37,6 +36,15 @@ public class Repository {
             }
         }
         return sInstance;
+    }
+
+    public void deleteAllSymptomDataForId(int id){
+        executors.diskIO().execute(() -> {
+            db.treatmentDao().deleteTreatmentsForSymptom(id);
+            db.noteDao().deleteNotesForSymptom(id);
+            db.noteDao().deleteNotesForSymptom(id);
+            db.symptomDao().deleteSymptom(id);
+        });
     }
 
     public void saveSeverity(SeverityEntity severity){
@@ -94,33 +102,5 @@ public class Repository {
 
     public LiveData<List<Symptom>> getUnresolvedSymptomLiveData(){
         return db.symptomDao().loadUnresolvedSymptomLiveData();
-    }
-
-    // TODO: not working. must move off main thread
-    public List<Symptom> getUnresolvedSymptoms(){
-        return db.symptomDao().loadUnresolvedSymptoms();
-    }
-
-    // TODO: not working. Remove? or can be fixed?
-    public List<Symptom> getUnresolvedSymptomsAsync(){
-        final List<Symptom>[] symptoms = new List[1];
-
-        class GetSeverityAsyncTask extends AsyncTask<Void, Void, List<Symptom>> {
-
-            @Override
-            protected List<Symptom> doInBackground(Void... voids) {
-                return db.symptomDao().loadUnresolvedSymptoms();
-            }
-
-            @Override
-            protected void onPostExecute(List<Symptom> symptomList) {
-                super.onPostExecute(symptomList);
-                symptoms[0] = symptomList;
-            }
-        }
-
-        new GetSeverityAsyncTask().execute();
-
-        return symptoms[0];
     }
 }

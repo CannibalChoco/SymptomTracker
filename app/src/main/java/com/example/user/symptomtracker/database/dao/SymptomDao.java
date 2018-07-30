@@ -3,7 +3,6 @@ package com.example.user.symptomtracker.database.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -28,8 +27,8 @@ public interface SymptomDao {
     @Insert
     long insertSymptom(SymptomEntity symptom);
 
-    @Delete
-    void deleteSymptom(SymptomEntity symptom);
+    @Query("DELETE FROM symptom WHERE id = :id")
+    void deleteSymptom(int id);
 
     /**
      * Get a symptom data by symptoms Id

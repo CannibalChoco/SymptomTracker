@@ -34,18 +34,23 @@
     <string name="status_resolved">Resolved</string>
     <string name="status_not_resolved">Not Resolved</string>
 
-    <!-- Dialog Fragments Actions-->
-    <string name="dialog_action_save">Save</string>
-    <string name="dialog_action_cancel">Cancel</string>
-    <string name="dialog_action_discard">Discard</string>
-
-    <!-- AddSymptomActivity -->
-    <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
-    <string name="dialog_action_keep_editing">Keep editing</string>
-    <string name="message_must_provide_name">You must provide a name for the symptom</string>
+    <!-- Actions-->
+    <string name="action_save">Save</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_discard">Discard</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_keep_editing">Keep editing</string>
 
     <!-- Add New Note Dialog -->
     <string name="add_note_title">Add Note</string>
+
+    <!-- Dialog messages -->
+    <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
+    <string name="dialog_msg_delete">Delete?</string>
+
+    <!-- AddSymptomActivity -->
+    <string name="message_must_provide_name">You must provide a name for the symptom</string>
 
     <!-- Add New Treatment  Dialog-->
     <string name="add_current_treatment_title">Add Current Treatment</string>
@@ -109,9 +114,4 @@
     <string name="content_treatment_name">Treatment name</string>
     <string name="content_treatment_time">Time</string>
 
-    <!-- Menu Action names -->
-    <string name="action_save">Save</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_edit">Edit</string>
 </resources>
