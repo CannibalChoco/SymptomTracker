@@ -13,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -126,6 +128,26 @@ public class DetailActivity extends AppCompatActivity implements AddNoteDialog.O
         bannerAd.loadAd(adRequest);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO
+        switch (item.getItemId()){
+            case R.id.action_edit:
+
+                return true;
+            case R.id.action_delete:
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void setUpNotesRecyclerView() {
         notesAdapter = new NotesAdapter(new ArrayList<>());

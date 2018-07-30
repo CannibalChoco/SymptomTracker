@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,7 +28,6 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Contains form for user to fill out when adding a symptom
@@ -50,9 +51,6 @@ public class AddSymptomActivity extends AppCompatActivity {
     RadioButton radioStatusChronic;
     @BindView(R.id.addNote)
     EditText editAddNote;
-
-    @BindView(R.id.btnSaveInDb)
-    Button saveInDb;
 
     private String symptomName;
     private boolean doctorIsInformed;
@@ -95,8 +93,47 @@ public class AddSymptomActivity extends AppCompatActivity {
         setTouchListener();
     }
 
-    @OnClick(R.id.btnSaveInDb)
-    public void saveInDb(){
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_DATA_HAS_CHANGED, dataHasChanged);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!dataHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        // If there are unsaved changes, setup a dialog to warn the user.
+        // Create a click listener to handle the user confirming that changes should be discarded.
+        // Show dialog that there are unsaved changes
+        showUnsavedChangesDialog(getDiscardClickLictener());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_or_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO
+        switch (item.getItemId()){
+            case R.id.action_save:
+                saveInDb();
+                return true;
+            case R.id.action_cancel:
+                showUnsavedChangesDialog(getDiscardClickLictener());
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveInDb(){
         getEnteredData();
 
         if(symptomName.isEmpty()){
@@ -117,29 +154,12 @@ public class AddSymptomActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_DATA_HAS_CHANGED, dataHasChanged);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!dataHasChanged) {
-            super.onBackPressed();
-            return;
-        }
-
-        // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-        // Create a click listener to handle the user confirming that changes should be discarded.
-        DialogInterface.OnClickListener discardButtonClickListener =
-                (dialogInterface, i) -> {
-                    // User clicked "Discard" button, close the current activity.
-                    finish();
-                };
-
-        // Show dialog that there are unsaved changes
-        showUnsavedChangesDialog(discardButtonClickListener);
+    @NonNull
+    private DialogInterface.OnClickListener getDiscardClickLictener() {
+        return (dialogInterface, i) -> {
+            // User clicked "Discard" button, close the current activity.
+            finish();
+        };
     }
 
     private void showUnsavedChangesDialog(

@@ -116,7 +116,6 @@ public class AddPastTreatmentDialog extends DialogFragment {
         }
     }
 
-    // TODO: allow to uncheck
     @OnClick({R.id.radioTimeHour, R.id.radioTimeDay, R.id.radioTimeWeek, R.id.radioTimeMonth})
     public void timeUnitSelected() {
         if (timeHour.isChecked()) {

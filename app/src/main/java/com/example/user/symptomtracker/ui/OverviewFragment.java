@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.Symptom;
@@ -38,6 +39,8 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     @BindView(R.id.overviewRecyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +48,8 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, rootView);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
@@ -62,6 +67,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
         model.getUnresolvedSymptomsLiveData().observe(getActivity(), symptoms ->
                 adapter.replaceDataSet(symptoms));
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

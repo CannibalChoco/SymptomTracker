@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
@@ -42,6 +43,9 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     @BindView(R.id.rvToday)
     RecyclerView recyclerView;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     static TodayAdapter adapter;
     static AppDatabase db;
 
@@ -54,6 +58,9 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         ButterKnife.bind(this, rootView);
+
+
+        progressBar.setVisibility(View.VISIBLE);
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
@@ -78,6 +85,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         if (model.isSymptomDataForTodayValid()) {
             symptoms = model.getUnresolvedSymptoms();
             adapter.replaceSymptomData(symptoms);
+
+            progressBar.setVisibility(View.GONE);
         } else {
             new GetSeverityAsyncTask().execute();
         }
@@ -113,6 +122,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
                 symptoms = symptomList;
                 model.setUnresolvedSymptoms(symptomList);
                 adapter.replaceSymptomData(symptomList);
+                // TODO: set progressbar gone
             }
         }
     }
