@@ -219,7 +219,6 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
         repository.setStatusResolved(symptomId, !symptom.isResolved());
     }
 
-    // TODO: add option for editing notes text- long click?
     @OnClick(R.id.addNote)
     public void addNote() {
         showEditTextDialog(EditTextDialog.ID_NEW_NOTE, "");
@@ -308,7 +307,6 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     }
 
     private void updateNote(String note){
-        // TODO: get Id before updating
         repository.updateNote(editNoteId, note);
     }
 
