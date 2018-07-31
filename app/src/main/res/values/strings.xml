@@ -117,5 +117,7 @@
     <string name="content_button_note_text">Note text</string>
     <string name="content_treatment_name">Treatment name</string>
     <string name="content_treatment_time">Time</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
