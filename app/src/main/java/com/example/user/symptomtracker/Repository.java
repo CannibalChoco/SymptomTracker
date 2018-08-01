@@ -38,6 +38,10 @@ public class Repository {
         return sInstance;
     }
 
+    public List<Symptom> getUnresolvedSymptoms(){
+        return db.symptomDao().loadUnresolvedSymptoms();
+    }
+
     public void updateTreatment(TreatmentEntity treatment){
         executors.diskIO().execute(() -> db.treatmentDao().updateTreatment(treatment));
     }

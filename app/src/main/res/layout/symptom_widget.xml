@@ -41,7 +41,6 @@
 
         </RelativeLayout>
 
-
         <ListView
             android:id="@+id/widget_list_view"
             android:layout_width="match_parent"
@@ -53,11 +52,11 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:id="@+id/widget_empty_state_text"
-        android:text="@string/app_name"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:id="@+id/widget_empty_state_text"-->
+        <!--android:text="@string/app_name"/>-->
 
 </FrameLayout>
