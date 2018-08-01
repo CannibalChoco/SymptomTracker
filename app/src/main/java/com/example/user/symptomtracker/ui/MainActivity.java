@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRAGMENT_ADD = 99;
     private static final int FRAGMENT_REPLACE = 88;
 
-    private FragmentManager fm;
-
     @BindView(R.id.navigation)
     BottomNavigationView navigationView;
     @BindView(R.id.dest_fragment_container)
     FrameLayout fragmentContainer;
     @BindView(R.id.adView)
     AdView bannerAd;
+
+    FragmentManager fm;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -65,48 +65,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         fm = getSupportFragmentManager();
-        int fragmentId;
-        Intent intent = getIntent();
 
-        //setOverviewFragment(FRAGMENT_ADD);
-
-        // TODO: fix backstack bug
         if (savedInstanceState == null){
-            // get id for which fragment to display
-            if (intent != null && intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)) {
-                fragmentId = intent.getIntExtra(WIDGET_KEY_FRAGMENT_ID, DEFAULT_FRAGMENT_ID);
-            } else {
-                fragmentId = DEFAULT_FRAGMENT_ID;
-            }
-        } else {
-            fragmentId = DEFAULT_FRAGMENT_ID;
-        }
-
-        // get id for which fragment to display
-        if (intent != null && intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)) {
-            fragmentId = intent.getIntExtra(WIDGET_KEY_FRAGMENT_ID, DEFAULT_FRAGMENT_ID);
-        } else {
-            fragmentId = DEFAULT_FRAGMENT_ID;
-        }
-
-        int action;
-
-        // decide whether to add or replace fragment
-        if (savedInstanceState == null && !intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)){
-            action = FRAGMENT_ADD;
-        } else {
-            action = FRAGMENT_REPLACE;
-        }
-
-
-        int backStack;
-        // display fragment
-        if (fragmentId == 0) {
-            navigationView.setSelectedItemId(R.id.navigation_today);
-            setTodayFragment(action);
-        } else {
-            navigationView.setSelectedItemId(R.id.navigation_overview);
-            setOverviewFragment(action);
+            setFragmentOnLaunch();
         }
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -117,6 +78,55 @@ public class MainActivity extends AppCompatActivity {
         setupFirebaseAnalytics();
 
         JobServiceUtils.scheduleCheckUnresolvedSymptoms(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setFragmentOnNewIntent(intent);
+    }
+
+    /**
+     * Checks if there is an intent that specifies what fragment to display. Sets fragment
+     */
+    private void setFragmentOnLaunch() {
+        int action;
+        Intent intent = getIntent();
+        action = FRAGMENT_ADD;
+        // get id for which fragment to display
+        if (intent != null && intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)) {
+            int fragmentId = intent.getIntExtra(WIDGET_KEY_FRAGMENT_ID, DEFAULT_FRAGMENT_ID);
+
+            if (fragmentId == 0) {
+                navigationView.setSelectedItemId(R.id.navigation_today);
+                setTodayFragment(action);
+            } else {
+                navigationView.setSelectedItemId(R.id.navigation_overview);
+                setOverviewFragment(action);
+            }
+        } else {
+            setOverviewFragment(action);
+            navigationView.setSelectedItemId(R.id.navigation_overview);
+        }
+    }
+
+    /**
+     * Checks intent extra and performs action based on extra
+     * @param intent
+     */
+    private void setFragmentOnNewIntent(Intent intent) {
+        if (intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)){
+            int fragmentId = intent.getIntExtra(WIDGET_KEY_FRAGMENT_ID, DEFAULT_FRAGMENT_ID);
+
+            if (fragmentId == 0) {
+                navigationView.setSelectedItemId(R.id.navigation_today);
+                setTodayFragment(FRAGMENT_REPLACE);
+            } else {
+                navigationView.setSelectedItemId(R.id.navigation_overview);
+                setOverviewFragment(FRAGMENT_REPLACE);
+            }
+        }
     }
 
     private void setupFirebaseAnalytics() {
@@ -137,11 +147,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Replace currently displayed fragment with OverviewFragment
+     * Add fragment or replace currently displayed fragment with OverviewFragment
      */
     private void setOverviewFragment(int action) {
         OverviewFragment overviewFragment = new OverviewFragment();
-        int count = fm.getBackStackEntryCount();
         if (action == FRAGMENT_ADD){
             getSupportFragmentManager()
                     .beginTransaction()
@@ -153,15 +162,13 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.dest_fragment_container, overviewFragment)
                     .commit();
         }
-        count = fm.getBackStackEntryCount();
     }
 
     /**
-     * Replace currently displayed fragment with TodayFragment
+     * Add fragment or replace currently displayed fragment with TodayFragment
      */
     private void setTodayFragment(int action) {
         TodayFragment todayFragment = new TodayFragment();
-        int count = fm.getBackStackEntryCount();
         if (action == FRAGMENT_ADD){
             getSupportFragmentManager()
                     .beginTransaction()
@@ -173,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.dest_fragment_container, todayFragment)
                     .commit();
         }
-        count = fm.getBackStackEntryCount();
     }
 
     /**
