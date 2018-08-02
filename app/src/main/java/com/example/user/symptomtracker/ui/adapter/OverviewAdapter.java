@@ -11,6 +11,7 @@ import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.github.mikephil.charting.charts.BarChart;
+
 import java.util.List;
 
 import butterknife.BindView;

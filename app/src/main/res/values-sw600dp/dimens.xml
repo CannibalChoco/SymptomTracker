@@ -13,8 +13,11 @@
     <!-- Fixed layout heights -->
     <dimen name="graph_view_height">300dp</dimen>
 
+    <!-- Severity button -->
+    <dimen name="btn_severity_dimension">56dp</dimen>
+
     <dimen name="gutter_width">24dp</dimen>
     <dimen name="margin_half_gutter_width">12dp</dimen>
 
-
+    <dimen name="bottom_nav_height">56dp</dimen>
 </resources>

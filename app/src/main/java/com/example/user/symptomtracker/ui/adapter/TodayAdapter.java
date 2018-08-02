@@ -1,5 +1,6 @@
 package com.example.user.symptomtracker.ui.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,14 +29,17 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     private List<Symptom> symptomList;
     private OnSeverityClickListener clickListener;
+    private Context context;
 
     public interface OnSeverityClickListener {
         void onSeverityClicked(int parentId, int severity);
     }
 
-    public TodayAdapter(List<Symptom> symptomList, OnSeverityClickListener clickListener) {
+    public TodayAdapter(Context context, List<Symptom> symptomList,
+                        OnSeverityClickListener clickListener) {
         this.symptomList = symptomList;
         this.clickListener = clickListener;
+        this.context = context;
     }
 
     @NonNull
