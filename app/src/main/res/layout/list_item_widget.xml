@@ -11,8 +11,7 @@
         android:layout_marginEnd="8dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Backpain"/>
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -21,59 +20,31 @@
 
         <TextView
             android:id="@+id/widget_day_1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
         <TextView
             android:id="@+id/widget_day_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
         <TextView
             android:id="@+id/widget_day_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
         <TextView
             android:id="@+id/widget_day_4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
         <TextView
             android:id="@+id/widget_day_5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
         <TextView
             android:id="@+id/widget_day_6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
         <TextView
             android:id="@+id/widget_day_7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/severity_10"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            style="@style/WidgetListItemStyle"/>
 
     </LinearLayout>
 

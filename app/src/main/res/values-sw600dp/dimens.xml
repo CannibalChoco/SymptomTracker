@@ -3,4 +3,18 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">24dp</dimen>
     <dimen name="activity_vertical_margin">24dp</dimen>
+
+    <dimen name="large_margin">64dp</dimen>
+
+    <dimen name="tablet_top_colored_background">200dp</dimen>
+    <dimen name="tablet_card_tom_margin">@dimen/large_margin</dimen>
+
+
+    <!-- Fixed layout heights -->
+    <dimen name="graph_view_height">300dp</dimen>
+
+    <dimen name="gutter_width">24dp</dimen>
+    <dimen name="margin_half_gutter_width">12dp</dimen>
+
+
 </resources>

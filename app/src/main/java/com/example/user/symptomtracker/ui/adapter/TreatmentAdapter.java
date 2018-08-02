@@ -56,7 +56,7 @@ public class TreatmentAdapter extends RecyclerView.Adapter<TreatmentAdapter.View
                     treatment.getTakesEffectIn());
             holder.takesEffect.setText(takesEffect);
         } else {
-            holder.takesEffect.setText(R.string.default_no_treatment_time_provided);
+            holder.takesEffect.setText(R.string.default_no_info);
         }
 
         if (treatment.getWasSuccessful() == TreatmentEntity.WAS_SUCCESSFUL_NO) {

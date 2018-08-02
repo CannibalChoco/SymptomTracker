@@ -22,7 +22,7 @@
             app:layout_constraintTop_toBottomOf="@+id/statusIsResolved"/>
 
         <android.support.constraint.Guideline
-            android:id="@+id/guideline"
+            android:id="@+id/middleGutter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"

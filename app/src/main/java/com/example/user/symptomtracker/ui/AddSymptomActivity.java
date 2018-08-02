@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
+import com.example.user.symptomtracker.SymptomTrackerApplication;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
 import com.example.user.symptomtracker.utils.UnsavedChangeDialogUtils;
+import com.example.user.symptomtracker.utils.WidgetUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -223,6 +225,8 @@ public class AddSymptomActivity extends AppCompatActivity {
                     DetailActivity.class);
             intent.putExtra(DetailActivity.KEY_ID, integer);
             context.get().startActivity(intent);
+
+            WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
         }
     }
 

@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.user.symptomtracker.service.WidgetService;
@@ -51,13 +50,20 @@ public class SymptomWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
+        updateAppWidgets(context, appWidgetManager, appWidgetIds);
+    }
 
-            Log.d("WIDGET_SERVICE", "provider onUpdate");
+    /**
+     * Go through all app widgets and update  them
+     * @param context app context
+     * @param appWidgetManager AppWidgetManager
+     * @param appWidgetIds array oi int ids of all the widgets on home screen
+     */
+    public static void updateAppWidgets (Context context, AppWidgetManager appWidgetManager,
+                                         int[] appWidgetIds){
+        for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
-
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override

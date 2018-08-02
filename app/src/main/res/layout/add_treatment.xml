@@ -27,7 +27,7 @@
         android:singleLine="false"
         android:text="@string/label_takes_effect"
         android:textColor="@color/colorAccent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/middleGutter"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_treatment_name" />
@@ -41,11 +41,11 @@
         android:inputType="textCapWords"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/middleGutter"
         android:hint="@string/content_treatment_name"/>
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/middleGutter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -61,7 +61,7 @@
         android:textSize="14sp"
         android:hint="@string/content_treatment_time"
         app:layout_constraintEnd_toStartOf="@+id/radioGroupTime"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/middleGutter"
         app:layout_constraintTop_toTopOf="@+id/label_current_treatments" />
 
     <RadioGroup

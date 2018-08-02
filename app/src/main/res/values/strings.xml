@@ -18,7 +18,7 @@
     <string name="label_severity">Severity</string>
 
     <!-- Default strings for when no information is provided -->
-    <string name="default_no_treatment_time_provided">-</string>
+    <string name="default_no_info">-</string>
 
     <!-- Statuses -->
     <string name="status_doctor_informed">Doctor is informed</string>

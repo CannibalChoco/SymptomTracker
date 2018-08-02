@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="add_symptom_include_layout_margin">8dp</dimen>
+
     <!-- elevations -->
     <dimen name="elevation_app_bar">4dp</dimen>
     <dimen name="elevation_fab">6dp</dimen>
@@ -18,7 +20,6 @@
 
     <!-- Fixed layout heights -->
     <dimen name="detail_rv_height">150dp</dimen>
-    <!-- TODO: calculate actual size -->
     <dimen name="treatment_layout_height">300dp</dimen>
     <dimen name="graph_view_height">250dp</dimen>
 
