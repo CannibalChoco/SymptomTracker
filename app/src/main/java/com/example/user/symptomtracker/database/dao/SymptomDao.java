@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
@@ -17,9 +18,11 @@ public interface SymptomDao {
     @Query("SELECT COUNT(*) FROM symptom")
     int getSymptomCount();
 
+    @Transaction
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     LiveData<List<Symptom>> loadUnresolvedSymptomLiveData();
 
+    @Transaction
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     List<Symptom> loadUnresolvedSymptoms();
 
