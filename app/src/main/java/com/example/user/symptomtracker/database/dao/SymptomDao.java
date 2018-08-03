@@ -14,6 +14,9 @@ import java.util.List;
 @Dao
 public interface SymptomDao {
 
+    @Query("SELECT COUNT(*) FROM symptom")
+    int getSymptomCount();
+
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     LiveData<List<Symptom>> loadUnresolvedSymptomLiveData();
 

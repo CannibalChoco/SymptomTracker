@@ -38,6 +38,12 @@ public class Repository {
         return sInstance;
     }
 
+    public int getSymptomCount(){
+        final int[] count = new int[1];
+        executors.diskIO().execute(() -> count[0] = db.symptomDao().getSymptomCount());
+        return count[0];
+    }
+
     public List<Symptom> getUnresolvedSymptoms(){
         return db.symptomDao().loadUnresolvedSymptoms();
     }

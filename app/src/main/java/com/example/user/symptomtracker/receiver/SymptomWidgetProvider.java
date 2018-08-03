@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.service.WidgetService;
 import com.example.user.symptomtracker.ui.AddSymptomActivity;
+import com.example.user.symptomtracker.ui.DetailActivity;
 import com.example.user.symptomtracker.ui.MainActivity;
 
 /**
@@ -24,7 +25,6 @@ public class SymptomWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.symptom_widget);
 
@@ -44,6 +44,11 @@ public class SymptomWidgetProvider extends AppWidgetProvider {
         views.setRemoteAdapter(R.id.widget_list_view, widgetServiceIntent);
 
         // TODO: construct intent to launch detail view on item click
+        Intent detailIntent = new Intent(context, DetailActivity.class);
+        PendingIntent detailPendingIntent = PendingIntent.getActivity(context, 2,
+                detailIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_list_view, detailPendingIntent);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

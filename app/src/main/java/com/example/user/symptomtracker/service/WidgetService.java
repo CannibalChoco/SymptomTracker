@@ -2,6 +2,7 @@ package com.example.user.symptomtracker.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -11,6 +12,7 @@ import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
+import com.example.user.symptomtracker.ui.DetailActivity;
 
 import java.util.List;
 
@@ -32,7 +34,6 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     public WidgetServiceRemoteViewsFactory(Context applicationContext) {
         this.context = applicationContext;
-
         Log.d("WIDGET_SERVICE", "factory constructor setting context");
     }
 
@@ -46,6 +47,7 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
         Repository repository = Repository.getInstance(AppDatabase.getInstance(context));
         symptoms = repository.getUnresolvedSymptoms();
         Log.d("WIDGET_SERVICE", "onDataSetChanged " + symptoms.toString());
+
     }
 
     @Override
@@ -77,6 +79,13 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
                 views.setTextViewText(id, value);
             }
         }
+
+        // set fillInIntent for launching detail view of clicked item
+        Bundle bundle = new Bundle();
+        bundle.putInt(DetailActivity.KEY_ID, symptom.getSymptom().getId());
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(bundle);
+        views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
 
         return views;
     }

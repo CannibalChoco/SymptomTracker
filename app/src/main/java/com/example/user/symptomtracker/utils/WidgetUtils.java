@@ -22,4 +22,5 @@ public class WidgetUtils {
         appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.widget_list_view);
     }
 
+
 }
