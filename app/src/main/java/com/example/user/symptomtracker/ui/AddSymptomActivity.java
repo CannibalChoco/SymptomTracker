@@ -1,5 +1,6 @@
 package com.example.user.symptomtracker.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +19,6 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.Repository;
 import com.example.user.symptomtracker.SymptomTrackerApplication;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
@@ -63,7 +63,6 @@ public class AddSymptomActivity extends AppCompatActivity {
     private String note;
 
     private AppDatabase db;
-    private Repository repository;
 
     private boolean dataHasChanged;
 
@@ -71,6 +70,7 @@ public class AddSymptomActivity extends AppCompatActivity {
      * Detect when a view is clicked to keep track if user has made any changes
      */
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             dataHasChanged = true;
@@ -91,7 +91,6 @@ public class AddSymptomActivity extends AppCompatActivity {
         setTitle(R.string.title_add_new);
 
         db = AppDatabase.getInstance(getApplicationContext());
-        repository = Repository.getInstance(db);
 
         setTouchListener();
     }
@@ -183,6 +182,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         note = editAddNote.getText().toString();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setTouchListener() {
         editSymptomName.setOnTouchListener(touchListener);
         editAddNote.setOnTouchListener(touchListener);

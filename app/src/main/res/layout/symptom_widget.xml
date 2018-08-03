@@ -35,7 +35,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:src="@drawable/ic_action_add_dark" />
+            android:src="@drawable/ic_action_add_dark"
+            android:contentDescription="@string/add_new_symptom" />
 
     </RelativeLayout>
 

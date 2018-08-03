@@ -51,6 +51,8 @@
 
     <!-- AddSymptomActivity -->
     <string name="message_must_provide_name">You must provide a name for the symptom</string>
+    <string name="hint_symptom_name">Symptom name</string>
+    <string name="hint_add_note">Note</string>
 
     <!-- Add New Treatment  Dialog-->
     <string name="add_current_treatment_title">Add Current Treatment</string>
@@ -118,10 +120,8 @@
     <string name="content_treatment_time">Time</string>
 
     <!-- Empty state text -->
-    <string name="empty_state_appwidget_text">You haven\'t added any symptoms yet</string>
-
-
 
     <string name="add_widget">Add widget</string>
+    <string name="add_new_symptom">Add new symptom</string>
 
 </resources>
