@@ -18,8 +18,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.user.symptomtracker.SymptomWidgetProvider.WIDGET_KEY_FRAGMENT_ID;
-import static com.example.user.symptomtracker.SymptomWidgetProvider.WIDGET_TARGET_FRAGMENT_OVERVIEW;
+import static com.example.user.symptomtracker.receiver.SymptomWidgetProvider.WIDGET_KEY_FRAGMENT_ID;
+import static com.example.user.symptomtracker.receiver.SymptomWidgetProvider.WIDGET_TARGET_FRAGMENT_OVERVIEW;
 
 /**
  * Set up and manage navigation between destinations by Fragment transactions through

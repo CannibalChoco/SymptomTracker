@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
+import com.example.user.symptomtracker.SymptomTrackerApplication;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.NoteEntity;
 import com.example.user.symptomtracker.database.entity.SymptomEntity;
@@ -31,6 +32,7 @@ import com.example.user.symptomtracker.ui.DialogFragments.EditTextDialog;
 import com.example.user.symptomtracker.ui.adapter.NotesAdapter;
 import com.example.user.symptomtracker.utils.GraphUtils;
 import com.example.user.symptomtracker.utils.UnsavedChangeDialogUtils;
+import com.example.user.symptomtracker.utils.WidgetUtils;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
 import com.github.mikephil.charting.charts.BarChart;
@@ -295,6 +297,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
             // User clicked "Discard" button, close the current activity.
             model.getSymptomEntity().removeObservers(this);
             repository.deleteAllSymptomDataForId(symptomId);
+            WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
             finish();
         };
     }
@@ -318,6 +321,8 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
     private void updateName (String name){
         repository.updateSymptomName(symptomId, name);
+
+        WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
     }
 
     @Override

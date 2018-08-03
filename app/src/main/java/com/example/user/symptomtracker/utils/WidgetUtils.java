@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.SymptomWidgetProvider;
+import com.example.user.symptomtracker.receiver.SymptomWidgetProvider;
 
 public class WidgetUtils {
 

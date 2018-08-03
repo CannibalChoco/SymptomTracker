@@ -1,4 +1,4 @@
-package com.example.user.symptomtracker;
+package com.example.user.symptomtracker.receiver;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.service.WidgetService;
 import com.example.user.symptomtracker.ui.AddSymptomActivity;
 import com.example.user.symptomtracker.ui.MainActivity;

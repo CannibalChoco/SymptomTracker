@@ -34,7 +34,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".SymptomWidgetProvider">
+        <receiver android:name=".receiver.SymptomWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

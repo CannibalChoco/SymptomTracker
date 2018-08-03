@@ -15,10 +15,12 @@ import android.widget.ProgressBar;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
+import com.example.user.symptomtracker.SymptomTrackerApplication;
 import com.example.user.symptomtracker.database.AppDatabase;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.ui.adapter.TodayAdapter;
+import com.example.user.symptomtracker.utils.WidgetUtils;
 import com.example.user.symptomtracker.viewmodel.MainActivityViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -99,6 +101,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
                 new Date().getTime());
 
         Repository.getInstance(db).saveSeverity(severityEntity);
+        WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
     }
 
     /**
