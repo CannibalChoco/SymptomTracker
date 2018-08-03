@@ -23,21 +23,14 @@ public class WidgetService extends RemoteViewsService {
     }
 }
 
-class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
+class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private static final int DAY_ONE = 0;
-    private static final int DAY_TWO = 1;
-    private static final int DAY_THREE = 2;
-    private static final int DAY_FOUR = 3;
-    private static final int DAY_FIVE = 4;
-    private static final int DAY_SIX = 5;
-    private static final int DAY_SEVEN = 6;
     private static final int ITEM_COUNT = 7;
 
     Context context;
     List<Symptom> symptoms;
 
-    public WidgetServiceRemoteViewsFactory(Context applicationContext){
+    public WidgetServiceRemoteViewsFactory(Context applicationContext) {
         this.context = applicationContext;
 
         Log.d("WIDGET_SERVICE", "factory constructor setting context");
@@ -65,10 +58,8 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
         return symptoms != null ? symptoms.size() : 0;
     }
 
-    // TODO: squish the bug
     @Override
     public RemoteViews getViewAt(int position) {
-        // TODO: set view data like in onBindViewHolder
         Symptom symptom = symptoms.get(position);
         Log.d("WIDGET_SERVICE", "getViewAt " + symptom.toString());
 
@@ -76,35 +67,14 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
         views.setTextViewText(R.id.widget_text_name, symptom.getSymptom().getName());
         //views.setViewVisibility(R.id.widget_empty_state_text, View.GONE);
 
-        // TODO: go through symptom severity and set it on severity views
-        List<SeverityEntity> severity = symptom.getSeverityList();
-        int severityListSize = severity.size();
-        int dayOne = severityListSize - ITEM_COUNT;
-        int seventh = dayOne + DAY_SEVEN;
-        int sixth = dayOne + DAY_SIX;
-        int fifth = dayOne + DAY_FIVE;
-        int fourth = dayOne + DAY_FOUR;
-        int third = dayOne + DAY_THREE;
-        int second = dayOne + DAY_TWO;
-        int first = dayOne;
+        List<SeverityEntity> severityList = symptom.getSeverityList();
+        int severityListSize = severityList.size();
+        int severityStartIndex = severityListSize - ITEM_COUNT;
 
-        for (int i = severityListSize; i >= dayOne; i--){
-            String value = String.valueOf(severity.get(i));
-            if (i == seventh){
-                views.setTextViewText(R.id.widget_day_7, value);
-            } else if (i == sixth){
-                views.setTextViewText(R.id.widget_day_6, value);
-            } else if (i == fifth){
-                views.setTextViewText(R.id.widget_day_5, value);
-            } else if (i == fourth){
-                views.setTextViewText(R.id.widget_day_4, value);
-            } else if (i == third){
-                views.setTextViewText(R.id.widget_day_3, value);
-            } else if (i == second){
-                views.setTextViewText(R.id.widget_day_2, value);
-            } else if (i == first){
-                views.setTextViewText(R.id.widget_day_1, value);
-            }
+        for (int i = severityStartIndex; i < severityListSize; i++){
+            String value = String.valueOf(severityList.get(i).getSeverity());
+            int id = getDayView(i - severityStartIndex);
+            views.setTextViewText(id, value);
         }
 
         return views;
@@ -128,5 +98,31 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     @Override
     public boolean hasStableIds() {
         return false;
+    }
+
+    /**
+     * Get days view ID by index
+     * @param dayIndex index 0-6
+     * @return ID for view corresponding to index
+     */
+    private int getDayView(int dayIndex) {
+        switch (dayIndex) {
+            case 0:
+                return R.id.widget_day_1;
+            case 1:
+                return R.id.widget_day_2;
+            case 2:
+                return R.id.widget_day_3;
+            case 3:
+                return R.id.widget_day_4;
+            case 4:
+                return R.id.widget_day_5;
+            case 5:
+                return R.id.widget_day_6;
+            case 6:
+                return R.id.widget_day_7;
+            default:
+                return R.id.widget_day_7;
+        }
     }
 }
