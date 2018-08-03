@@ -65,16 +65,17 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.list_item_widget);
         views.setTextViewText(R.id.widget_text_name, symptom.getSymptom().getName());
-        //views.setViewVisibility(R.id.widget_empty_state_text, View.GONE);
 
         List<SeverityEntity> severityList = symptom.getSeverityList();
         int severityListSize = severityList.size();
-        int severityStartIndex = severityListSize - ITEM_COUNT;
+        if (severityListSize > 0) {
 
-        for (int i = severityStartIndex; i < severityListSize; i++){
-            String value = String.valueOf(severityList.get(i).getSeverity());
-            int id = getDayView(i - severityStartIndex);
-            views.setTextViewText(id, value);
+            for (int i = 0; i < severityListSize; i++) {
+                int dayIndex = ITEM_COUNT - severityListSize + i;
+                String value = String.valueOf(severityList.get(i).getSeverity());
+                int id = getDayView(dayIndex);
+                views.setTextViewText(id, value);
+            }
         }
 
         return views;
@@ -102,6 +103,7 @@ class WidgetServiceRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
     /**
      * Get days view ID by index
+     *
      * @param dayIndex index 0-6
      * @return ID for view corresponding to index
      */

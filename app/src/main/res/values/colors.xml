@@ -14,8 +14,10 @@
     <color name="colorStatusAttention">@color/colorAccent</color>
     <color name="colorStatusDefault">@color/neutralGrey</color>
 
-    <!-- Severity button state colors -->
-    <color name="colorSeverityDefault">#ffffff</color>
-    <color name="colorSeverityPressed">#906672</color>
-    <color name="colorSeverityFocused">#906672</color>
+    <!-- Widget colors -->
+    <!-- Transparent -->
+    <color name="widget_background_transparent_white_50">#80FFFFFF</color>
+    <!-- @color/neutralGrey transparent 50% -->
+    <color name="widget_separator_transparent_gray_50">#80757575</color>
+
 </resources>

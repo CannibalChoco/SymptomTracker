@@ -1,14 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_frame"
     android:layout_width="match_parent"
-    android:layout_margin="@dimen/widget_margin"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:layout_margin="8dp"
+    android:background="@drawable/background_widget">
 
     <LinearLayout
         android:id="@+id/non_empty_widget_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="8dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -21,42 +22,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:textSize="@dimen/widget_name_size"
-                android:text="@string/title_today"/>
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:text="@string/title_today"
+                android:textSize="@dimen/widget_name_size" />
 
             <TextView
                 android:id="@+id/widget_overview_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/widget_name_size"
-                android:text="@string/title_overview"/>
+                android:text="@string/title_overview"
+                android:textSize="@dimen/widget_name_size" />
 
             <ImageView
                 android:id="@+id/widget_add_symptom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_action_add_dark"/>
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_action_add_dark" />
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/widget_separator_transparent_gray_50" />
 
         <ListView
             android:id="@+id/widget_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:divider="@null"
-            android:paddingBottom="@dimen/widget_margin"
-            android:paddingTop="@dimen/widget_margin" />
+            android:gravity="center" />
 
     </LinearLayout>
 
     <!--<TextView-->
+        <!--android:id="@+id/widget_empty_state_text"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginTop="42dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
         <!--android:gravity="center"-->
-        <!--android:id="@+id/widget_empty_state_text"-->
-        <!--android:text="@string/app_name"/>-->
+        <!--android:text="@string/empty_state_appwidget_text" />-->
 
 </FrameLayout>
