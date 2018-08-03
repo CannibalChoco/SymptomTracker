@@ -19,5 +19,4 @@
     <dimen name="gutter_width">24dp</dimen>
     <dimen name="margin_half_gutter_width">12dp</dimen>
 
-    <dimen name="bottom_nav_height">56dp</dimen>
 </resources>

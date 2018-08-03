@@ -20,4 +20,7 @@
     <!-- @color/neutralGrey transparent 50% -->
     <color name="widget_separator_transparent_gray_50">#80757575</color>
 
+    <color name="bottomNavChecked">@android:color/white</color>
+    <color name="bottomNavDefault">#c892b9</color>
+
 </resources>

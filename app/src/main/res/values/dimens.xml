@@ -34,7 +34,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_name_size">16sp</dimen>
 
-    <dimen name="bottom_nav_height">48dp</dimen>
+    <dimen name="bottom_nav_height">56dp</dimen>
 
 
 </resources>
