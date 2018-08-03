@@ -23,7 +23,6 @@ public class ReminderNotificationJobService extends JobService {
             List<SymptomEntity> symptoms = db.symptomDao().loadAllUnresolvedSymptoms(
                     TimeUtils.getTimeWeekAgo());
 
-            // TODO: either use the rest of symptoms returned or query just for one
             if (symptoms.size() > 0){
                 String title = symptoms.get(0).getName() +
                         getString(R.string.notification_title_append);

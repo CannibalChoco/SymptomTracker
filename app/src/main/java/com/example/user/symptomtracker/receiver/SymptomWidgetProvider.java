@@ -43,7 +43,6 @@ public class SymptomWidgetProvider extends AppWidgetProvider {
         Intent widgetServiceIntent = new Intent(context, WidgetService.class);
         views.setRemoteAdapter(R.id.widget_list_view, widgetServiceIntent);
 
-        // TODO: construct intent to launch detail view on item click
         Intent detailIntent = new Intent(context, DetailActivity.class);
         PendingIntent detailPendingIntent = PendingIntent.getActivity(context, 2,
                 detailIntent, PendingIntent.FLAG_CANCEL_CURRENT);
