@@ -19,6 +19,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -42,6 +44,7 @@ import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindDrawable;
@@ -87,6 +90,11 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     TabLayout tabs;
     @BindView(R.id.adView)
     AdView bannerAd;
+
+    @BindView(R.id.todayEmptyStateTextNotes)
+    TextView emptyStateNotes;
+    @BindView(R.id.progressBarNotes)
+    ProgressBar progressBarNotes;
 
     private TreatmentPagerAdapter treatmentPagerAdapter;
 
@@ -195,8 +203,10 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     }
 
     private void retrieveNotes() {
-        model.getNoteList().observe(this, noteEntities ->
-                notesAdapter.replaceDataSet(noteEntities));
+        model.getNoteList().observe(this, noteEntities ->{
+                    notesAdapter.replaceDataSet(noteEntities);
+            setProgressBarAndEmptyState(noteEntities);
+                });
     }
 
     /**
@@ -323,6 +333,16 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
         repository.updateSymptomName(symptomId, name);
 
         WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
+    }
+
+    private void setProgressBarAndEmptyState(List<NoteEntity> noteEntities) {
+        int noteListSize = noteEntities.size();
+        progressBarNotes.setVisibility(View.GONE);
+        if(noteListSize > 0){
+            emptyStateNotes.setVisibility(View.GONE);
+        } else {
+            emptyStateNotes.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

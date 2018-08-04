@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
@@ -22,6 +24,7 @@ import com.example.user.symptomtracker.viewmodel.DetailActivityViewModel;
 import com.example.user.symptomtracker.viewmodel.DetailActivityViewModelFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +47,10 @@ public class TreatmentFragment extends Fragment implements
 
     @BindView(R.id.treatmentRv)
     RecyclerView treatmentRv;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.todayEmptyStateText)
+    TextView emptyStateText;
 
     /**
      * Differentiate for weather to get current or past treatments
@@ -54,6 +61,7 @@ public class TreatmentFragment extends Fragment implements
     private AppDatabase db;
     private DetailActivityViewModel model;
     private Repository repository;
+
     public TreatmentFragment() {
     }
 
@@ -111,12 +119,12 @@ public class TreatmentFragment extends Fragment implements
 
     private void retrieveCurrentTreatments() {
         model.getCurrentTreatments().observe(this, treatmentEntities ->
-                treatmentAdapter.replaceDataSet(treatmentEntities));
+            refreshData(treatmentEntities, ID_FRAGMENT_CURRENT));
     }
 
     private void retrievePastTreatments() {
         model.getPastTreatments().observe(this, treatmentEntities ->
-                treatmentAdapter.replaceDataSet(treatmentEntities));
+                    refreshData(treatmentEntities, ID_FRAGMENT_PAST));
     }
 
     private void showEditTreatmentDialog(int id, @Nullable TreatmentEntity treatment) {
@@ -147,5 +155,26 @@ public class TreatmentFragment extends Fragment implements
     @Override
     public void onEditTreatment(TreatmentEntity treatment) {
         showEditTreatmentDialog(ID_ACTION_EDIT, treatment);
+    }
+
+    private void refreshData(List<TreatmentEntity> treatmentEntities, int fragmentId) {
+        treatmentAdapter.replaceDataSet(treatmentEntities);
+        int treatmentListSize = treatmentEntities.size();
+        setProgressBarAndEmptyStateText(treatmentListSize, fragmentId);
+    }
+
+    private void setProgressBarAndEmptyStateText(int treatmentListSize, int fragmentId) {
+        progressBar.setVisibility(View.GONE);
+        if (treatmentListSize > 0){
+            emptyStateText.setVisibility(View.GONE);
+        } else {
+            emptyStateText.setVisibility(View.VISIBLE);
+        }
+
+        if (fragmentId == ID_FRAGMENT_CURRENT){
+            emptyStateText.setText(getString(R.string.empty_treatments_current));
+        } else if (fragmentId == ID_FRAGMENT_PAST){
+            emptyStateText.setText(getString(R.string.empty_treatments_past));
+        }
     }
 }

@@ -122,8 +122,9 @@
     <!-- Empty state text -->
     <string name="empty_no_unresolved_symptoms">There are no unresolved symptoms</string>
     <string name="empty_fragment_resolved_coming_soon">Resolved Overview coming soon</string>
-
-
+    <string name="empty_treatments_current">You haven\'t added any current treatments</string>
+    <string name="empty_treatments_past">There are no past treatments</string>
+    <string name="empty_notes">You haven\'t added any notes yet</string>
 
     <string name="add_widget">Add widget</string>
     <string name="add_new_symptom">Add new symptom</string>

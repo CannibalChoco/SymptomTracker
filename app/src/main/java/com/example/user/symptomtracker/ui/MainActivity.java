@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
-            // TODO: Show progress?
             case R.id.navigation_today:
                 setTodayFragment(FRAGMENT_REPLACE);
                 return true;
