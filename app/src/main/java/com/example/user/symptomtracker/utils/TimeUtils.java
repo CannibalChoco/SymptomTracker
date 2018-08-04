@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import com.example.user.symptomtracker.R;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -101,5 +102,11 @@ public class TimeUtils {
 
     public static long getTimeWeekAgo(){
         return System.currentTimeMillis() - WEEK_TO_MILLIS;
+    }
+
+    public static String getDay(long millis){
+        Date date = new Date(millis);
+        DateFormat format = new SimpleDateFormat("EEE");
+        return String.valueOf(format.format(date));
     }
 }
