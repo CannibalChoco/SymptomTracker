@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.Symptom;
@@ -41,6 +42,8 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     RecyclerView recyclerView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.todayEmptyStateText)
+    TextView emptyStateText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,12 +52,9 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, rootView);
 
-        progressBar.setVisibility(View.VISIBLE);
+        initProgressBarAndEmptyState();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        initRecyclerView();
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
@@ -65,8 +65,14 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     private void getDataFromViewModel() {
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
-        model.getUnresolvedSymptomsLiveData().observe(getActivity(), symptoms ->
-                adapter.replaceDataSet(symptoms));
+        model.getUnresolvedSymptomsLiveData().observe(getActivity(), symptoms -> {
+            adapter.replaceDataSet(symptoms);
+            if (symptoms.size() < 1){
+                emptyStateText.setVisibility(View.VISIBLE);
+            } else {
+                emptyStateText.setVisibility(View.GONE);
+            }
+        });
         progressBar.setVisibility(View.GONE);
     }
 
@@ -76,5 +82,17 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(DetailActivity.KEY_ID, id);
         startActivity(intent);
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initProgressBarAndEmptyState() {
+        progressBar.setVisibility(View.VISIBLE);
+        emptyStateText.setVisibility(View.GONE);
     }
 }

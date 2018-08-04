@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.utils.JobServiceUtils;
@@ -38,12 +40,15 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout fragmentContainer;
     @BindView(R.id.adView)
     AdView bannerAd;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     FragmentManager fm;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
+            // TODO: Show progress?
             case R.id.navigation_today:
                 setTodayFragment(FRAGMENT_REPLACE);
                 return true;
@@ -109,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             setOverviewFragment(action);
             navigationView.setSelectedItemId(R.id.navigation_overview);
         }
+
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -162,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.dest_fragment_container, overviewFragment)
                     .commit();
         }
+
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -180,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.dest_fragment_container, todayFragment)
                     .commit();
         }
+
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -191,5 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.dest_fragment_container, resolvedFragment)
                 .commit();
+
+        progressBar.setVisibility(View.GONE);
     }
 }

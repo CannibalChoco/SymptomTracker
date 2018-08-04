@@ -120,6 +120,7 @@
     <string name="content_treatment_time">Time</string>
 
     <!-- Empty state text -->
+    <string name="empty_no_unresolved_symptoms">There are no unresolved symptoms</string>
     <string name="empty_fragment_resolved_coming_soon">Resolved Overview coming soon</string>
 
 

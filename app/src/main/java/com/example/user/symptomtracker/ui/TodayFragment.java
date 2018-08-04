@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.Repository;
@@ -45,8 +46,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     @BindView(R.id.rvToday)
     RecyclerView recyclerView;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+    private static ProgressBar progressBar;
+    private static TextView emptyStateText;
 
     static TodayAdapter adapter;
     static AppDatabase db;
@@ -61,16 +62,12 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         ButterKnife.bind(this, rootView);
 
-
-        progressBar.setVisibility(View.VISIBLE);
+        initProgressbarAndEmptyState(rootView);
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new TodayAdapter(new ArrayList<>(), this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        initRecyclerView();
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
@@ -125,8 +122,26 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
                 symptoms = symptomList;
                 model.setUnresolvedSymptoms(symptomList);
                 adapter.replaceSymptomData(symptomList);
-                // TODO: set progressbar gone
+                emptyStateText.setVisibility(View.GONE);
+            } else {
+                emptyStateText.setVisibility(View.VISIBLE);
             }
+
+            progressBar.setVisibility(View.GONE);
         }
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        adapter = new TodayAdapter(new ArrayList<>(), this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initProgressbarAndEmptyState(View rootView) {
+        progressBar = rootView.findViewById(R.id.progressBar);
+        emptyStateText = rootView.findViewById(R.id.todayEmptyStateText);
+        progressBar.setVisibility(View.VISIBLE);
+        emptyStateText.setVisibility(View.GONE);
     }
 }
