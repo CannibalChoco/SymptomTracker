@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
-import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.ui.adapter.OverviewAdapter;
 import com.example.user.symptomtracker.viewmodel.MainActivityViewModel;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -86,7 +85,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        adapter = new OverviewAdapter(new ArrayList<Symptom>(), this);
+        adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }

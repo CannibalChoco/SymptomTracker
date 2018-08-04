@@ -199,7 +199,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
     private void retrieveSeverity() {
         model.getSeverityList().observe(this, severityEntities ->
-                GraphUtils.initBarChart(graph, severityEntities));
+                GraphUtils.initBarChart(this, graph, severityEntities));
     }
 
     private void retrieveNotes() {

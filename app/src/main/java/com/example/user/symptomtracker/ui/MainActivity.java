@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.utils.JobServiceUtils;
@@ -40,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout fragmentContainer;
     @BindView(R.id.adView)
     AdView bannerAd;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
 
     FragmentManager fm;
 
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         fm = getSupportFragmentManager();
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             setFragmentOnLaunch();
         }
 
@@ -113,16 +109,15 @@ public class MainActivity extends AppCompatActivity {
             setOverviewFragment(action);
             navigationView.setSelectedItemId(R.id.navigation_overview);
         }
-
-        progressBar.setVisibility(View.GONE);
     }
 
     /**
      * Checks intent extra and performs action based on extra
+     *
      * @param intent
      */
     private void setFragmentOnNewIntent(Intent intent) {
-        if (intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)){
+        if (intent.hasExtra(WIDGET_KEY_FRAGMENT_ID)) {
             int fragmentId = intent.getIntExtra(WIDGET_KEY_FRAGMENT_ID, DEFAULT_FRAGMENT_ID);
 
             if (fragmentId == 0) {
@@ -157,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setOverviewFragment(int action) {
         OverviewFragment overviewFragment = new OverviewFragment();
-        if (action == FRAGMENT_ADD){
+        if (action == FRAGMENT_ADD) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.dest_fragment_container, overviewFragment)
@@ -168,8 +163,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.dest_fragment_container, overviewFragment)
                     .commit();
         }
-
-        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -177,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setTodayFragment(int action) {
         TodayFragment todayFragment = new TodayFragment();
-        if (action == FRAGMENT_ADD){
+        if (action == FRAGMENT_ADD) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.dest_fragment_container, todayFragment)
@@ -188,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.dest_fragment_container, todayFragment)
                     .commit();
         }
-
-        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -201,7 +192,5 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.dest_fragment_container, resolvedFragment)
                 .commit();
-
-        progressBar.setVisibility(View.GONE);
     }
 }

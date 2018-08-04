@@ -1,5 +1,6 @@
 package com.example.user.symptomtracker.ui.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,15 +22,17 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
     private List<Symptom> symptomList;
     private OnSymptomClickListener clickListener;
+    private Context context;
 
     public interface OnSymptomClickListener{
         void onSymptomSelected(int id);
     }
 
-    public OverviewAdapter(List<Symptom> symptomList,
+    public OverviewAdapter(Context context, List<Symptom> symptomList,
                            OnSymptomClickListener listener) {
         this.symptomList = symptomList;
         this.clickListener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -44,7 +47,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Symptom symptom = symptomList.get(position);
         holder.name.setText(symptom.getSymptom().getName());
-        GraphUtils.initBarChart(holder.graph, symptom.getSeverityList());
+        GraphUtils.initBarChart(context, holder.graph, symptom.getSeverityList());
     }
 
     @Override
