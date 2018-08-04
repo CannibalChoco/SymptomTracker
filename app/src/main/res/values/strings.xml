@@ -120,6 +120,9 @@
     <string name="content_treatment_time">Time</string>
 
     <!-- Empty state text -->
+    <string name="empty_fragment_resolved_coming_soon">Resolved Overview coming soon</string>
+
+
 
     <string name="add_widget">Add widget</string>
     <string name="add_new_symptom">Add new symptom</string>
