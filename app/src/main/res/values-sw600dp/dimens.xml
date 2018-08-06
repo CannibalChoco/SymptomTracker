@@ -4,10 +4,13 @@
     <dimen name="activity_horizontal_margin">24dp</dimen>
     <dimen name="activity_vertical_margin">24dp</dimen>
 
+    <dimen name="activity_horizontal_half_margin">12dp</dimen>
+    <dimen name="activity_vertical_half_margin">12dp</dimen>
+
     <dimen name="large_margin">64dp</dimen>
 
     <dimen name="tablet_top_colored_background">200dp</dimen>
-    <dimen name="tablet_card_tom_margin">@dimen/large_margin</dimen>
+    <dimen name="tablet_card_top_margin">@dimen/large_margin</dimen>
 
 
     <!-- Fixed layout heights -->
