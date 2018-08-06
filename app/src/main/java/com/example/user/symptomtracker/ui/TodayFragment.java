@@ -2,12 +2,10 @@ package com.example.user.symptomtracker.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +47,13 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     private static ProgressBar progressBar;
     private static TextView emptyStateText;
 
-    static TodayAdapter adapter;
+    TodayAdapter adapter;
     static AppDatabase db;
 
     private static MainActivityViewModel model;
     private static List<Symptom> symptoms;
+
+    private Repository repository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,72 +65,117 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         initProgressbarAndEmptyState(rootView);
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
+        repository = Repository.getInstance(db);
+
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
 
         initRecyclerView();
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
-        getValidData();
+        //getValidData();
+        getDataFromViewModel();
 
         return rootView;
     }
+
+    private void getDataFromViewModel() {
+        model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
+        model.getUnresolvedSymptomsLiveData().observe(getActivity(), symptoms -> {
+
+            adapter.replaceSymptomData(symptoms);
+
+//                TodayAdapter newAdapter = new TodayAdapter(symptoms, this);
+//                recyclerView.swapAdapter(newAdapter, true);
+
+            if (symptoms.size() < 1){
+                emptyStateText.setVisibility(View.VISIBLE);
+            } else {
+                emptyStateText.setVisibility(View.GONE);
+            }
+        });
+        progressBar.setVisibility(View.GONE);
+    }
+
 
     /**
      * Checks ViewModel if there is valid data cached. If there is, uses that data, otherwise
      * queries database for fresh data. Sends that data to adapter
      */
-    private void getValidData() {
-        if (model.isSymptomDataForTodayValid()) {
-            symptoms = model.getUnresolvedSymptoms();
-            adapter.replaceSymptomData(symptoms);
-
-            progressBar.setVisibility(View.GONE);
-        } else {
-            new GetSeverityAsyncTask().execute();
-        }
-    }
+//    private void getValidData() {
+//        if (model.isSymptomDataForTodayValid()) {
+//            symptoms = model.getUnresolvedSymptoms();
+//            adapter.replaceSymptomData(symptoms);
+//
+//            progressBar.setVisibility(View.GONE);
+//        } else {
+//            new GetSeverityAsyncTask().execute();
+//        }
+//    }
 
     @Override
-    public void onSeverityClicked(int parentId, final int severity) {
-        model.invalidateSymptomDataForToday();
+    public void onSeverityInsert(int parentId, final int severity) {
+        //model.invalidateSymptomDataForToday();
         final SeverityEntity severityEntity = new SeverityEntity(parentId, severity,
                 new Date().getTime());
 
-        // TODO: get severity from adapter
-        Repository.getInstance(db).saveSeverity(severityEntity);
+        repository.saveSeverity(severityEntity);
+
+
+        //new GetSeverityAsyncTask().execute();
+
+
+        WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
+    }
+
+    @Override
+    public void onSeverityUpdate(int severityEntityId, int newSeverityValue) {
+        //model.invalidateSymptomDataForToday();
+        repository.updateSeverity(severityEntityId, newSeverityValue, System.currentTimeMillis());
+
+
+        //new GetSeverityAsyncTask().execute();
+
+
         WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
     }
 
     /**
-     * AsyncTask needed for db read, because ToggleButtonGroup does not work if the dataset comes
-     * from LiveData.
+     * AsyncTask for db read
+     *
      * AsyncTask retrieves Symptom list from database, caches it in MainActivityViewModel, and reloads
      * only if the user has entered new data
      */
-    private static class GetSeverityAsyncTask extends AsyncTask<Void, Void, List<Symptom>> {
-
-        @Override
-        protected List<Symptom> doInBackground(Void... voids) {
-            Log.d("ASYNCQUERY", "doInBackground");
-            return db.symptomDao().loadUnresolvedSymptoms();
-        }
-
-        @Override
-        protected void onPostExecute(List<Symptom> symptomList) {
-            super.onPostExecute(symptomList);
-            if (symptomList != null && symptomList.size() > 0) {
-                symptoms = symptomList;
-                model.setUnresolvedSymptoms(symptomList);
-                adapter.replaceSymptomData(symptomList);
-                emptyStateText.setVisibility(View.GONE);
-            } else {
-                emptyStateText.setVisibility(View.VISIBLE);
-            }
-
-            progressBar.setVisibility(View.GONE);
-        }
-    }
+//    private static class GetSeverityAsyncTask extends AsyncTask<Void, Void, List<Symptom>> {
+//
+//        @Override
+//        protected List<Symptom> doInBackground(Void... voids) {
+//            Log.d("ASYNCQUERY", "doInBackground");
+//            return db.symptomDao().loadUnresolvedSymptoms();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Symptom> symptomList) {
+//            super.onPostExecute(symptomList);
+//            if (symptomList != null && symptomList.size() > 0) {
+//                symptoms = symptomList;
+//                model.setUnresolvedSymptoms(symptomList);
+//                //adapter.replaceSymptomData(symptomList);
+//
+//
+////                adapter.clearAdapter();
+////                adapter.addAllToAdapter(symptomList);
+//
+//
+//
+//                emptyStateText.setVisibility(View.GONE);
+//            } else {
+//                emptyStateText.setVisibility(View.VISIBLE);
+//            }
+//
+//            progressBar.setVisibility(View.GONE);
+//        }
+//    }
 
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

@@ -38,19 +38,9 @@ public class Repository {
         return sInstance;
     }
 
-    public int getSymptomCount(){
-        final int[] count = new int[1];
-        executors.diskIO().execute(() -> count[0] = db.symptomDao().getSymptomCount());
-        return count[0];
-    }
-
-    public void updateSeverity(SeverityEntity severity){
-        db.severityDao().updateSeverity(severity);
-    }
-
-    // TODO: move off main thread
-    public SeverityEntity getLastSeverityForSymptom(int id){
-        return db.severityDao().loadLastSeverityForSymptom(id);
+    public void updateSeverity(int id, int newSeverityValue, long timestamp){
+        executors.diskIO().execute(() -> db.severityDao().updateSeverityForId(
+                id, newSeverityValue, timestamp));
     }
 
     public List<Symptom> getUnresolvedSymptoms(){

@@ -31,8 +31,9 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     private OnSeverityClickListener clickListener;
 
     public interface OnSeverityClickListener {
-        // TODO: send severity with last entry timestamp
-        void onSeverityClicked(int parentId, int severity);
+        void onSeverityInsert(int parentId, int severity);
+
+        void onSeverityUpdate(int severityEntityId, int newSeverityValue);
     }
 
     public TodayAdapter(List<Symptom> symptomList,
@@ -52,27 +53,21 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        //holder.selectionGroup.clearCheck();
+
         Symptom symptom = symptomList.get(position);
         holder.name.setText(symptom.getSymptom().getName());
 
-        List<SeverityEntity> severityList = symptom.getSeverityList();
-
-        // TODO: set selection only if not set for today
-        int severityListSize = severityList.size();
-        if (severityList.size() > 0) {
-            SeverityEntity severity = severityList.get(severityListSize - 1);
-            long timestamp = severity.getTimestamp();
-            boolean addedToday = TimeUtils.severityAddedToday(timestamp);
-
-            // set checked if added today
-            if (addedToday){
-                int viewId = holder.getViewForSeverity(severity.getSeverity());
-                if (viewId != VIEW_NOT_FOUND) {
-                    holder.selectionGroup.check(viewId);
-                }
+        // set checked if added today
+        if (lastSeverityAddedToday(symptom)) {
+            List<SeverityEntity> severityEntityList = symptom.getSeverityList();
+            SeverityEntity lastSeverityEntity = severityEntityList.get(severityEntityList.size() - 1);
+            int viewId = holder.getViewForSeverity(lastSeverityEntity.getSeverity());
+            if (viewId != VIEW_NOT_FOUND) {
+                holder.selectionGroup.check(viewId);
             }
         }
-
     }
 
     @Override
@@ -81,12 +76,29 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     }
 
     public void replaceSymptomData(List<Symptom> symptomList) {
-        if (!this.symptomList.isEmpty()) {
+        int size = this.symptomList.size();
+        if (size > 0) {
             this.symptomList.clear();
+            notifyItemRangeRemoved(0, size);
         }
+
+        // TODO: reset the selection group ?
 
         this.symptomList.addAll(symptomList);
         notifyDataSetChanged();
+    }
+
+    public void addAllToAdapter(List<Symptom> symptomList) {
+        this.symptomList.addAll(symptomList);
+        notifyDataSetChanged();
+    }
+
+    public void clearAdapter() {
+        int size = this.symptomList.size();
+        if (size > 0) {
+            this.symptomList.clear();
+            notifyItemRangeRemoved(0, size);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -112,11 +124,26 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             selectionGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 int severity = getSeverityForView(checkedId);
 
-                int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
-                if (userHasChecked){
-                    listener.onSeverityClicked(parentId, severity);
-                }
+                if (userHasChecked) {
+                    // check if added today
+                    int position = getAdapterPosition();
 
+
+                    boolean lastSeverityAddedToday = lastSeverityAddedToday(symptomList.get(position));
+                    if (lastSeverityAddedToday) {
+                        // if added today- update, sending severityId, new severity value
+                        List<SeverityEntity> severityEntityList = symptomList.get(getAdapterPosition())
+                                .getSeverityList();
+                        SeverityEntity lastSeverityEntity = severityEntityList
+                                .get(severityEntityList.size() - 1);
+                        listener.onSeverityUpdate(lastSeverityEntity.getId(), severity);
+
+                    } else {
+                        // insert, sending parentId, severityValue
+                        int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
+                        listener.onSeverityInsert(parentId, severity);
+                    }
+                }
             });
         }
 
@@ -220,5 +247,19 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             }
             return viewId;
         }
+    }
+
+    private boolean lastSeverityAddedToday(Symptom symptom) {
+        List<SeverityEntity> severityEntityList = symptom.getSeverityList();
+
+        int severityListSize = severityEntityList.size();
+        if (severityListSize > 0) {
+            SeverityEntity lastSeverityEntity = severityEntityList.get(severityListSize - 1);
+
+            // set checked if added today
+            return TimeUtils.severityAddedToday(lastSeverityEntity.getTimestamp());
+        }
+
+        return false;
     }
 }

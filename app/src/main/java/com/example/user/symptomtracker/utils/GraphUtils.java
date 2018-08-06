@@ -36,19 +36,25 @@ public class GraphUtils {
          */
         ArrayList<String> labelX = new ArrayList<>();
 
-        for (int i = 0; i < listSize; i++) {
-            SeverityEntity severity = severityEntities.get(i);
-            entries.add(new BarEntry(i, severity.getSeverity()));
-            labelX.add(TimeUtils.getDay(severity.getTimestamp()));
+        if (listSize > 0){
+            for (int i = 0; i < listSize; i++) {
+                SeverityEntity severity = severityEntities.get(i);
+                entries.add(new BarEntry(i, severity.getSeverity()));
+                labelX.add(TimeUtils.getDay(severity.getTimestamp()));
+            }
         }
 
+        // TODO: fix crash when symptom is deleted
         graph.setDescription(null);
 
         XAxis xAxis = graph.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.TOP);
         // remove X axis lines
         xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter((value, axis) -> labelX.get((int) value));
+        if (labelX.size() > 0){
+            xAxis.setValueFormatter((value, axis) -> labelX.get((int) value));
+        }
+
 
         BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColor(R.color.colorPrimaryDark);

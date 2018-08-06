@@ -2,11 +2,8 @@ package com.example.user.symptomtracker.database.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
 
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 
@@ -21,15 +18,10 @@ public interface SeverityDao {
     @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC LIMIT 1")
     SeverityEntity loadLastSeverityForSymptom(int symptomId);
 
-    @Query("DELETE FROM severity WHERE symptom_id = :symptomId")
-    void deleteNotesForSymptom(int symptomId);
+    // TODO: update timestamp?
+    @Query("UPDATE severity SET severity = :newSeverity, timestamp = :newTimestamp WHERE id = :id ")
+    void updateSeverityForId(int id, int newSeverity, long newTimestamp);
 
     @Insert
     void insertSeverity(SeverityEntity severity);
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateSeverity(SeverityEntity severity);
-
-    @Delete
-    void deleteSeverity(SeverityEntity severity);
 }
