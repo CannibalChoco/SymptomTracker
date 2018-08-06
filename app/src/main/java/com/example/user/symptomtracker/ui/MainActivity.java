@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         // add Ads
         setupAds();
-        // add Firebase Analytics
-        setupFirebaseAnalytics();
 
         JobServiceUtils.scheduleCheckUnresolvedSymptoms(this);
     }

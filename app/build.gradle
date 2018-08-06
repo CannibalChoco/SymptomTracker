@@ -67,5 +67,3 @@ dependencies {
     // stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
 }
-
-apply plugin: 'com.google.gms.google-services'

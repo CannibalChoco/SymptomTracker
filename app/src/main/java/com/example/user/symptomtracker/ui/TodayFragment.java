@@ -21,7 +21,6 @@ import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.ui.adapter.TodayAdapter;
 import com.example.user.symptomtracker.utils.WidgetUtils;
 import com.example.user.symptomtracker.viewmodel.MainActivityViewModel;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,8 +69,6 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         model = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
 
         initRecyclerView();
-
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
         //getValidData();
         getDataFromViewModel();

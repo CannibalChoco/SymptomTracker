@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.ui.adapter.OverviewAdapter;
 import com.example.user.symptomtracker.viewmodel.MainActivityViewModel;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -54,8 +53,6 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         initProgressBarAndEmptyState();
 
         initRecyclerView();
-
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
         getDataFromViewModel();
 
