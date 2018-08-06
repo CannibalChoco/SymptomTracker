@@ -9,3 +9,7 @@
 /captures
 .externalNativeBuild
 /.idea/
+/gradle.properties
+app/google-services.json
+app/libs/
+symptomTrackerKeystore.jks
