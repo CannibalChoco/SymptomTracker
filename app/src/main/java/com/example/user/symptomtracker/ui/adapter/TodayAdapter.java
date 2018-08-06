@@ -53,9 +53,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        //holder.selectionGroup.clearCheck();
-
         Symptom symptom = symptomList.get(position);
         holder.name.setText(symptom.getSymptom().getName());
 
@@ -83,6 +80,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         }
 
         // TODO: reset the selection group ?
+
 
         this.symptomList.addAll(symptomList);
         notifyDataSetChanged();
@@ -128,7 +126,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                     // check if added today
                     int position = getAdapterPosition();
 
-
                     boolean lastSeverityAddedToday = lastSeverityAddedToday(symptomList.get(position));
                     if (lastSeverityAddedToday) {
                         // if added today- update, sending severityId, new severity value
@@ -144,6 +141,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                         listener.onSeverityInsert(parentId, severity);
                     }
                 }
+
             });
         }
 

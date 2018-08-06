@@ -6,6 +6,7 @@ import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -44,23 +45,39 @@ public class GraphUtils {
             }
         }
 
-        // TODO: fix crash when symptom is deleted
         graph.setDescription(null);
 
         XAxis xAxis = graph.getXAxis();
+        YAxis yAxis = graph.getAxisLeft();
+
         xAxis.setPosition(XAxis.XAxisPosition.TOP);
+        xAxis.setLabelCount(listSize, true);
+
         // remove X axis lines
         xAxis.setDrawGridLines(false);
         if (labelX.size() > 0){
             xAxis.setValueFormatter((value, axis) -> labelX.get((int) value));
         }
 
-
         BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColor(R.color.colorPrimaryDark);
+
         BarData barData = new BarData(dataSet);
+        barData.setValueFormatter(new IntegerValueFormatter());
+
+
         graph.setData(barData);
         graph.setVisibleXRange(VISIBLE_DAYS, VISIBLE_DAYS);
+
+        //graph.setVisibleYRange(0, 10, YAxis.AxisDependency.LEFT);
+        YAxis rightAxis = graph.getAxisRight();
+        rightAxis.setDrawLabels(false);
+        rightAxis.setEnabled(false);
+
+        yAxis.setAxisMaximum(10);
+        yAxis.setAxisMinimum(0);
+        yAxis.setLabelCount(10);
+
         graph.moveViewToX(listSize);
         graph.getLegend().setEnabled(false);
     }
