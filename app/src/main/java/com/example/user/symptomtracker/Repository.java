@@ -44,6 +44,15 @@ public class Repository {
         return count[0];
     }
 
+    public void updateSeverity(SeverityEntity severity){
+        db.severityDao().updateSeverity(severity);
+    }
+
+    // TODO: move off main thread
+    public SeverityEntity getLastSeverityForSymptom(int id){
+        return db.severityDao().loadLastSeverityForSymptom(id);
+    }
+
     public List<Symptom> getUnresolvedSymptoms(){
         return db.symptomDao().loadUnresolvedSymptoms();
     }

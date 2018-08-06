@@ -7,7 +7,9 @@ import com.example.user.symptomtracker.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +29,9 @@ public class TimeUtils {
     public static final int TIME_UNIT_DAY = 1;
     public static final int TIME_UNIT_WEEK = 2;
     public static final int TIME_UNIT_MONTH = 3;
+
+    private static final String DAY_FORMAT = "EEE";
+    private static final int DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
     public static String getDateStringFromTimestamp(long timestamp) {
         Date date = new Date(timestamp);
@@ -106,7 +111,33 @@ public class TimeUtils {
 
     public static String getDay(long millis){
         Date date = new Date(millis);
-        DateFormat format = new SimpleDateFormat("EEE");
+        DateFormat format = new SimpleDateFormat(DAY_FORMAT);
         return String.valueOf(format.format(date));
+    }
+
+    /**
+     * Compare timestamp with todays start of day
+     *
+     * @param timestamp to compare
+     * @return true if timestamp not smaller than todays start of day, false otherwise
+     */
+    public static boolean severityAddedToday(long timestamp){
+        return timestamp >= getStartOfDay();
+    }
+
+    /**
+     * Get todays start of day in milliseconds
+     * @return start of day in millis
+     */
+    private static long getStartOfDay() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTimeInMillis();
     }
 }

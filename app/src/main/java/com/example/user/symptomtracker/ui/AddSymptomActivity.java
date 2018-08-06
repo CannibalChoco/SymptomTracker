@@ -227,7 +227,7 @@ public class AddSymptomActivity extends AppCompatActivity {
             context.get().startActivity(intent);
 
             WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
-        }
+            }
     }
 
 }

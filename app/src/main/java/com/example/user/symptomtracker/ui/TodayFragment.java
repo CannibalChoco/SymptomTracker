@@ -97,6 +97,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         final SeverityEntity severityEntity = new SeverityEntity(parentId, severity,
                 new Date().getTime());
 
+        // TODO: get severity from adapter
         Repository.getInstance(db).saveSeverity(severityEntity);
         WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
     }

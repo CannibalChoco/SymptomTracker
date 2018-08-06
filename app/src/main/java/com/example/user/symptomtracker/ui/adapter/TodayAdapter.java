@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
+import com.example.user.symptomtracker.utils.TimeUtils;
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
     private OnSeverityClickListener clickListener;
 
     public interface OnSeverityClickListener {
+        // TODO: send severity with last entry timestamp
         void onSeverityClicked(int parentId, int severity);
     }
 
@@ -55,12 +57,19 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
         List<SeverityEntity> severityList = symptom.getSeverityList();
 
+        // TODO: set selection only if not set for today
         int severityListSize = severityList.size();
         if (severityList.size() > 0) {
             SeverityEntity severity = severityList.get(severityListSize - 1);
-            int viewId = holder.getViewForSeverity(severity.getSeverity());
-            if (viewId != VIEW_NOT_FOUND) {
-                holder.selectionGroup.check(viewId);
+            long timestamp = severity.getTimestamp();
+            boolean addedToday = TimeUtils.severityAddedToday(timestamp);
+
+            // set checked if added today
+            if (addedToday){
+                int viewId = holder.getViewForSeverity(severity.getSeverity());
+                if (viewId != VIEW_NOT_FOUND) {
+                    holder.selectionGroup.check(viewId);
+                }
             }
         }
 
@@ -102,6 +111,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         private void setSelectionListener() {
             selectionGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 int severity = getSeverityForView(checkedId);
+
                 int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
                 if (userHasChecked){
                     listener.onSeverityClicked(parentId, severity);

@@ -19,7 +19,7 @@ public interface SeverityDao {
     LiveData<List<SeverityEntity>> loadSeverityForSymptom(int symptomId);
 
     @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC LIMIT 1")
-    LiveData<SeverityEntity> loadLastSeverityForSymptom(int symptomId);
+    SeverityEntity loadLastSeverityForSymptom(int symptomId);
 
     @Query("DELETE FROM severity WHERE symptom_id = :symptomId")
     void deleteNotesForSymptom(int symptomId);
