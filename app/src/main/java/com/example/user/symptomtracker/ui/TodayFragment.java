@@ -3,6 +3,7 @@ package com.example.user.symptomtracker.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     private static final String NAME = TodayFragment.class.getSimpleName();
 
+    private static final String KEY_RV_STATE = "rvState";
+
     public TodayFragment() {
         // Required empty public constructor
     }
@@ -48,6 +51,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     static AppDatabase db;
 
     private static MainActivityViewModel model;
+
+    private LinearLayoutManager layoutManager;
 
     private Repository repository;
 
@@ -75,7 +80,19 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
         getDataFromViewModel();
 
+        if (savedInstanceState != null){
+            layoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(
+                    KEY_RV_STATE));
+        }
+
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(KEY_RV_STATE, layoutManager.onSaveInstanceState());
     }
 
     @Override
@@ -134,7 +151,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     }
 
     private void initRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         adapter = new TodayAdapter(new ArrayList<>(), this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

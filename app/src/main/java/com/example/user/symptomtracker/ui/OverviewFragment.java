@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,9 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     private static final String NAME = OverviewFragment.class.getSimpleName();
 
+    private static final String KEY_GRID_RV_STATE = "gridviewState";
+    private static final String KEY_LINEAR_RV_STATE = "linearviewState";
+
     public OverviewFragment() {
         // Required empty public constructor
     }
@@ -45,6 +49,9 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     ProgressBar progressBar;
     @BindView(R.id.todayEmptyStateText)
     TextView emptyStateText;
+
+    GridLayoutManager gridLayoutManager;
+    LinearLayoutManager linearLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +68,30 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
         getDataFromViewModel();
 
+        if (savedInstanceState != null){
+            Configuration configuration = getResources().getConfiguration();
+            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                gridLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(
+                        KEY_GRID_RV_STATE));
+            } else {
+                linearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(
+                        KEY_LINEAR_RV_STATE));
+            }
+        }
+
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Configuration configuration = getResources().getConfiguration();
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            outState.putParcelable(KEY_GRID_RV_STATE, gridLayoutManager.onSaveInstanceState());
+        } else {
+            outState.putParcelable(KEY_LINEAR_RV_STATE, linearLayoutManager.onSaveInstanceState());
+        }
     }
 
     private void getDataFromViewModel() {
@@ -88,11 +118,11 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     private void initRecyclerView() {
         Configuration configuration = getResources().getConfiguration();
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-            recyclerView.setLayoutManager(layoutManager);
+            gridLayoutManager = new GridLayoutManager(getContext(), 2);
+            recyclerView.setLayoutManager(gridLayoutManager);
         } else {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
+            linearLayoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(linearLayoutManager);
         }
 
         adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);

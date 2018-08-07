@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -57,6 +59,10 @@ import static com.example.user.symptomtracker.ui.MainActivity.DUMMY_AD_ID;
 
 public class DetailActivity extends AppCompatActivity implements EditTextDialog.OnSaveText,
         NotesAdapter.OnNoteLongClickListener{
+
+    private static final String KEY_RV_TREATMENTS_STATE = "treatmentRvState";
+    private static final String KEY_RV_NOTES_STATE = "notesRvState";
+    private static final String KEY_SCROLL_POSITION = "scrollPosition";
 
     public static final String KEY_ID = "id";
     public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
@@ -96,6 +102,9 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     @BindView(R.id.progressBarNotes)
     ProgressBar progressBarNotes;
 
+    @BindView(R.id.detailMainScroll)
+    ScrollView detailMainScroll;
+
     private TreatmentPagerAdapter treatmentPagerAdapter;
 
     @BindDrawable(R.drawable.background_status_attention)
@@ -114,6 +123,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     @BindColor(R.color.colorStatusDefault)
     int colorStatusDefault;
 
+    private LinearLayoutManager notesLayoutManager;
     private NotesAdapter notesAdapter;
 
     private DetailActivityViewModel model;
@@ -169,9 +179,43 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putIntArray(KEY_SCROLL_POSITION, new int[]{detailMainScroll.getScrollX(),
+            detailMainScroll.getScrollY()});
+        outState.putParcelable(KEY_RV_NOTES_STATE, notesLayoutManager.onSaveInstanceState());
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Parcelable notesLayoutState = savedInstanceState.getParcelable(KEY_RV_NOTES_STATE);
+        notesLayoutManager.onRestoreInstanceState(notesLayoutState);
+
+        restoreScrollViewPosition(savedInstanceState);
+
+    }
+
+    /**
+     * Restore main scrollviews position if its not null
+     * @param savedInstanceState bundle that holds the state
+     */
+    private void restoreScrollViewPosition(Bundle savedInstanceState) {
+        int[] scrollPosition = savedInstanceState.getIntArray(KEY_SCROLL_POSITION);
+        if (scrollPosition != null){
+            int position0 = scrollPosition[0];
+            int position1 = scrollPosition[1];
+            detailMainScroll.post(() ->
+                    detailMainScroll.scrollTo(position0, position1));
+        }
+    }
+
     private void setUpNotesRecyclerView() {
         notesAdapter = new NotesAdapter(this, new ArrayList<>(), this);
-        LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
+        notesLayoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setAdapter(notesAdapter);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
         notesRecyclerView.setHasFixedSize(true);

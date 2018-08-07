@@ -34,6 +34,8 @@ public class TreatmentFragment extends Fragment implements
         EditTreatmentDialog.OnSaveTreatment,
         TreatmentAdapter.OnEditTreatment {
 
+    private static final String KEY_TREATMENT_RV_STATE = "treatmentRvState";
+
     public static final int ID_FRAGMENT_CURRENT = 0;
     public static final int ID_FRAGMENT_PAST = 1;
     public static final String KEY_FRAGMENT_ID = "fragmentId";
@@ -62,6 +64,8 @@ public class TreatmentFragment extends Fragment implements
     private DetailActivityViewModel model;
     private Repository repository;
 
+    private LinearLayoutManager treatmentLayoutManager;
+
     public TreatmentFragment() {
     }
 
@@ -89,13 +93,18 @@ public class TreatmentFragment extends Fragment implements
         DetailActivityViewModelFactory factory = new DetailActivityViewModelFactory(db, symptomId);
         model = ViewModelProviders.of(getActivity(), factory).get(DetailActivityViewModel.class);
 
-        LinearLayoutManager treatmentLayoutManager = new LinearLayoutManager(getContext());
+        treatmentLayoutManager = new LinearLayoutManager(getContext());
         treatmentRv.setLayoutManager(treatmentLayoutManager);
         treatmentRv.setHasFixedSize(true);
 
         treatmentAdapter = new TreatmentAdapter(getContext(),
                 new ArrayList<>(), this);
         treatmentRv.setAdapter(treatmentAdapter);
+
+        if (savedInstanceState != null){
+            treatmentLayoutManager.onRestoreInstanceState(savedInstanceState
+                    .getParcelable(KEY_TREATMENT_RV_STATE));
+        }
 
         return rootView;
     }
@@ -109,6 +118,13 @@ public class TreatmentFragment extends Fragment implements
         } else if (fragmentId == ID_FRAGMENT_PAST){
             retrievePastTreatments();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(KEY_TREATMENT_RV_STATE, treatmentLayoutManager.onSaveInstanceState());
     }
 
     @Nullable
