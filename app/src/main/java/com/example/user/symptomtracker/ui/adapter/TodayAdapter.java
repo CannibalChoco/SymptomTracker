@@ -5,14 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.example.user.symptomtracker.database.entity.Symptom;
 import com.example.user.symptomtracker.utils.TimeUtils;
-import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,9 +24,6 @@ import butterknife.OnClick;
  * responsible for displaying all active symptoms in Todays View for allowing the user to log data
  */
 public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> {
-
-    private static final int VIEW_NOT_FOUND = -1;
-    private boolean userHasChecked = false;
 
     private List<Symptom> symptomList;
     private OnSeverityClickListener clickListener;
@@ -60,10 +58,7 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         if (lastSeverityAddedToday(symptom)) {
             List<SeverityEntity> severityEntityList = symptom.getSeverityList();
             SeverityEntity lastSeverityEntity = severityEntityList.get(severityEntityList.size() - 1);
-            int viewId = holder.getViewForSeverity(lastSeverityEntity.getSeverity());
-            if (viewId != VIEW_NOT_FOUND) {
-                holder.selectionGroup.check(viewId);
-            }
+            holder.setPressedForSeverity(lastSeverityEntity.getSeverity());
         }
     }
 
@@ -78,9 +73,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             this.symptomList.clear();
             notifyItemRangeRemoved(0, size);
         }
-
-        // TODO: reset the selection group ?
-
 
         this.symptomList.addAll(symptomList);
         notifyDataSetChanged();
@@ -103,9 +95,32 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
         @BindView(R.id.todaySymptom)
         TextView name;
-        @BindView(R.id.selectionGroup)
-        SingleSelectToggleGroup selectionGroup;
         View view;
+
+        @BindView(R.id.severity0)
+        Button button0;
+        @BindView(R.id.severity1)
+        Button button1;
+        @BindView(R.id.severity2)
+        Button button2;
+        @BindView(R.id.severity3)
+        Button button3;
+        @BindView(R.id.severity4)
+        Button button4;
+        @BindView(R.id.severity5)
+        Button button5;
+        @BindView(R.id.severity6)
+        Button button6;
+        @BindView(R.id.severity7)
+        Button button7;
+        @BindView(R.id.severity8)
+        Button button8;
+        @BindView(R.id.severity9)
+        Button button9;
+        @BindView(R.id.severity10)
+        Button button10;
+
+        List<Button> buttonList;
 
         OnSeverityClickListener listener;
 
@@ -115,36 +130,25 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             this.view = itemView;
             this.listener = listener;
 
-            setSelectionListener();
+            buttonList = new ArrayList<>();
+            buttonList.add(button0);
+            buttonList.add(button1);
+            buttonList.add(button2);
+            buttonList.add(button3);
+            buttonList.add(button4);
+            buttonList.add(button5);
+            buttonList.add(button6);
+            buttonList.add(button7);
+            buttonList.add(button8);
+            buttonList.add(button9);
+            buttonList.add(button10);
         }
 
-        private void setSelectionListener() {
-            selectionGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                int severity = getSeverityForView(checkedId);
-
-                if (userHasChecked) {
-                    // check if added today
-                    int position = getAdapterPosition();
-
-                    boolean lastSeverityAddedToday = lastSeverityAddedToday(symptomList.get(position));
-                    if (lastSeverityAddedToday) {
-                        // if added today- update, sending severityId, new severity value
-                        List<SeverityEntity> severityEntityList = symptomList.get(getAdapterPosition())
-                                .getSeverityList();
-                        SeverityEntity lastSeverityEntity = severityEntityList
-                                .get(severityEntityList.size() - 1);
-                        listener.onSeverityUpdate(lastSeverityEntity.getId(), severity);
-
-                    } else {
-                        // insert, sending parentId, severityValue
-                        int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
-                        listener.onSeverityInsert(parentId, severity);
-                    }
-                }
-
-            });
-        }
-
+        /**
+         * Handle logic for listeners
+         *
+         * @param view clicked view
+         */
         @OnClick({R.id.severity0,
                 R.id.severity1,
                 R.id.severity2,
@@ -157,9 +161,32 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
                 R.id.severity9,
                 R.id.severity10})
         public void severitySet(View view) {
-            userHasChecked = true;
+            // get severity for view
+            int severity = getSeverityForView(view.getId());
+
+            int position = getAdapterPosition();
+            // check if added today
+            boolean lastSeverityAddedToday = lastSeverityAddedToday(symptomList.get(position));
+            if (lastSeverityAddedToday) {
+                // if added today- update, sending severityId, new severity value
+                List<SeverityEntity> severityEntityList = symptomList.get(getAdapterPosition())
+                        .getSeverityList();
+                SeverityEntity lastSeverityEntity = severityEntityList
+                        .get(severityEntityList.size() - 1);
+                listener.onSeverityUpdate(lastSeverityEntity.getId(), severity);
+
+            } else {
+                // insert, sending parentId, severityValue
+                int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
+                listener.onSeverityInsert(parentId, severity);
+            }
         }
 
+        /**
+         * Matches the pressed button to a severity value
+         * @param checkedId view Id of the checked view Id
+         * @return
+         */
         private int getSeverityForView(int checkedId) {
             int severity;
             switch (checkedId) {
@@ -203,47 +230,67 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             return severity;
         }
 
-        private int getViewForSeverity(int severity) {
-            int viewId;
+        /**
+         * Matches severity value to a button. Calls setButtonListState, passing the button to set
+         * pressed
+         * @param severity int severity value
+         */
+        private void setPressedForSeverity(int severity) {
+            Button button;
             switch (severity) {
                 case 0:
-                    viewId = R.id.severity0;
+                    button = button0;
                     break;
                 case 1:
-                    viewId = R.id.severity1;
+                    button = button1;
                     break;
                 case 2:
-                    viewId = R.id.severity2;
+                    button = button2;
                     break;
                 case 3:
-                    viewId = R.id.severity3;
+                    button = button3;
                     break;
                 case 4:
-                    viewId = R.id.severity4;
+                    button = button4;
                     break;
                 case 5:
-                    viewId = R.id.severity5;
+                    button = button5;
                     break;
                 case 6:
-                    viewId = R.id.severity6;
+                    button = button6;
                     break;
                 case 7:
-                    viewId = R.id.severity7;
+                    button = button7;
                     break;
                 case 8:
-                    viewId = R.id.severity8;
+                    button = button8;
                     break;
                 case 9:
-                    viewId = R.id.severity9;
+                    button = button9;
                     break;
                 case 10:
-                    viewId = R.id.severity10;
+                    button = button10;
                     break;
                 default:
-                    viewId = VIEW_NOT_FOUND;
+                    button = null;
                     break;
             }
-            return viewId;
+
+            setButtonListState(button);
+        }
+
+        /**
+         * Goes through the button list and sets button pressed state either to true or false
+         * @param pressedButton the button that will be set pressed
+         */
+        private void setButtonListState(Button pressedButton){
+            for (Button button : buttonList){
+                if (button == pressedButton){
+                    button.setPressed(true);
+                } else {
+                    button.setPressed(false);
+                }
+            }
         }
     }
 

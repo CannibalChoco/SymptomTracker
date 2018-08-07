@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/todaySymptom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Symptom name" />
+
+    <HorizontalScrollView
+        android:id="@+id/scrollSeverity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fadeScrollbars="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todaySymptom">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/severity0"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_00" />
+
+            <Button
+                android:id="@+id/severity1"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_1" />
+
+            <Button
+                android:id="@+id/severity2"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_2" />
+
+            <Button
+                android:id="@+id/severity3"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_3" />
+
+            <Button
+                android:id="@+id/severity4"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_4" />
+
+            <Button
+                android:id="@+id/severity5"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_5" />
+
+            <Button
+                android:id="@+id/severity6"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_6" />
+
+            <Button
+                android:id="@+id/severity7"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_7" />
+
+            <Button
+                android:id="@+id/severity8"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_8" />
+
+            <Button
+                android:id="@+id/severity9"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_9" />
+
+            <Button
+                android:id="@+id/severity10"
+                style="@style/ButtonSeverityStyle"
+                android:text="@string/severity_10" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</android.support.constraint.ConstraintLayout>

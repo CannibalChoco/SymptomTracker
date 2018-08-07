@@ -68,9 +68,6 @@ dependencies {
     // MPAndroidChart
     implementation "com.github.PhilJay:MPAndroidChart:$mpandroidchart_version"
 
-    // ToggleButtonGroup
-    implementation 'com.nex3z:toggle-button-group:1.1.4'
-
     // Firebase JobDispatcher
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 

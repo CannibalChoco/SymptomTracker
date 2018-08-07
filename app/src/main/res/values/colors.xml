@@ -23,4 +23,12 @@
     <color name="bottomNavChecked">@android:color/white</color>
     <color name="bottomNavDefault">#c892b9</color>
 
+    <!-- Severity button state colors -->
+    <color name="colorAccentExtraLight">#ffb477</color>
+
+    <color name="severityStateDefault">@android:color/white</color>
+    <color name="severityStateFocusedSolid">#fcc9a1</color>
+    <color name="severityStateFocusedStroke">#fdac93</color>
+    <color name="severityStateChecked">@color/colorAccent</color>
+
 </resources>
