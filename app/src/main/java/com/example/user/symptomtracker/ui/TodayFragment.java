@@ -51,12 +51,16 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     private Repository repository;
 
+    private boolean canRestoreButtonState;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         ButterKnife.bind(this, rootView);
+
+        canRestoreButtonState = false;
 
         initProgressbarAndEmptyState(rootView);
 
@@ -69,10 +73,23 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
-        //getValidData();
         getDataFromViewModel();
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(canRestoreButtonState){
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        canRestoreButtonState = true;
     }
 
     private void getDataFromViewModel() {
