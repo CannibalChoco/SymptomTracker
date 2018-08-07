@@ -109,7 +109,6 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     @Override
     public void onSymptomSelected(int id) {
-        // TODO: refactor. The same code in OverviewFragment
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(DetailActivity.KEY_ID, id);
         startActivity(intent);
@@ -125,7 +124,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
             recyclerView.setLayoutManager(linearLayoutManager);
         }
 
-        adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);
+        adapter = new OverviewAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
     }
 

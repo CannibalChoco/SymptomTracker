@@ -13,9 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
@@ -43,15 +42,9 @@ public class AddSymptomActivity extends AppCompatActivity {
     @BindView(R.id.editSymptomName)
     EditText editSymptomName;
     @BindView(R.id.radioStatusDoctor)
-    RadioButton radioStatusDoctor;
-    @BindView(R.id.radioGroupStatus)
-    RadioGroup radioGroupStatus;
-    @BindView(R.id.radioStatusNew)
-    RadioButton radioStatusNew;
-    @BindView(R.id.radioStatusReoccurring)
-    RadioButton radioStatusReoccurring;
+    CheckBox radioStatusDoctor;
     @BindView(R.id.radioStatusChronic)
-    RadioButton radioStatusChronic;
+    CheckBox checkStatusChronic;
     @BindView(R.id.addNote)
     EditText editAddNote;
 
@@ -122,7 +115,6 @@ public class AddSymptomActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO
         switch (item.getItemId()){
             case R.id.action_save:
                 saveInDb();
@@ -176,8 +168,8 @@ public class AddSymptomActivity extends AppCompatActivity {
         symptomName = editSymptomName.getText().toString();
 
         doctorIsInformed = radioStatusDoctor.isChecked();
-        isChronic = radioStatusChronic.isChecked();
-        isReoccurring = radioStatusReoccurring.isChecked();
+        isChronic = checkStatusChronic.isChecked();
+        isReoccurring = false;
 
         note = editAddNote.getText().toString();
     }
@@ -186,9 +178,7 @@ public class AddSymptomActivity extends AppCompatActivity {
     private void setTouchListener() {
         editSymptomName.setOnTouchListener(touchListener);
         editAddNote.setOnTouchListener(touchListener);
-        radioGroupStatus.setOnTouchListener(touchListener);
-        radioStatusChronic.setOnTouchListener(touchListener);
-        radioStatusReoccurring.setOnTouchListener(touchListener);
+        checkStatusChronic.setOnTouchListener(touchListener);
     }
 
     /**

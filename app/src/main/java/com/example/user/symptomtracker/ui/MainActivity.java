@@ -3,7 +3,6 @@ package com.example.user.symptomtracker.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView bannerAd;
 
-    FragmentManager fm;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
@@ -63,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        fm = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
             setFragmentOnLaunch();

@@ -10,16 +10,12 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Utility class for initializing Jobs
  */
 public class JobServiceUtils {
 
     private static final int REMINDER_INTERVAL_HOURS = 24;
-    private static final int REMINDER_INTERVAL_SECONDS = (int)TimeUnit.HOURS.toSeconds(
-            REMINDER_INTERVAL_HOURS);
 
     private static final String REMINDER_JOB_TAG = "check_unresolved_symptoms_job";
 
@@ -38,7 +34,6 @@ public class JobServiceUtils {
                 .setTag(REMINDER_JOB_TAG)
                 .setRecurring(true)
                 .setLifetime(Lifetime.FOREVER)
-                // TODO: set windowEnd to 1 day
                 .setTrigger(Trigger.executionWindow(0, 60))
                 .setReplaceCurrent(true)
                 .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)

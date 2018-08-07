@@ -82,7 +82,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
 
         @BindView(R.id.todaySymptom)
         TextView name;
-        View view;
 
         @BindView(R.id.severity0)
         Button button0;
@@ -114,7 +113,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         public ViewHolder(View itemView, OnSeverityClickListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.view = itemView;
             this.listener = listener;
 
             buttonList = new ArrayList<>();

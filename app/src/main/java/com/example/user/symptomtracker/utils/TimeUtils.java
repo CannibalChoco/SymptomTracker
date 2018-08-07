@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class TimeUtils {
 
-    private static final long DEBUG_MINUTE_TO_MILLIS = TimeUnit.MINUTES.toMillis(1);
     public static final long WEEK_TO_MILLIS = TimeUnit.DAYS.toMillis(7);
 
     public static final int DAY = 1;
@@ -31,7 +30,6 @@ public class TimeUtils {
     public static final int TIME_UNIT_MONTH = 3;
 
     private static final String DAY_FORMAT = "EEE";
-    private static final int DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
     public static String getDateStringFromTimestamp(long timestamp) {
         Date date = new Date(timestamp);

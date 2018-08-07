@@ -15,10 +15,6 @@ public interface SeverityDao {
     @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC")
     LiveData<List<SeverityEntity>> loadSeverityForSymptom(int symptomId);
 
-    @Query("SELECT * FROM severity WHERE symptom_id = :symptomId ORDER BY timestamp ASC LIMIT 1")
-    SeverityEntity loadLastSeverityForSymptom(int symptomId);
-
-    // TODO: update timestamp?
     @Query("UPDATE severity SET severity = :newSeverity, timestamp = :newTimestamp WHERE id = :id ")
     void updateSeverityForId(int id, int newSeverity, long newTimestamp);
 

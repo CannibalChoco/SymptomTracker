@@ -17,35 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/middleGutter"
-        app:layout_constraintTop_toBottomOf="@+id/radioStatusChronic">
-
-        <RadioButton
-            android:id="@+id/radioStatusNew"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/status_new"
-            app:layout_constraintStart_toStartOf="@+id/middleGutter"
-            app:layout_constraintTop_toBottomOf="@+id/radioStatusChronic" />
-
-        <RadioButton
-            android:id="@+id/radioStatusReoccurring"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/status_reoccurring"
-            app:layout_constraintBaseline_toBaselineOf="@+id/radioStatusNew"
-            app:layout_constraintStart_toEndOf="@+id/radioStatusNew" />
-
-    </RadioGroup>
-
-    <RadioButton
+    <CheckBox
         android:id="@+id/radioStatusDoctor"
         android:layout_width="171dp"
         android:layout_height="wrap_content"
@@ -86,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSymptomName" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/radioStatusChronic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,7 +77,7 @@
         android:text="@string/label_notes"
         android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/radioStatusChronic" />
 
     <EditText
         android:id="@+id/addNote"

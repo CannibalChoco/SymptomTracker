@@ -60,7 +60,6 @@ import static com.example.user.symptomtracker.ui.MainActivity.DUMMY_AD_ID;
 public class DetailActivity extends AppCompatActivity implements EditTextDialog.OnSaveText,
         NotesAdapter.OnNoteLongClickListener{
 
-    private static final String KEY_RV_TREATMENTS_STATE = "treatmentRvState";
     private static final String KEY_RV_NOTES_STATE = "notesRvState";
     private static final String KEY_SCROLL_POSITION = "scrollPosition";
 
@@ -243,7 +242,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
     private void retrieveSeverity() {
         model.getSeverityList().observe(this, severityEntities ->
-                GraphUtils.initBarChart(this, graph, severityEntities));
+                GraphUtils.initBarChart(graph, severityEntities));
     }
 
     private void retrieveNotes() {

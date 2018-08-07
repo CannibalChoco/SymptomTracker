@@ -44,8 +44,8 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     @BindView(R.id.rvToday)
     RecyclerView recyclerView;
-    private static ProgressBar progressBar;
-    private static TextView emptyStateText;
+    private ProgressBar progressBar;
+    private TextView emptyStateText;
 
     TodayAdapter adapter;
     static AppDatabase db;

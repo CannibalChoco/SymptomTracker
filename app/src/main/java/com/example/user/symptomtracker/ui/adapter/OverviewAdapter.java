@@ -1,6 +1,5 @@
 package com.example.user.symptomtracker.ui.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,17 +21,15 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
     private List<Symptom> symptomList;
     private OnSymptomClickListener clickListener;
-    private Context context;
 
     public interface OnSymptomClickListener{
         void onSymptomSelected(int id);
     }
 
-    public OverviewAdapter(Context context, List<Symptom> symptomList,
+    public OverviewAdapter(List<Symptom> symptomList,
                            OnSymptomClickListener listener) {
         this.symptomList = symptomList;
         this.clickListener = listener;
-        this.context = context;
     }
 
     @NonNull
@@ -47,7 +44,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Symptom symptom = symptomList.get(position);
         holder.name.setText(symptom.getSymptom().getName());
-        GraphUtils.initBarChart(context, holder.graph, symptom.getSeverityList());
+        GraphUtils.initBarChart(holder.graph, symptom.getSeverityList());
     }
 
     @Override
@@ -55,15 +52,11 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         return symptomList != null ? symptomList.size() : 0;
     }
 
-    public void clear(){
-        int size = getItemCount();
-        this.symptomList.clear();
-        notifyItemRangeChanged(0, size);
-    }
-
     public void replaceDataSet(List<Symptom> symptomList){
+        int size = getItemCount();
         if (!this.symptomList.isEmpty()){
             this.symptomList.clear();
+            notifyItemRangeChanged(0, size);
         }
 
         this.symptomList.addAll(symptomList);
@@ -97,7 +90,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
             int position = getAdapterPosition();
             Symptom symptom = symptomList.get(position);
             int id = symptom.getSymptom().getId();
-            clickListener.onSymptomSelected(id);
+            listener.onSymptomSelected(id);
         }
     }
 }

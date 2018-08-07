@@ -14,9 +14,6 @@ import java.util.List;
 @Dao
 public interface TreatmentDao {
 
-    @Query("SELECT * FROM treatments WHERE symptom_id = :symptomId")
-    LiveData<List<TreatmentEntity>> loadTreatmentsForSymptom(int symptomId);
-
     @Query("SELECT * FROM treatments WHERE symptom_id = :symptomId AND is_active = :isActive")
     LiveData<List<TreatmentEntity>> loadTreatmentsByIsActive(int symptomId, boolean isActive);
 

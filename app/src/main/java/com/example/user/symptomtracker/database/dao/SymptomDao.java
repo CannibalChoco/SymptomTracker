@@ -15,9 +15,6 @@ import java.util.List;
 @Dao
 public interface SymptomDao {
 
-    @Query("SELECT COUNT(*) FROM symptom")
-    int getSymptomCount();
-
     @Transaction
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     LiveData<List<Symptom>> loadUnresolvedSymptomLiveData();
@@ -43,14 +40,6 @@ public interface SymptomDao {
      */
     @Query("SELECT * FROM symptom WHERE id = :id")
     LiveData<SymptomEntity> loadSymptomById(int id);
-
-    /**
-     * Get the symptoms Id by name
-     * @param name the symptoms name
-     * @return the symptoms auto-generated Id
-     */
-    @Query("SELECT id FROM symptom WHERE name = :name")
-    int getSymptomsId(String name);
 
     /**
      * Update the value of isResolved

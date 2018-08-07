@@ -33,9 +33,6 @@ import static com.example.user.symptomtracker.utils.TimeUtils.getTimeInMillis;
 
 public class EditTreatmentDialog extends DialogFragment {
 
-    public static final int ID_UPDATE_TREATMENT = 4;
-    public static final int ID_NEW_TREATMENT = 5;
-
     @BindView(R.id.editCurrentTreatmentName)
     EditText editTreatment;
     @BindView(R.id.editCurrentTime)

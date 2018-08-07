@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ButtonSeverityStyle">
+        <item name="android:layout_width">@dimen/btn_severity_dimension</item>
+        <item name="android:layout_height">@dimen/btn_severity_dimension</item>
+        <item name="android:layout_margin">@dimen/btn_severity_margin</item>
+        <item name="android:background">@drawable/button_severity</item>
+        <item name="android:textColor">@color/button_severity_text_color</item>
+        <item name="android:elevation">@dimen/elevation_button</item>
+    </style>
+
+
+</resources>
