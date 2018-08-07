@@ -78,19 +78,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void addAllToAdapter(List<Symptom> symptomList) {
-        this.symptomList.addAll(symptomList);
-        notifyDataSetChanged();
-    }
-
-    public void clearAdapter() {
-        int size = this.symptomList.size();
-        if (size > 0) {
-            this.symptomList.clear();
-            notifyItemRangeRemoved(0, size);
-        }
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.todaySymptom)

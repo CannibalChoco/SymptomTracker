@@ -17,6 +17,7 @@
         <item name="android:layout_height">@dimen/btn_severity_dimension</item>
         <item name="android:layout_margin">@dimen/btn_severity_margin</item>
         <item name="android:background">@drawable/button_severity</item>
+        <item name="android:textColor">@color/button_severity_text_color</item>
     </style>
 
     <style name="WidgetListItemStyle">
