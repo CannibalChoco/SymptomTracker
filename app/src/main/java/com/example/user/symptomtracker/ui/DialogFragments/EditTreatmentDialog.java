@@ -100,7 +100,8 @@ public class EditTreatmentDialog extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         fragmentId = bundle.getInt(TreatmentFragment.KEY_FRAGMENT_ID);
         symptomId = bundle.getInt(TreatmentFragment.KEY_SYMPTOM_ID);
@@ -156,7 +157,7 @@ public class EditTreatmentDialog extends DialogFragment {
         if ((timeString.isEmpty()
                 || selectedTimeUnit == TIME_UNIT_NOT_SELECTED)
                 && name.isEmpty()){
-            Toast.makeText(getContext(), "Please fill all necessary fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.dialog_msg_provide_all_info), Toast.LENGTH_SHORT).show();
         } else {
             constructTreatment(symptomId, name, timeInMillis, treatmentSuccessInt, isActive);
             listener.onSaveTreatment(treatment, actionSaveOrEdit);

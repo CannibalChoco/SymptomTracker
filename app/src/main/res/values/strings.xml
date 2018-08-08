@@ -48,6 +48,7 @@
     <!-- Dialog messages -->
     <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>
     <string name="dialog_msg_delete">Delete?</string>
+    <string name="dialog_msg_provide_all_info">Please fill all necessary fields</string>
 
     <!-- AddSymptomActivity -->
     <string name="message_must_provide_name">You must provide a name for the symptom</string>
