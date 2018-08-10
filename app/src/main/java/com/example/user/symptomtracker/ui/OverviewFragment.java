@@ -124,7 +124,7 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
             recyclerView.setLayoutManager(linearLayoutManager);
         }
 
-        adapter = new OverviewAdapter(new ArrayList<>(), this);
+        adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
     }
 

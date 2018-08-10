@@ -1,5 +1,7 @@
 package com.example.user.symptomtracker.utils;
 
+import android.content.Context;
+
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.database.entity.SeverityEntity;
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,7 +27,7 @@ public class GraphUtils {
      * @param graph the view
      * @param severityEntities List of data
      */
-    public static void initBarChart(BarChart graph, List<SeverityEntity> severityEntities){
+    public static void initBarChart(Context context, BarChart graph, List<SeverityEntity> severityEntities){
         graph.invalidate();
         List<BarEntry> entries = new ArrayList<>();
         int listSize = severityEntities.size();
@@ -57,8 +59,9 @@ public class GraphUtils {
             xAxis.setValueFormatter((value, axis) -> labelX.get((int) value));
         }
 
+        int color = context.getResources().getColor(R.color.colorPrimary);
         BarDataSet dataSet = new BarDataSet(entries, "");
-        dataSet.setColor(R.color.colorPrimaryDark);
+        dataSet.setColor(color);
 
         BarData barData = new BarData(dataSet);
         barData.setValueFormatter(new IntegerValueFormatter());

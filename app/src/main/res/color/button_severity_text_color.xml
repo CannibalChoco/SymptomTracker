@@ -4,5 +4,5 @@
         android:state_pressed="true"
         android:color="@color/severityStatePressedText"/>
     <item
-        android:color="@color/severityStateDefaultText"/>
+        android:color="@color/mediumEmphasisText"/>
 </selector>

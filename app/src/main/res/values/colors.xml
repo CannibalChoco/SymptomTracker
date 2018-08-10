@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#721156</color>
-    <color name="colorPrimaryDark">#43002d</color>
-    <color name="colorPrimaryLight">#a34483</color>
 
-    <color name="colorAccent">#d84315</color>
+    <color name="colorPrimary">#00a6af</color>
+    <color name="colorPrimaryDark">#007789</color>
+    <color name="colorPrimaryLight">#5ad8e1</color>
 
-    <color name="green">#1faa00</color>
+    <color name="colorSecondary">#01579b</color>
+    <color name="colorSecondaryDark">#002f6c</color>
+    <color name="colorSecondaryLight">#4f83cc</color>
+
+
+    <color name="colorAccent">@color/colorSecondary</color>
+
+    <color name="green">@color/colorSecondaryDark</color>
     <color name="neutralGrey">#757575</color>
 
     <!-- Status colors -->
@@ -21,15 +27,20 @@
     <color name="widget_separator_transparent_gray_50">#80757575</color>
 
     <color name="bottomNavChecked">@android:color/white</color>
-    <color name="bottomNavDefault">#c892b9</color>
+    <color name="bottomNavDefault">@color/colorPrimaryLight</color>
 
-    <!-- Severity button state colors -->
     <color name="severityStateDefault">@android:color/white</color>
-    <color name="severityStateFocusedSolid">#fcc9a1</color>
-    <color name="severityStateFocusedStroke">#fdac93</color>
-    <color name="severityStateChecked">@color/colorAccent</color>
+    <color name="severityStateFocusedSolid">@color/colorPrimary</color>
+    <color name="severityStateFocusedStroke">@color/colorPrimaryDark</color>
+    <color name="severityStateChecked">@color/colorPrimary</color>
 
     <color name="severityStatePressedText">#ffffff</color>
-    <color name="severityStateDefaultText">#000000</color>
+    <color name="severityStateDefaultText">@color/neutralGrey</color>
+
+    <!-- Text colors -->
+    <!-- Dark text on light backgrounds -->
+    <color name="highEmphasisText">#de000000</color>
+    <color name="mediumEmphasisText">#99000000</color>
+    <color name="disabledText">#61000000</color>
 
 </resources>
