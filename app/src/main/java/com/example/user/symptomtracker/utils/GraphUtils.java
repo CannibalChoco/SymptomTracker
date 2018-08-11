@@ -70,7 +70,6 @@ public class GraphUtils {
         graph.setData(barData);
         graph.setVisibleXRange(VISIBLE_DAYS, VISIBLE_DAYS);
 
-        //graph.setVisibleYRange(0, 10, YAxis.AxisDependency.LEFT);
         YAxis rightAxis = graph.getAxisRight();
         rightAxis.setDrawLabels(false);
         rightAxis.setEnabled(false);

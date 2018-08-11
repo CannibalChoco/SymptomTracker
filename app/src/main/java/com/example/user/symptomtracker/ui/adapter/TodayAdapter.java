@@ -148,23 +148,37 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         public void severitySet(View view) {
             // get severity for view
             int severity = getSeverityForView(view.getId());
-
             int position = getAdapterPosition();
             // check if added today
             boolean lastSeverityAddedToday = lastSeverityAddedToday(symptomList.get(position));
             if (lastSeverityAddedToday) {
-                // if added today- update, sending severityId, new severity value
-                List<SeverityEntity> severityEntityList = symptomList.get(getAdapterPosition())
-                        .getSeverityList();
-                SeverityEntity lastSeverityEntity = severityEntityList
-                        .get(severityEntityList.size() - 1);
-                listener.onSeverityUpdate(lastSeverityEntity.getId(), severity);
-
+                sendUpdateData(severity);
             } else {
-                // insert, sending parentId, severityValue
-                int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
-                listener.onSeverityInsert(parentId, severity);
+                sendInsertData(severity);
             }
+        }
+
+        /**
+         * Sends parentId and severity value through listener for new SeverityEntity creation
+         * for insertion in db
+         * @param severity value of severity in range 0 - 10
+         */
+        private void sendInsertData(int severity) {
+            int parentId = symptomList.get(getAdapterPosition()).getSymptom().getId();
+            listener.onSeverityInsert(parentId, severity);
+        }
+
+        /**
+         * Sends SeverityEntity Id and new severity value through listener for existing
+         * SeverityEntity updating.
+         * @param severity new value of severity in range 0 - 10
+         */
+        private void sendUpdateData(int severity) {
+            List<SeverityEntity> severityEntityList = symptomList.get(getAdapterPosition())
+                    .getSeverityList();
+            SeverityEntity lastSeverityEntity = severityEntityList
+                    .get(severityEntityList.size() - 1);
+            listener.onSeverityUpdate(lastSeverityEntity.getId(), severity);
         }
 
         /**
@@ -279,6 +293,11 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         }
     }
 
+    /**
+     * Checks if the lase entered severity for a SymptomEntity was added today
+     * @param symptom Symptom to check for last severity insertion time
+     * @return true if added today, else false
+     */
     private boolean lastSeverityAddedToday(Symptom symptom) {
         List<SeverityEntity> severityEntityList = symptom.getSeverityList();
 
@@ -286,7 +305,6 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         if (severityListSize > 0) {
             SeverityEntity lastSeverityEntity = severityEntityList.get(severityListSize - 1);
 
-            // set checked if added today
             return TimeUtils.severityAddedToday(lastSeverityEntity.getTimestamp());
         }
 
