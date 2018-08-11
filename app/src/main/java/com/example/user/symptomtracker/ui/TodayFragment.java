@@ -125,15 +125,10 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
     @Override
     public void onSeverityInsert(int parentId, final int severity) {
-        //model.invalidateSymptomDataForToday();
         final SeverityEntity severityEntity = new SeverityEntity(parentId, severity,
                 new Date().getTime());
 
         repository.saveSeverity(severityEntity);
-
-
-        //new GetSeverityAsyncTask().execute();
-
 
         WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
     }

@@ -13,4 +13,5 @@
 
     <item
         android:drawable="@drawable/background_button_severity_default"/>
+
 </selector>

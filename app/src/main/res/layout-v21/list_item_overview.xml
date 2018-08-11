@@ -21,7 +21,10 @@
             android:id="@+id/symptomName"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
 
         <com.github.mikephil.charting.charts.BarChart
             app:layout_constraintStart_toEndOf="@id/symptomName"
