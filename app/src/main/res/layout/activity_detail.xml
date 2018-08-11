@@ -11,8 +11,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         tools:context=".DetailActivity">
-        <!-- TODO: refactor as shared between all layouts -->
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/graph"
             android:layout_width="match_parent"
@@ -29,7 +30,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-        <!-- TODO: refactor as shared between all layouts -->
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
             android:layout_width="0dp"
@@ -83,7 +83,7 @@
 
             </LinearLayout>
         </HorizontalScrollView>
-        <!-- TODO: refactor as shared between all layouts -->
+
         <TextView
             android:id="@+id/statusIsResolved"
             android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Resolved" />
-        <!-- TODO: refactor as shared between all layouts -->
+
         <Switch
             android:id="@+id/switchResolved"
             android:layout_width="wrap_content"

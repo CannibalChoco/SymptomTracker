@@ -11,6 +11,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/large_margin"
         tools:context=".DetailActivity">
 
         <com.github.mikephil.charting.charts.BarChart
@@ -103,7 +105,7 @@
             android:id="@+id/switchResolved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/large_margin"
             app:layout_constraintBottom_toTopOf="@+id/statusIsResolved"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusIsResolved" />

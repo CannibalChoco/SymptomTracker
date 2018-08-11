@@ -11,6 +11,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         tools:context=".DetailActivity">
 
         <com.github.mikephil.charting.charts.BarChart
@@ -18,8 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/graph_view_height"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_vertical_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusIsResolved"/>
@@ -35,8 +35,6 @@
             android:id="@+id/horizontalScrollView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_margin"
-            android:layout_marginEnd="@dimen/large_margin"
             android:layout_marginTop="16dp"
             android:fadeScrollbars="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +44,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     android:id="@+id/statusDoctorInformed"
@@ -103,7 +102,6 @@
             android:id="@+id/switchResolved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@+id/statusIsResolved"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusIsResolved" />
@@ -114,8 +112,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="@dimen/large_margin"
-            android:layout_marginEnd="@dimen/large_margin"
             app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
             app:cardCornerRadius="@dimen/cardview_default_radius">
 
@@ -132,8 +128,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             app:adSize="BANNER"
             app:adUnitId="ca-app-pub-3940256099942544/6300978111"
@@ -145,8 +139,6 @@
             layout="@layout/notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_margin"
-            android:layout_marginEnd="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
