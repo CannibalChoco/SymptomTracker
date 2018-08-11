@@ -59,7 +59,7 @@ public class GraphUtils {
             xAxis.setValueFormatter((value, axis) -> labelX.get((int) value));
         }
 
-        int color = context.getResources().getColor(R.color.colorPrimary);
+        int color = context.getResources().getColor(R.color.graphBar);
         BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColor(color);
 

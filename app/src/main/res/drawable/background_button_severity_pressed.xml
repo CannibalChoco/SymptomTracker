@@ -4,11 +4,11 @@
     android:shape="oval">
 
     <stroke
-        android:color="@color/severityStateChecked"
+        android:color="@color/dataAmber"
         android:width="2dp"/>
 
     <solid
-        android:color="@color/severityStateChecked"/>
+        android:color="@color/dataAmber"/>
 
     <size
         android:width="48dp"

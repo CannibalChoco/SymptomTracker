@@ -42,4 +42,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <dimen name="bottom_nav_height">56dp</dimen>
 
+    <!-- Text size for CardViews title text-->
+    <dimen name="cardTitle">16sp</dimen>
+
 </resources>

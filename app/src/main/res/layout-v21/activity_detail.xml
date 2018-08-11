@@ -58,6 +58,9 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/background_status_default"
                     android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     tools:text="Needs doctors attention" />
 
                 <TextView
@@ -69,6 +72,9 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/background_status_default"
                     android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     tools:text="Not chronic" />
 
                 <TextView

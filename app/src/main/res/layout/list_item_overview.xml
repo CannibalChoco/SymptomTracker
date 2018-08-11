@@ -20,6 +20,7 @@
             android:id="@+id/symptomName"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:textSize="@dimen/cardTitle"
             android:gravity="center"
             android:clickable="true"
             android:focusable="true"

@@ -12,6 +12,6 @@
 
     <stroke
         android:width="2px"
-        android:color="@color/colorAccent"/>
+        android:color="@color/colorStatusAttention"/>
 
 </shape>
