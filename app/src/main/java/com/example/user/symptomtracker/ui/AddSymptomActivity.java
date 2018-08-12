@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,8 +15,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.user.symptomtracker.R;
 import com.example.user.symptomtracker.SymptomTrackerApplication;
@@ -40,13 +39,13 @@ public class AddSymptomActivity extends AppCompatActivity {
 
     public static final String KEY_DATA_HAS_CHANGED = "DATA_HAS_CHANGED";
     @BindView(R.id.editSymptomName)
-    EditText editSymptomName;
+    TextInputEditText editSymptomName;
     @BindView(R.id.radioStatusDoctor)
     CheckBox radioStatusDoctor;
     @BindView(R.id.radioStatusChronic)
     CheckBox checkStatusChronic;
     @BindView(R.id.addNote)
-    EditText editAddNote;
+    TextInputEditText editAddNote;
 
     private String symptomName;
     private boolean doctorIsInformed;
@@ -131,8 +130,7 @@ public class AddSymptomActivity extends AppCompatActivity {
         getEnteredData();
 
         if(symptomName.isEmpty()){
-            Toast.makeText(this, R.string.message_must_provide_name,
-                    Toast.LENGTH_SHORT).show();
+            editSymptomName.setError(getString(R.string.error_must_provide_name));
             editSymptomName.requestFocus();
         } else {
             final SymptomEntity symptom = new SymptomEntity(symptomName,
@@ -144,8 +142,8 @@ public class AddSymptomActivity extends AppCompatActivity {
 
             // save
             new SaveSymptomAsyncTask(this, db, symptom, note).execute();
+            finish();
         }
-        finish();
     }
 
     @NonNull

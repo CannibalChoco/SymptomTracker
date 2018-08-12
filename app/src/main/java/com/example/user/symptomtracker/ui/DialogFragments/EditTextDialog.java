@@ -48,6 +48,7 @@ public class EditTextDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
+                //TODO: Set the right name- new note, edit note, edit name
                 .setTitle(R.string.add_note_title)
                 .setPositiveButton(R.string.action_save, (dialog, which) -> {
                     String note = noteText.getText().toString();

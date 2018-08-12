@@ -3,46 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.AddSymptomActivity">
 
-    <TextView
-        android:id="@+id/label_treatment_name"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/editCurrentTreatmentNameLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_treatment"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:errorEnabled="true">
 
-    <TextView
-        android:id="@+id/label_current_treatments"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/editCurrentTreatmentName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_treatment"
+            android:inputType="textCapWords" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/editCurrentTimeLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:singleLine="false"
-        android:text="@string/label_takes_effect"
-        android:textColor="@color/colorAccent"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/middleGutter"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_treatment_name" />
+        app:layout_constraintTop_toBottomOf="@id/editCurrentTreatmentNameLayout">
 
-    <EditText
-        android:id="@+id/editCurrentTreatmentName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:inputType="textCapWords"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/middleGutter"
-        android:hint="@string/content_treatment_name"/>
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/editCurrentTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_takes_effect_in"
+            android:inputType="number" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/middleGutter"
@@ -51,27 +48,16 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.4" />
 
-    <EditText
-        android:id="@+id/editCurrentTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:inputType="number"
-        android:textSize="14sp"
-        android:hint="@string/content_treatment_time"
-        app:layout_constraintEnd_toStartOf="@+id/radioGroupTime"
-        app:layout_constraintStart_toStartOf="@+id/middleGutter"
-        app:layout_constraintTop_toTopOf="@+id/label_current_treatments" />
-
     <RadioGroup
         android:id="@+id/radioGroupTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editCurrentTime">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/middleGutter"
+        app:layout_constraintTop_toTopOf="@+id/editCurrentTimeLayout">
 
         <RadioButton
             android:id="@+id/radioTimeHour"

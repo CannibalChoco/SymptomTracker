@@ -50,17 +50,21 @@
     <string name="dialog_msg_delete">Delete?</string>
     <string name="dialog_msg_provide_all_info">Please fill all necessary fields</string>
 
+    <!-- Error messages -->
+    <string name="error_must_provide_name">Must provide a name</string>
+    <string name="error_must_provide_time">Must provide time</string>
+
     <!-- AddSymptomActivity -->
-    <string name="message_must_provide_name">You must provide a name for the symptom</string>
     <string name="hint_symptom_name">Symptom name</string>
     <string name="hint_add_note">Note</string>
 
     <!-- Add New Treatment  Dialog-->
-    <string name="add_current_treatment_title">Add Current Treatment</string>
-    <string name="add_past_treatment_title">Add Past Treatment</string>
+    <string name="add_treatment_title">Add Treatment</string>
+    <string name="edit_treatment">Edit Treatment</string>
     <string name="label_treatment">Treatment</string>
     <string name="label_takes_effect">Takes effect in (optional)</string>
     <string name="label_was_successful">Treatment success (optional)</string>
+    <string name="hint_optional">(optional)</string>
 
     <!-- Time Radio Group -->
     <string name="radio_time_hour">Hours</string>
@@ -118,7 +122,10 @@
     <string name="content_button_add_note">Add note</string>
     <string name="content_button_note_text">Note text</string>
     <string name="content_treatment_name">Treatment name</string>
-    <string name="content_treatment_time">Time</string>
+    <string name="content_takes_effect">Treatment takes effect in</string>
+
+    <!-- Text input hints -->
+    <string name="hint_takes_effect_in">Takes effect in</string>
 
     <!-- Empty state text -->
     <string name="empty_no_unresolved_symptoms">There are no unresolved symptoms</string>

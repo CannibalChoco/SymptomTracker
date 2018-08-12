@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:layout_editor_absoluteY="81dp">
+    android:padding="@dimen/activity_horizontal_margin">
 
     <include
         android:id="@+id/include"
@@ -20,7 +19,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/label_was_successful"
         android:textColor="@color/colorAccent"
@@ -66,12 +64,11 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/middleGutter"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupSuccess">
+        app:layout_constraintTop_toTopOf="@+id/isActiveOptional">
 
         <RadioButton
             android:id="@+id/radioTreatmentCurrent"
@@ -85,5 +82,17 @@
             android:layout_height="wrap_content"
             android:text="@string/radio_treatment_past" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/isActiveOptional"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/hint_optional"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toStartOf="@+id/middleGutter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupSuccess" />
 
 </android.support.constraint.ConstraintLayout>
