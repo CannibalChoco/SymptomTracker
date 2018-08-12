@@ -59,9 +59,8 @@ public class GraphUtils {
             xAxis.setValueFormatter((value, axis) -> labelX.get((int) value));
         }
 
-        int color = context.getResources().getColor(R.color.graphBar);
         BarDataSet dataSet = new BarDataSet(entries, "");
-        dataSet.setColor(color);
+        dataSet.setColor(context.getResources().getColor(R.color.graphBar));
 
         BarData barData = new BarData(dataSet);
         barData.setValueFormatter(new IntegerValueFormatter());
@@ -77,6 +76,8 @@ public class GraphUtils {
         yAxis.setAxisMaximum(10);
         yAxis.setAxisMinimum(0);
         yAxis.setLabelCount(10);
+
+        graph.setBackgroundColor(context.getResources().getColor(R.color.graphBackground));
 
         graph.moveViewToX(listSize);
         graph.getLegend().setEnabled(false);

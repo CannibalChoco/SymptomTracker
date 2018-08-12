@@ -21,29 +21,28 @@
 
     <TextView
         android:id="@+id/labelNotes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        style="@style/CardTitleTextStyle"
         android:text="@string/label_notes"
-        android:textSize="@dimen/cardTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/CardTitleDividerStyle"
+        app:layout_constraintTop_toBottomOf="@id/labelNotes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/notesRv"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_rv_height"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelNotes" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <ProgressBar
         android:id="@+id/progressBarNotes"

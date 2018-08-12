@@ -9,30 +9,7 @@
     card_view:cardCornerRadius="@dimen/cardview_default_radius"
     android:elevation="@dimen/elevation_card">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <include
+        layout="@layout/list_item_overview_shared"/>
 
-        <TextView
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/symptomName"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:textSize="@dimen/cardTitle"
-            android:background="?android:attr/selectableItemBackground" />
-
-        <com.github.mikephil.charting.charts.BarChart
-            app:layout_constraintStart_toEndOf="@id/symptomName"
-            app:layout_constraintTop_toBottomOf="@+id/symptomName"
-            android:id="@+id/list_item_graph"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"/>
-
-    </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

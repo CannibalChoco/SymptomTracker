@@ -26,7 +26,7 @@
         android:contentDescription="@string/add_new_symptom"
         android:clickable="true"
         android:focusable="true"
-        app:rippleColor="@color/colorSecondaryLight"
+        app:rippleColor="@color/amber"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:elevation="@dimen/elevation_fab"/>

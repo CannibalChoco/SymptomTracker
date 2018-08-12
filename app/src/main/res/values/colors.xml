@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#00a6af</color>
     <color name="colorPrimaryDark">#007789</color>
-    <color name="colorPrimaryLight">#5ad8e1</color>
+    <color name="colorPrimaryLight">#92DCE7</color>
 
     <!--teal 100-->
     <!--<color name="colorPrimaryBackground">#b2dfdb</color>-->
@@ -20,14 +20,9 @@
     <!-- teal 50 -->
     <!--<color name="colorPrimaryBackground">#E0F2F1</color>-->
 
+    <!--<color name="colorAccent">@color/colorSecondary</color>-->
+    <color name="colorAccent">#FF791A</color>
 
-
-    <color name="colorSecondary">#01579b</color>
-    <color name="colorSecondaryDark">#002f6c</color>
-    <color name="colorSecondaryLight">#4f83cc</color>
-
-
-    <color name="colorAccent">@color/colorSecondary</color>
 
     <color name="green">#388e3c</color>
     <color name="neutralGrey">#757575</color>
@@ -41,12 +36,16 @@
     <color name="colorStatusDefault">@color/neutralGrey</color>
 
     <!-- Data colors -->
-    <color name="dataAmber">#fabc40</color>
+    <color name="amber">#fabc40</color>
+    <color name="amberDarkAccent">@color/colorAccent</color>
+    <color name="amberLight">#FAE19D</color>
 
     <!-- Graph colors -->
-    <color name="graphBar">@color/dataAmber</color>
-    <!-- Today selected severity -->
+    <color name="graphBar">@color/amber</color>
+    <color name="graphBackground">@android:color/white</color>
 
+    <!-- Scrollbar -->
+    <color name="scrollbar">@color/colorPrimaryLight</color>
 
     <!-- Widget colors -->
     <!-- Transparent -->
@@ -61,8 +60,8 @@
     <color name="severityStateDefault">@android:color/white</color>
     <color name="severityStateDefaultStroke">@color/gray300</color>
     <color name="severityStateFocusedSolid">#ffee71</color>
-    <color name="severityStateFocusedStroke">@color/dataAmber</color>
-    <color name="severityStateChecked">@color/dataAmber</color>
+    <color name="severityStateFocusedStroke">@color/amber</color>
+    <color name="severityStateChecked">@color/amber</color>
 
     <!-- Text colors -->
     <!-- Dark text on light backgrounds -->

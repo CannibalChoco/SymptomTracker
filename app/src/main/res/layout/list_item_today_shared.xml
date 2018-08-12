@@ -7,33 +7,27 @@
 
     <TextView
         android:id="@+id/todaySymptom"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="@dimen/cardTitle"
+        style="@style/CardTitleTextStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Symptom name"
-        android:textColor="@color/mediumEmphasisText"/>
+        tools:text="Symptom name"/>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/dataAmber"
-        app:layout_constraintTop_toBottomOf="@id/todaySymptom"/>
+        style="@style/CardTitleDividerStyle"
+        app:layout_constraintTop_toBottomOf="@id/todaySymptom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <HorizontalScrollView
         android:id="@+id/scrollSeverity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="@dimen/activity_vertical_half_margin"
+        android:paddingEnd="@dimen/activity_horizontal_half_margin"
+        android:paddingStart="@dimen/activity_horizontal_half_margin"
+        android:scrollbarThumbHorizontal="@drawable/scrollbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +36,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_half_margin">
 
             <Button
                 android:id="@+id/severity0"
