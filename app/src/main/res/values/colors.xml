@@ -59,7 +59,7 @@
     <!-- Custom Severity button state colors -->
     <color name="severityStateDefault">@android:color/white</color>
     <color name="severityStateDefaultStroke">@color/gray300</color>
-    <color name="severityStateFocusedSolid">#ffee71</color>
+    <color name="severityStateFocusedSolid">@color/amberLight</color>
     <color name="severityStateFocusedStroke">@color/amber</color>
     <color name="severityStateChecked">@color/amber</color>
 
