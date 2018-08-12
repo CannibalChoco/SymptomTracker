@@ -16,16 +16,22 @@
         android:layout_marginEnd="@dimen/large_margin"
         tools:context=".DetailActivity">
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/graph"
+        <android.support.v7.widget.CardView
+            android:id="@+id/graphContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/graph_view_height"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="@dimen/large_margin"
-            android:layout_marginStart="@dimen/large_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statusIsResolved"/>
+            app:layout_constraintTop_toBottomOf="@+id/statusIsResolved">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/graph_view_height"
+                android:layout_marginTop="16dp"/>
+
+        </android.support.v7.widget.CardView>
 
         <android.support.constraint.Guideline
             android:id="@+id/middleGutter"
@@ -44,7 +50,7 @@
             android:fadeScrollbars="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/graph">
+            app:layout_constraintTop_toBottomOf="@+id/graphContainer">
 
             <LinearLayout
                 android:layout_width="wrap_content"
