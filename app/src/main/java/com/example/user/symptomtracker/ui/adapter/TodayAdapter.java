@@ -32,6 +32,8 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
         void onSeverityInsert(int parentId, int severity);
 
         void onSeverityUpdate(int severityEntityId, int newSeverityValue);
+
+        void onSymptomSelected(int id);
     }
 
     public TodayAdapter(List<Symptom> symptomList,
@@ -156,6 +158,13 @@ public class TodayAdapter extends RecyclerView.Adapter<TodayAdapter.ViewHolder> 
             } else {
                 sendInsertData(severity);
             }
+        }
+
+        @OnClick(R.id.todaySymptom)
+        public void symptomSelected(View view){
+            int position = getAdapterPosition();
+            Symptom symptom = symptomList.get(position);
+            listener.onSymptomSelected(symptom.getSymptom().getId());
         }
 
         /**

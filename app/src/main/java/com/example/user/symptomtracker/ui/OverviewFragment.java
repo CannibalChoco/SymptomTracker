@@ -2,7 +2,6 @@ package com.example.user.symptomtracker.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,6 +37,12 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     public OverviewFragment() {
         // Required empty public constructor
+    }
+
+    private OnSymptomSelected symptomSelectedListener;
+
+    public interface OnSymptomSelected{
+        void onOverviewSymptomSelected(int id);
     }
 
     private OverviewAdapter adapter;
@@ -109,9 +114,11 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
 
     @Override
     public void onSymptomSelected(int id) {
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra(DetailActivity.KEY_ID, id);
-        startActivity(intent);
+        symptomSelectedListener.onOverviewSymptomSelected(id);
+    }
+
+    public void setSymptomSelectedListener(OnSymptomSelected listener){
+        this.symptomSelectedListener = listener;
     }
 
     private void initRecyclerView() {

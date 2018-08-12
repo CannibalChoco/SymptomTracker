@@ -41,6 +41,11 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     public TodayFragment() {
         // Required empty public constructor
     }
+    private OnSymptomSelected symptomSelectedListener;
+
+    public interface OnSymptomSelected{
+        void onTodaySymptomSelected(int id);
+    }
 
     @BindView(R.id.rvToday)
     RecyclerView recyclerView;
@@ -143,6 +148,15 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
 
         WidgetUtils.updateWidget(SymptomTrackerApplication.getInstance());
+    }
+
+    @Override
+    public void onSymptomSelected(int id) {
+        symptomSelectedListener.onTodaySymptomSelected(id);
+    }
+
+    public void setSymptomSelectedListener(OnSymptomSelected listener){
+        this.symptomSelectedListener = listener;
     }
 
     private void initRecyclerView() {

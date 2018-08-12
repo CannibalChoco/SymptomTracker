@@ -24,7 +24,8 @@ import static com.example.user.symptomtracker.receiver.SymptomWidgetProvider.WID
  * Set up and manage navigation between destinations by Fragment transactions through
  * bottom navigation
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OverviewFragment.OnSymptomSelected,
+        TodayFragment.OnSymptomSelected{
 
     public static final String DUMMY_AD_ID = "ca-app-pub-3940256099942544~3347511713";
     private static final int DEFAULT_FRAGMENT_ID = WIDGET_TARGET_FRAGMENT_OVERVIEW;
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setOverviewFragment(int action) {
         OverviewFragment overviewFragment = new OverviewFragment();
+        overviewFragment.setSymptomSelectedListener(this);
         if (action == FRAGMENT_ADD) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -165,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setTodayFragment(int action) {
         TodayFragment todayFragment = new TodayFragment();
+        todayFragment.setSymptomSelectedListener(this);
         if (action == FRAGMENT_ADD) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -188,4 +191,21 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.dest_fragment_container, resolvedFragment)
                 .commit();
     }
+
+    @Override
+    public void onOverviewSymptomSelected(int id) {
+        launchDetailActivityForSymptom(id);
+    }
+
+    @Override
+    public void onTodaySymptomSelected(int id) {
+        launchDetailActivityForSymptom(id);
+    }
+
+    public void launchDetailActivityForSymptom(int id){
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(DetailActivity.KEY_ID, id);
+        startActivity(intent);
+    }
+
 }
