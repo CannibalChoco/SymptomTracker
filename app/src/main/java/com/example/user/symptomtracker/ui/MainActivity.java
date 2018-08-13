@@ -25,7 +25,7 @@ import static com.example.user.symptomtracker.receiver.SymptomWidgetProvider.WID
  * bottom navigation
  */
 public class MainActivity extends AppCompatActivity implements OverviewFragment.OnSymptomSelected,
-        TodayFragment.OnSymptomSelected{
+        TodayFragment.OnSymptomSelected, ResolvedFragment.OnSymptomSelected{
 
     public static final String DUMMY_AD_ID = "ca-app-pub-3940256099942544~3347511713";
     private static final int DEFAULT_FRAGMENT_ID = WIDGET_TARGET_FRAGMENT_OVERVIEW;
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
      */
     private void fragmentReplaceWithResolved() {
         ResolvedFragment resolvedFragment = new ResolvedFragment();
+        resolvedFragment.setSymptomSelectedListener(this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.dest_fragment_container, resolvedFragment)
@@ -199,6 +200,11 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
 
     @Override
     public void onTodaySymptomSelected(int id) {
+        launchDetailActivityForSymptom(id);
+    }
+
+    @Override
+    public void onResolvedSymptomSelected(int id) {
         launchDetailActivityForSymptom(id);
     }
 

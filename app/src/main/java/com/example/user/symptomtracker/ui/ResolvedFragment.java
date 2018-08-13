@@ -48,6 +48,13 @@ public class ResolvedFragment extends Fragment implements ResolvedAdapter.OnSymp
         // Required empty public constructor
     }
 
+    private OnSymptomSelected symptomSelectedListener;
+
+    public interface OnSymptomSelected{
+        void onResolvedSymptomSelected(int id);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,6 +105,10 @@ public class ResolvedFragment extends Fragment implements ResolvedAdapter.OnSymp
 
     @Override
     public void onResolvedSymptomSelected(int id) {
-        // TODO: on item click, launch detail activity from main activity
+        symptomSelectedListener.onResolvedSymptomSelected(id);
+    }
+
+    public void setSymptomSelectedListener(OnSymptomSelected listener){
+        this.symptomSelectedListener = listener;
     }
 }
