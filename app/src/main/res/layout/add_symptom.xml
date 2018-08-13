@@ -32,7 +32,7 @@
             android:id="@+id/addNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords"
+            android:inputType="textCapSentences"
             android:hint="@string/hint_add_note"/>
 
     </android.support.design.widget.TextInputLayout>
