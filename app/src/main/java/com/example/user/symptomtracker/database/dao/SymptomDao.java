@@ -20,6 +20,10 @@ public interface SymptomDao {
     LiveData<List<Symptom>> loadUnresolvedSymptomLiveData();
 
     @Transaction
+    @Query("SELECT * FROM symptom WHERE is_resolved")
+    LiveData<List<Symptom>> loadResolvedSymptomLiveData();
+
+    @Transaction
     @Query("SELECT * FROM symptom WHERE NOT is_resolved")
     List<Symptom> loadUnresolvedSymptoms();
 
@@ -74,11 +78,19 @@ public interface SymptomDao {
     void updateDoctorIsInformed(int id, boolean doctorIsInformed);
 
     /**
-     * Update the timestamp of when symptom is set to not resolved
+     * Update the timestamp for unresolved
      * @param id symptom ID
-     * @param timestamp current time in milliseconds
+     * @param timestamp current time in milliseconds or -1 if symptom is resolved
      */
     @Query("UPDATE symptom SET not_resolved_timestamp = :timestamp WHERE id = :id")
     void updateNotResolvedTimestamp(int id, long timestamp);
+
+    /**
+     * Update the timestamp for resolved
+     * @param id symptom ID
+     * @param timestamp current time in milliseconds or -1 if symptom is unresolved
+     */
+    @Query("UPDATE symptom SET resolved_timestamp = :timestamp WHERE id = :id")
+    void updateResolvedTimestamp(int id, long timestamp);
 
 }

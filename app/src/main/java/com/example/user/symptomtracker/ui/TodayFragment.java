@@ -47,10 +47,12 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         void onTodaySymptomSelected(int id);
     }
 
-    @BindView(R.id.rvToday)
+    @BindView(R.id.todayRv)
     RecyclerView recyclerView;
-    private ProgressBar progressBar;
-    private TextView emptyStateText;
+    @BindView(R.id.todayProgressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.todayEmptyText)
+    TextView emptyStateText;
 
     TodayAdapter adapter;
     static AppDatabase db;
@@ -72,7 +74,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
 
         canRestoreButtonState = false;
 
-        initProgressbarAndEmptyState(rootView);
+        initProgressbarAndEmptyState();
 
         db = AppDatabase.getInstance(getActivity().getApplicationContext());
         repository = Repository.getInstance(db);
@@ -166,9 +168,7 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         recyclerView.setAdapter(adapter);
     }
 
-    private void initProgressbarAndEmptyState(View rootView) {
-        progressBar = rootView.findViewById(R.id.progressBar);
-        emptyStateText = rootView.findViewById(R.id.todayEmptyStateText);
+    private void initProgressbarAndEmptyState() {
         progressBar.setVisibility(View.VISIBLE);
         emptyStateText.setVisibility(View.GONE);
     }

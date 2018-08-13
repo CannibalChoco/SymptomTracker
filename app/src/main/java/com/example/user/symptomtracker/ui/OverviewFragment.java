@@ -48,11 +48,11 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     private OverviewAdapter adapter;
     private MainActivityViewModel model;
 
-    @BindView(R.id.overviewRecyclerView)
+    @BindView(R.id.overviewRv)
     RecyclerView recyclerView;
-    @BindView(R.id.progressBar)
+    @BindView(R.id.overviewProgressBar)
     ProgressBar progressBar;
-    @BindView(R.id.todayEmptyStateText)
+    @BindView(R.id.overviewEmptyText)
     TextView emptyStateText;
 
     GridLayoutManager gridLayoutManager;

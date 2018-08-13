@@ -43,6 +43,10 @@ public class Repository {
                 id, newSeverityValue, timestamp));
     }
 
+    public LiveData<List<Symptom>> getResolvedSymptomLiveData(){
+        return db.symptomDao().loadResolvedSymptomLiveData();
+    }
+
     public List<Symptom> getUnresolvedSymptoms(){
         return db.symptomDao().loadUnresolvedSymptoms();
     }
@@ -82,7 +86,11 @@ public class Repository {
     public void setStatusResolved(int symptomId, boolean isResolved){
         executors.diskIO().execute(() -> {
             db.symptomDao().updateIsResolved(symptomId, isResolved);
-            if (!isResolved){
+            if (isResolved){
+                db.symptomDao().updateResolvedTimestamp(symptomId, System.currentTimeMillis());
+                db.symptomDao().updateNotResolvedTimestamp(symptomId, -1);
+            } else {
+                db.symptomDao().updateResolvedTimestamp(symptomId, -1);
                 db.symptomDao().updateNotResolvedTimestamp(symptomId, System.currentTimeMillis());
             }
         });

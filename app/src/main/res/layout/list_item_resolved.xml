@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/resolved_item_height"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:id="@+id/resolvedName"
+        style="@style/ResolvedPrimaryTextStyle"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/hint_symptom_name"
+        android:textSize="@dimen/resolved_text_size_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Headache" />
+
+    <TextView
+        android:id="@+id/labelResolvedSince"
+        style="@style/ResolvedSecondaryTextStyle"
+        android:paddingTop="@dimen/secondary_item_padding"
+        android:text="@string/label_resolved_since"
+        app:layout_constraintBottom_toTopOf="@+id/textResolvedSince"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textResolvedSince"
+        style="@style/ResolvedSecondaryTextStyle"
+        android:paddingBottom="@dimen/secondary_item_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelResolvedSince"
+        tools:text="10/03/2018" />
+
+</android.support.constraint.ConstraintLayout>

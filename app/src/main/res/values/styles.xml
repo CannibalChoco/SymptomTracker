@@ -37,6 +37,22 @@
         <item name="android:textSize">@dimen/cardTitle</item>
     </style>
 
+    <style name="ResolvedPrimaryTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/mediumEmphasisText</item>
+        <item name="android:textSize">@dimen/cardTitle</item>
+    </style>
+
+    <style name="ResolvedSecondaryTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/disabledText</item>
+        <item name="android:textSize">@dimen/resolved_text_size_secondary</item>
+    </style>
+
     <style name="CardTitleDividerStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">1dp</item>

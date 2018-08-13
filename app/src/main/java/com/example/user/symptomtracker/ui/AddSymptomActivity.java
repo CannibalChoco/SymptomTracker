@@ -138,7 +138,8 @@ public class AddSymptomActivity extends AppCompatActivity {
                     isReoccurring,
                     doctorIsInformed,
                     false,
-                    System.currentTimeMillis());
+                    System.currentTimeMillis(),
+                    SymptomEntity.NO_RESOLVED_TIMESTAMP);
 
             // save
             new SaveSymptomAsyncTask(this, db, symptom, note).execute();

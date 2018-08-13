@@ -49,9 +49,9 @@ public class TreatmentFragment extends Fragment implements
 
     @BindView(R.id.treatmentRv)
     RecyclerView treatmentRv;
-    @BindView(R.id.progressBar)
+    @BindView(R.id.overviewProgressBar)
     ProgressBar progressBar;
-    @BindView(R.id.todayEmptyStateText)
+    @BindView(R.id.overviewEmptyText)
     TextView emptyStateText;
 
     /**

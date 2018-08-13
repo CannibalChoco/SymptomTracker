@@ -16,6 +16,7 @@
     <string name="label_status">Status</string>
     <string name="label_notes">Notes</string>
     <string name="label_severity">Severity</string>
+    <string name="label_resolved_since">Resolved since</string>
 
     <!-- Default strings for when no information is provided -->
     <string name="default_no_info">-</string>
@@ -129,7 +130,7 @@
 
     <!-- Empty state text -->
     <string name="empty_no_unresolved_symptoms">There are no unresolved symptoms</string>
-    <string name="empty_fragment_resolved_coming_soon">Resolved Overview coming soon</string>
+    <string name="empty_fragment_resolved">There are no resolved symptoms</string>
     <string name="empty_treatments_current">You haven\'t added any current treatments</string>
     <string name="empty_treatments_past">There are no past treatments</string>
     <string name="empty_notes">You haven\'t added any notes yet</string>

@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/addSymptom" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/overviewProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/todayEmptyStateText"
+        android:id="@+id/overviewEmptyText"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:layout_marginEnd="8dp"
