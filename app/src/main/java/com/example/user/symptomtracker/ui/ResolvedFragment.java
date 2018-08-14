@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,8 +95,6 @@ public class ResolvedFragment extends Fragment implements ResolvedAdapter.OnSymp
         }
 
         adapter = new ResolvedAdapter(new ArrayList<>(), this);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
     }
 
