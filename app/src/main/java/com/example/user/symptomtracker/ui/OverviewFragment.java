@@ -126,12 +126,13 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
             gridLayoutManager = new GridLayoutManager(getContext(), 2);
             recyclerView.setLayoutManager(gridLayoutManager);
+            adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);
         } else {
             linearLayoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(linearLayoutManager);
+            adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);
         }
 
-        adapter = new OverviewAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
     }
 

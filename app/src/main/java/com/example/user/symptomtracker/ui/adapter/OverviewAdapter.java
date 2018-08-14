@@ -2,6 +2,7 @@ package com.example.user.symptomtracker.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         TextView name;
         @BindView(R.id.list_item_graph)
         BarChart graph;
+        @BindView(R.id.card_view)
+        CardView card;
 
         public ViewHolder(View itemView, OnSymptomClickListener listener) {
             super(itemView);
