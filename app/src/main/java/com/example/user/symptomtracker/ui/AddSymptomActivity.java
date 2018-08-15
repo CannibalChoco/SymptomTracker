@@ -29,6 +29,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Contains form for user to fill out when adding a symptom
@@ -115,9 +116,6 @@ public class AddSymptomActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_save:
-                saveInDb();
-                return true;
             case R.id.action_cancel:
                 showUnsavedChangesDialog();
                 return true;
@@ -126,7 +124,8 @@ public class AddSymptomActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveInDb(){
+    @OnClick(R.id.button_like_action_save)
+    public void saveInDb(){
         getEnteredData();
 
         if(symptomName.isEmpty()){

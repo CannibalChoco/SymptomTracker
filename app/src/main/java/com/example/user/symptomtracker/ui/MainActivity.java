@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
                 setOverviewFragment(FRAGMENT_REPLACE);
                 return true;
             case R.id.navigation_resolved:
-                fragmentReplaceWithResolved();
+                fragmentReplaceWithResolved(FRAGMENT_REPLACE);
                 return true;
         }
 
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
      */
     private void setOverviewFragment(int action) {
         OverviewFragment overviewFragment = new OverviewFragment();
-        overviewFragment.setSymptomSelectedListener(this);
         if (action == FRAGMENT_ADD) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -167,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
      */
     private void setTodayFragment(int action) {
         TodayFragment todayFragment = new TodayFragment();
-        todayFragment.setSymptomSelectedListener(this);
         if (action == FRAGMENT_ADD) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -184,13 +182,19 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
     /**
      * Replace currently displayed fragment with ResolvedFragment
      */
-    private void fragmentReplaceWithResolved() {
+    private void fragmentReplaceWithResolved(int action) {
         ResolvedFragment resolvedFragment = new ResolvedFragment();
-        resolvedFragment.setSymptomSelectedListener(this);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.dest_fragment_container, resolvedFragment)
-                .commit();
+        if (action == FRAGMENT_ADD) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.dest_fragment_container, resolvedFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.dest_fragment_container, resolvedFragment)
+                    .commit();
+        }
     }
 
     @Override

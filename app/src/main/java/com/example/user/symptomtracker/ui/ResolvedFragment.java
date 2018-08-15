@@ -2,6 +2,7 @@ package com.example.user.symptomtracker.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -54,6 +55,13 @@ public class ResolvedFragment extends Fragment implements ResolvedAdapter.OnSymp
         void onResolvedSymptomSelected(int id);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof OnSymptomSelected){
+            symptomSelectedListener = (OnSymptomSelected) context;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +77,12 @@ public class ResolvedFragment extends Fragment implements ResolvedAdapter.OnSymp
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), NAME, null);
 
         return rootView;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        symptomSelectedListener = null;
     }
 
     private void getDataFromViewModel(){
@@ -108,7 +122,4 @@ public class ResolvedFragment extends Fragment implements ResolvedAdapter.OnSymp
         symptomSelectedListener.onResolvedSymptomSelected(id);
     }
 
-    public void setSymptomSelectedListener(OnSymptomSelected listener){
-        this.symptomSelectedListener = listener;
-    }
 }

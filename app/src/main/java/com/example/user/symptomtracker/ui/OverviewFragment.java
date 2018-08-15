@@ -2,6 +2,7 @@ package com.example.user.symptomtracker.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -59,6 +60,14 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     LinearLayoutManager linearLayoutManager;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof OnSymptomSelected){
+            symptomSelectedListener = (OnSymptomSelected) context;
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -85,6 +94,12 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        symptomSelectedListener = null;
     }
 
     @Override
@@ -115,10 +130,6 @@ public class OverviewFragment extends Fragment implements OverviewAdapter.OnSymp
     @Override
     public void onSymptomSelected(int id) {
         symptomSelectedListener.onOverviewSymptomSelected(id);
-    }
-
-    public void setSymptomSelectedListener(OnSymptomSelected listener){
-        this.symptomSelectedListener = listener;
     }
 
     private void initRecyclerView() {

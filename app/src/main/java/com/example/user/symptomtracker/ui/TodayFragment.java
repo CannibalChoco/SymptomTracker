@@ -2,6 +2,7 @@ package com.example.user.symptomtracker.ui;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -66,6 +67,14 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     private boolean canRestoreButtonState;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof OnSymptomSelected){
+            symptomSelectedListener = (OnSymptomSelected) context;
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -93,6 +102,12 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        symptomSelectedListener = null;
     }
 
     @Override
@@ -155,10 +170,6 @@ public class TodayFragment extends Fragment implements TodayAdapter.OnSeverityCl
     @Override
     public void onSymptomSelected(int id) {
         symptomSelectedListener.onTodaySymptomSelected(id);
-    }
-
-    public void setSymptomSelectedListener(OnSymptomSelected listener){
-        this.symptomSelectedListener = listener;
     }
 
     private void initRecyclerView() {
