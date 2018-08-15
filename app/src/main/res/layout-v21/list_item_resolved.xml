@@ -9,6 +9,7 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    android:elevation="@dimen/elevation_card"
     app:cardCornerRadius="@dimen/cardview_default_radius">
 
     <include
