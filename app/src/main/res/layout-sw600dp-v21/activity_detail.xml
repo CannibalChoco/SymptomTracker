@@ -65,7 +65,6 @@
                     android:background="@drawable/background_status_default"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:padding="8dp"
                     tools:text="Needs doctors attention" />
 
@@ -79,7 +78,6 @@
                     android:background="@drawable/background_status_default"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:padding="8dp"
                     tools:text="Not chronic" />
 
