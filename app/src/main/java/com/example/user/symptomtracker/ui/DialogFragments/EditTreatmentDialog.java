@@ -33,6 +33,13 @@ import static com.example.user.symptomtracker.utils.TimeUtils.getTimeInMillis;
 
 public class EditTreatmentDialog extends DialogFragment {
 
+    public static final String KEY_ID_EDIT_TYPE = "keyId";
+    public static final String KEY_FRAGMENT_TITLE = "title";
+    public static final String KEY_TREATMENT = "treatment";
+    public static final String KEY_SYMPTOM_ID = "symptomId";
+    public static final int ID_NEW = 0;
+    public static final int ID_UPDATE = 1;
+
     @BindView(R.id.editCurrentTreatmentName)
     EditText editTreatment;
     @BindView(R.id.editCurrentTime)
@@ -65,7 +72,7 @@ public class EditTreatmentDialog extends DialogFragment {
     private int selectedTimeUnit;
     private int treatmentSuccessInt;
     private int fragmentId;
-    private int actionSaveOrEdit;
+    private int idEditType;
     private TreatmentEntity treatment;
     private int symptomId;
 
@@ -88,12 +95,49 @@ public class EditTreatmentDialog extends DialogFragment {
     public EditTreatmentDialog() {
     }
 
+    /**
+     * Create EditTreatmentDialog Fragment instance with bundle
+     * @param fragmentEditTypeId either edit or add new treatment
+     * @param treatment Treatment entity if edit, otherwise null
+     * @param symptomId parent symptom Id
+     * @param title title for the DialogFragment
+     * @param listener dialog host
+     * @return EditTreatmentDialog instance with data in Bundle
+     */
+    public static EditTreatmentDialog newInstance(int fragmentEditTypeId, TreatmentEntity treatment,
+                                                  int symptomId, String title,
+                                                  OnSaveTreatment listener){
+        EditTreatmentDialog fragment = new EditTreatmentDialog();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_ID_EDIT_TYPE, fragmentEditTypeId);
+        if (fragmentEditTypeId == ID_UPDATE){
+            bundle.putParcelable(KEY_TREATMENT, treatment);
+        }
+        bundle.putInt(KEY_SYMPTOM_ID, symptomId);
+        bundle.putString(KEY_FRAGMENT_TITLE, title);
+
+        fragment.setArguments(bundle);
+        fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        fragment.setOnSaveTreatmentListener(listener);
+
+        fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
+        fragment.setOnSaveTreatmentListener(listener);
+
+        return fragment;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
+        fragmentId = bundle.getInt(TreatmentFragment.KEY_FRAGMENT_ID);
+        symptomId = bundle.getInt(KEY_SYMPTOM_ID);
+        idEditType = bundle.getInt(KEY_ID_EDIT_TYPE);
+        String title = bundle.getString(KEY_FRAGMENT_TITLE);
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
-                //TODO: Set the right name- new treatment, edit treatment
-                .setTitle(R.string.edit_treatment)
+                .setTitle(title)
                 .setPositiveButton(R.string.action_save, (dialog, which) -> sendDataThroughListener())
                 .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss());
 
@@ -139,14 +183,10 @@ public class EditTreatmentDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Bundle bundle = getArguments();
-        fragmentId = bundle.getInt(TreatmentFragment.KEY_FRAGMENT_ID);
-        symptomId = bundle.getInt(TreatmentFragment.KEY_SYMPTOM_ID);
-        actionSaveOrEdit = bundle.getInt(TreatmentFragment.KEY_ACTION_SAVE_OR_EDIT);
 
         // populate views if editing existing treatment
-        if (actionSaveOrEdit == TreatmentFragment.ID_ACTION_EDIT) {
-            treatment = bundle.getParcelable(TreatmentFragment.KEY_TREATMENT);
+        if (idEditType == ID_UPDATE) {
+            treatment = getArguments().getParcelable(KEY_TREATMENT);
             editTreatment.setText(treatment.getName());
 
             long takesEffectIn = treatment.getTakesEffectIn();
@@ -211,7 +251,7 @@ public class EditTreatmentDialog extends DialogFragment {
      */
     private void sendDataWithListener(String name, long timeInMillis, boolean isActive) {
         constructTreatment(symptomId, name, timeInMillis, treatmentSuccessInt, isActive);
-        listener.onSaveTreatment(treatment, actionSaveOrEdit);
+        listener.onSaveTreatment(treatment, idEditType);
     }
 
     /**

@@ -35,7 +35,7 @@ public class EditTextDialog extends DialogFragment {
     public static final int ID_UPDATE_NOTE = 1;
     public static final int ID_UPDATE_NAME = 2;
 
-    private int id;
+    private int idEditType;
     private String text;
 
     @BindView(R.id.editNewNote)
@@ -83,7 +83,7 @@ public class EditTextDialog extends DialogFragment {
 
         Bundle args = getArguments();
         text = args.getString(KEY_OLD_TEXT);
-        id = args.getInt(KEY_ID_EDIT_TYPE);
+        idEditType = args.getInt(KEY_ID_EDIT_TYPE);
         String title = args.getString(KEY_FRAGMENT_TITLE);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
@@ -91,7 +91,7 @@ public class EditTextDialog extends DialogFragment {
                 .setPositiveButton(R.string.action_save, (dialog, which) -> {
                     String note = noteText.getText().toString();
                     if (!note.isEmpty()){
-                        listener.onSaveText(id, note);
+                        listener.onSaveText(idEditType, note);
                     } else {
                         dialog.dismiss();
                     }
