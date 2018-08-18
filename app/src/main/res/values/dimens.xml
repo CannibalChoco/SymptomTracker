@@ -26,7 +26,8 @@
 
     <!-- Fixed layout heights -->
     <dimen name="detail_rv_height">150dp</dimen>
-    <dimen name="treatment_layout_height">300dp</dimen>
+    <!-- ViewPager height = detail_rv_height + add button height + button vertical margins -->
+    <dimen name="treatment_view_pager_height">190dp</dimen>
     <dimen name="graph_view_height">250dp</dimen>
 
     <!-- Severity button -->
