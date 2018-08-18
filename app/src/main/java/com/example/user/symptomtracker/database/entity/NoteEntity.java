@@ -7,7 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "notes_container",
+@Entity(tableName = "notes",
         foreignKeys = {
                 @ForeignKey(entity = SymptomEntity.class,
                         parentColumns = "id",
