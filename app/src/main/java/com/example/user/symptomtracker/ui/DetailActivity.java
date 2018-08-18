@@ -1,6 +1,5 @@
 package com.example.user.symptomtracker.ui;
 
-import android.app.DialogFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -64,7 +63,7 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     private static final String KEY_SCROLL_POSITION = "scrollPosition";
 
     public static final String KEY_ID = "id";
-    public static final String FRAGMENT_ADD_NOTE = "fragmentAddNote";
+    public static final String FRAGMENT_TAG = "editTextDialog";
     public static final int VIBRATE_MILLIS = 100;
 
     public static final int NUM_PAGES = 2;
@@ -168,7 +167,8 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
         switch (item.getItemId()) {
             case R.id.action_edit_name:
                 String name = symptom.getName();
-                showEditTextDialog(EditTextDialog.ID_UPDATE_NAME, name);
+                showEditTextDialog(EditTextDialog.ID_UPDATE_NAME, name,
+                        getString(R.string.edit_symptom_name));
                 return true;
             case R.id.action_delete:
                 showDeleteDialog();
@@ -282,19 +282,12 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
 
     @OnClick(R.id.addNote)
     public void addNote() {
-        showEditTextDialog(EditTextDialog.ID_NEW_NOTE, "");
+        showEditTextDialog(EditTextDialog.ID_NEW_NOTE, "", getString(R.string.add_note_title));
     }
 
-    private void showEditTextDialog(int id, String text) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(EditTextDialog.KEY_ID, id);
-        bundle.putString(EditTextDialog.KEY_TEXT, text);
-
-        EditTextDialog dialog = new EditTextDialog();
-        dialog.setArguments(bundle);
-        dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentWithTitle);
-        dialog.setOnSAveNoteListener(this);
-        dialog.show(getSupportFragmentManager(), FRAGMENT_ADD_NOTE);
+    private void showEditTextDialog(int id, String text, String title) {
+        EditTextDialog dialog = EditTextDialog.newInstance(id, text, title, this);
+        dialog.show(getSupportFragmentManager(), FRAGMENT_TAG);
     }
 
     private void setIsChronicInUi(boolean isChronic) {
@@ -389,8 +382,8 @@ public class DetailActivity extends AppCompatActivity implements EditTextDialog.
     }
 
     @Override
-    public void onNoteEdit(int id, String text) {
-        showEditTextDialog(EditTextDialog.ID_UPDATE_NOTE, text);
+    public void onNoteLongClick(int id, String text) {
+        showEditTextDialog(EditTextDialog.ID_UPDATE_NOTE, text, getString(R.string.edit_note_title));
         editNoteId = id;
     }
 

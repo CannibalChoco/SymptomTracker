@@ -43,8 +43,10 @@
     <string name="action_delete">Delete</string>
     <string name="action_keep_editing">Keep editing</string>
 
-    <!-- Add New Note Dialog -->
+    <!-- Dialog titles -->
     <string name="add_note_title">Add Note</string>
+    <string name="edit_note_title">Edit Note</string>
+    <string name="edit_symptom_name">Edit Symptom Name</string>
 
     <!-- Dialog messages -->
     <string name="dialog_msg_unsaved_changes">There are unsaved changes.</string>

@@ -26,7 +26,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private OnNoteLongClickListener listener;
 
     public interface OnNoteLongClickListener {
-        void onNoteEdit(int id, String text);
+        void onNoteLongClick(int id, String text);
     }
 
     public NotesAdapter(Context context, List<NoteEntity> notes, OnNoteLongClickListener listener) {
@@ -87,7 +87,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         @Override
         public boolean onLongClick(View v) {
             NoteEntity note = notes.get(getAdapterPosition());
-            listener.onNoteEdit(note.getId(), note.getContent());
+            listener.onNoteLongClick(note.getId(), note.getContent());
             Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(DetailActivity.VIBRATE_MILLIS);
             return false;
