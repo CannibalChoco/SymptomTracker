@@ -155,7 +155,7 @@
 
         <include
             android:id="@+id/include2"
-            layout="@layout/notes"
+            layout="@layout/notes_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_half_gutter_width"

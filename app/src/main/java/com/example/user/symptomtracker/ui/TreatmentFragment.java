@@ -50,7 +50,7 @@ public class TreatmentFragment extends Fragment implements
     TextView emptyStateText;
 
     /**
-     * Differentiate for weather to get current or past treatments
+     * Differentiate for weather to get current or past treatments_shared
      */
     private int fragmentId;
     private int symptomId;
@@ -69,7 +69,7 @@ public class TreatmentFragment extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.treatments, container, false);
+                R.layout.treatments_shared, container, false);
 
         ButterKnife.bind(this, rootView);
 

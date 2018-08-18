@@ -261,7 +261,7 @@ public class EditTreatmentDialog extends DialogFragment {
      * @param name          treatment name
      * @param timeInMillis  time in millis to take effect
      * @param wasSuccessful boolean whether took effect
-     * @param isActive      true for current treatments, false for past treatments
+     * @param isActive      true for current treatments_shared, false for past treatments_shared
      */
     private void constructTreatment(int symptomId, String name, long timeInMillis, int wasSuccessful,
                                     boolean isActive) {

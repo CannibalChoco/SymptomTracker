@@ -10,11 +10,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Provides all necessary information for a symptoms treatments. All entities of this class
+ * Provides all necessary information for a symptoms treatments_shared. All entities of this class
  * will be mapped to a parent object by parents ID
  */
 
-@Entity(tableName = "treatments",
+@Entity(tableName = "treatments_shared",
         foreignKeys = {
                 @ForeignKey(entity = SymptomEntity.class,
                         parentColumns = "id",
